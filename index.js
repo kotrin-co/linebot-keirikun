@@ -316,10 +316,11 @@ const initialInput = async (auth,ssID) => {
 
   const request_row = {
     spreadsheetId: ssID,
-    range: '入力用シート!A2:A16',
+    range: '入力用シート!A2',
     valueInputOption: 'RAW',
+
     resource: {
-      values: [account]
+      values: [account[0],account[1],account[2]]
     }
   };
 
