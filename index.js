@@ -200,7 +200,7 @@ const createSheet = async (address,userName,ev) => {
                       };
           
                       connection.query(update_query)
-                          .then(()=>{
+                          .then(async ()=>{
                               await initialInput(ssID);
                               console.log('user情報更新成功');
                               return client.replyMessage(ev.replyToken,{
