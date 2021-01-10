@@ -173,53 +173,46 @@ const createSheet = async (address,userName,ev) => {
           },
          'sheets': [
                 {
-        'properties': {
-          'sheetId': 0,
-          'title': 'シート1',
-          //'index': 0,
-          //'sheetType': 'GRID',
-          //'gridProperties': {
-            //'rowCount': 1000,
-            //'columnCount': 26
-          //}
-        }
-      }
-    ],      
+              'properties': {
+                'sheetId': 0,
+                'title': '入力用シート',
+                'index': 0,
+                'sheetType': 'GRID',
+                'gridProperties': {
+                  'rowCount': 50,
+                  'columnCount': 400
+                }
+              }
+            }
+          ],
         }
       };
   
     await sheets.spreadsheets.create(request, (err,response)=>{
 
-            console.log(JSON.stringify(response,null,2));
-            const spreadsheetId = response.data.spreadsheetId;
-            gmailAccountAdd(spreadsheetId,'owner','kentaro523@gmail.com')
-                .then((ssId)=>{
-                    gmailAccountAdd(spreadsheetId,'writer',address)
-                        .then((ssID)=>{
-                            const update_query = {
-                                text:`UPDATE users SET (gmail,ssid) = ('${address}','${ssID}') WHERE line_uid='${ev.source.userId}';`
-                            };
-                
-                            connection.query(update_query)
-                                .then(()=>{
-                                    console.log('user情報更新成功');
-                                    return client.replyMessage(ev.replyToken,{
-                                        "type":"text",
-                                        "text":`${userName}さん、会計シートが正しく作れました\uDBC0\uDC04`
-                                    });
-                                })
-                                .catch(e=>console.log(e.stack));
-                        })
-                        .catch(e=>console.log(e));
-                })
-                .catch(e=>console.log(e))
-            
-            // const res = JSON.stringify(response,null,2);
-            // console.log('response:',response);
-            // console.log('config:',response.config);
-            // console.log('data:',response.data);
-            
-        });
+      const spreadsheetId = response.data.spreadsheetId;
+      gmailAccountAdd(spreadsheetId,'owner','kentaro523@gmail.com')
+          .then((ssId)=>{
+              gmailAccountAdd(spreadsheetId,'writer',address)
+                  .then((ssID)=>{
+                      const update_query = {
+                          text:`UPDATE users SET (gmail,ssid) = ('${address}','${ssID}') WHERE line_uid='${ev.source.userId}';`
+                      };
+          
+                      connection.query(update_query)
+                          .then(()=>{
+                              console.log('user情報更新成功');
+                              initialInput(ssID);
+                              return client.replyMessage(ev.replyToken,{
+                                  "type":"text",
+                                  "text":`${userName}さん、会計シートが正しく作れました\uDBC0\uDC04`
+                              });
+                          })
+                          .catch(e=>console.log(e.stack));
+                  })
+                  .catch(e=>console.log(e));
+          })
+    });
 }
 
 const gmailAccountAdd = async (ssID,role,gmail) => {
@@ -285,54 +278,23 @@ const gmailAccountAdd = async (ssID,role,gmail) => {
     })
 }
 
+const initialInput = async (ssID) => {
+  const auth = await google.auth.getClient({
+    scopes: ['https://www.googleapis.com/auth/spreadsheets']
+  });
+  const sheets = google.sheets({version: 'v4', auth});
+  const datesArray = [];
+  for(let i=0;i<365;i++){
+    datesArray.push(i);
+  }
+  const request = {
+    spreadsheetId: ssID,
+    range: 'Sheet0!B1:NC1',
+    valueInputOption: 'RAW',
+    resource: {
+      values: [datesArray]
+    }
+  };
 
-
-//sheet名を取得する
-// const getSpreadsheetTitleByKey = async (spreadsheetKey) => {
-
-//     const doc = new GoogleSpreadsheet(spreadsheetKey);
-
-//     await doc.useServiceAccountAuth({
-//         client_email: CREDIT.client_email,
-//         private_key: CREDIT.private_key
-//     });
-
-//     await doc.loadInfo();
-//     console.log(doc.title);
-// }
-
-// getSpreadsheetTitleByKey(SPREADSHEET_KEY);
-
-// const setHeaderToSpreadsheet = async (spreadsheetKey,sheetIndex,headerValues) => {
-//     const doc = new GoogleSpreadsheet(spreadsheetKey);
-//     await doc.useServiceAccountAuth({
-//         client_email: CREDIT.client_email,
-//         private_key: CREDIT.private_key
-//     });
-
-//     await doc.loadInfo();
-//     const sheet = doc.sheetsByIndex[sheetIndex];
-
-//     await sheet.setHeaderRow(headerValues);
-// }
-
-// setHeaderToSpreadsheet(SPREADSHEET_KEY,0,['id','name','age']);
-
-//データを挿入する
-// const insertItems = async () => {
-//     await spreadSheetService.insert({id:1,name:'nakagawa',age:39});
-//     await spreadSheetService.insert({id:2,name:'hikaru',age:33});
-//     await spreadSheetService.insert({id:3,name:'sakurako',age:35});
-//     await spreadSheetService.insert({id:4,name:'gal',age:18});
-// }
-
-// insertItems();
-
-// spreadSheetService.select(row => parseInt(row.age) === 33)
-//     .then(data=>console.log(data));
-
-
-// spreadSheetService.updateById('2',{name:'utada'});
-
-// //delete
-// spreadSheetService.deleteById('3');
+  await sheets.spreadsheets.values.update(request);
+}
