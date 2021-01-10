@@ -305,25 +305,35 @@ const initialInput = async (auth,ssID) => {
 
   //行データの生成
   const account = ['収入','売上','支出','源泉所得税','交通費','会議費','接待交際費','通信費','衣装費','郵便代','保険料','年金','家賃','従業員報酬','その他']
-  const request_column = {
-    spreadsheetId: ssID,
-    range: '入力用シート!B1',
-    valueInputOption: 'RAW',
+  // const request_column = {
+  //   spreadsheetId: ssID,
+  //   range: '入力用シート!B1',
+  //   valueInputOption: 'RAW',
+  //   resource: {
+  //     values: [datesArray]
+  //   }
+  // };
+
+  // const request_row = {
+  //   spreadsheetId: ssID,
+  //   range: '入力用シート!A2',
+  //   valueInputOption: 'RAW',
+
+  //   resource: {
+  //     values: [[account[0]],[account[1]],[account[2]]]
+  //   }
+  // };
+
+  const request = {
+    spreadsheetId: '1ywCoA14h_Ei3Wkicln75beM25I5kLOKFVOVWALvwNgY',
+    sheetId: 0,
     resource: {
-      values: [datesArray]
+      destinationSpreadsheetId: ssID
     }
   };
 
-  const request_row = {
-    spreadsheetId: ssID,
-    range: '入力用シート!A2',
-    valueInputOption: 'RAW',
+  await sheets.spreadsheets.sheets.copyTo(request);
 
-    resource: {
-      values: [[account[0]],[account[1]],[account[2]]]
-    }
-  };
-
-  await sheets.spreadsheets.values.update(request_column);
-  await sheets.spreadsheets.values.update(request_row);
+  // await sheets.spreadsheets.values.update(request_column);
+  // await sheets.spreadsheets.values.update(request_row);
 }
