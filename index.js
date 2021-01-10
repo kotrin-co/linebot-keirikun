@@ -116,7 +116,15 @@ const handleMessageEvent = async (ev) => {
     connection.query(select_query)
         .then(res=>{
             console.log('res.rows[0]:',res.rows[0]);
-            if(!res.rows[0].gmail){
+            if( text === '消す'){
+              const update_query = {
+                text:`UPDATE users SET (gmail,ssid) = ('','') WHERE line_uid='${ev.source.userId}';`
+              };
+              connection.query(update_query)
+                .then(()=>console.log('消した！！'))
+                .catch(e=>console.log(e));
+            }else{
+              if(!res.rows[0].gmail){
                 const reg = /^[A-Za-z0-9]{1}[A-Za-z0-9_.-]*@gmail.com/;
                 if(reg.test(text)){
                     console.log('メアドOK');
@@ -129,13 +137,13 @@ const handleMessageEvent = async (ev) => {
                         "text":"まずはメールアドレスを登録しましょう。（Gmailアドレスのみを送ってください。）"
                     });
                 }
-            }
-            
-            else{
-                return client.replyMessage(ev.replyToken,{
-                    "type":"text",
-                    "text":"メルアドとシート作成ができましたので、これからサービスの中身を実装していきます^^"
-                });
+              }
+              else{
+                  return client.replyMessage(ev.replyToken,{
+                      "type":"text",
+                      "text":"メルアドとシート作成ができましたので、これからサービスの中身を実装していきます^^"
+                  });
+              }
             }
         })
         .catch(e=>console.log(e));
@@ -176,7 +184,7 @@ const createSheet = async (address,userName,ev) => {
               'properties': {
                 'sheetId': 0,
                 'title': '入力用シート',
-                'index': 0,
+                'index': 1,
                 'sheetType': 'GRID',
                 'gridProperties': {
                   'rowCount': 50,
@@ -289,7 +297,7 @@ const initialInput = async (auth,ssID) => {
   }
   const request = {
     spreadsheetId: ssID,
-    range: 'Sheet0!A1:F1',
+    range: 'Sheet1!A1:F1',
     valueInputOption: 'RAW',
     resource: {
       values: [[0,0,0,1,2,3]]
