@@ -291,18 +291,38 @@ const initialInput = async (auth,ssID) => {
   //   scopes: ['https://www.googleapis.com/auth/spreadsheets']
   // });
   const sheets = google.sheets({version: 'v4', auth});
+
+  //列データの生成
   const datesArray = [];
+  const thisYear = new Date().getFullYear();
+  const oneDay = 24*60*60*1000;
+  const start = new Date(`${thisYear}/1/1 00:00`).getTime();
+  console.log('start=',start);
   for(let i=0;i<365;i++){
-    datesArray.push(i);
+    const date = (new Date(start+i*oneDay).getMonth()+1) + '/' + new Date(start+i*oneDay).getDate();
+    datesArray.push(date);
   }
-  const request = {
+
+  //行データの生成
+  const account = ['収入','売上','支出','源泉所得税','交通費','会議費','接待交際費','通信費','衣装費','郵便代','保険料','年金','家賃','従業員報酬','その他']
+  const request_column = {
     spreadsheetId: ssID,
-    range: '入力用シート!A1',
+    range: '入力用シート!B1',
     valueInputOption: 'RAW',
     resource: {
       values: [datesArray]
     }
   };
 
-  await sheets.spreadsheets.values.update(request);
+  const request_row = {
+    spreadsheetId: ssID,
+    range: '入力用シート!2:16',
+    valueInputOption: 'RAW',
+    resource: {
+      values: [account]
+    }
+  };
+
+  await sheets.spreadsheets.values.update(request_column);
+  await sheets.spreadsheets.values.update(request_row);
 }
