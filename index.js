@@ -324,7 +324,7 @@ const initialInput = async (auth,ssID) => {
   //   }
   // };
 
-  const request = {
+  const copy_request = {
     spreadsheetId: '1ywCoA14h_Ei3Wkicln75beM25I5kLOKFVOVWALvwNgY',
     sheetId: 0,
     resource: {
@@ -332,7 +332,22 @@ const initialInput = async (auth,ssID) => {
     }
   };
 
-  await sheets.spreadsheets.sheets.copyTo(request);
+  await sheets.spreadsheets.sheets.copyTo(copy_request);
+
+  const delete_request = {
+    spreadsheetId: ssID,
+    resource: {
+      requests: [
+        {
+          'deleteSheet': {
+            'sheetId': 0
+          }
+        }
+      ]
+    }
+  }
+
+  await sheets.spreadsheets.batchUpdate(delete_request);
 
   // await sheets.spreadsheets.values.update(request_column);
   // await sheets.spreadsheets.values.update(request_row);
