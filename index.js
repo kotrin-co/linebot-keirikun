@@ -320,7 +320,7 @@ const initialInput = async (auth,ssID) => {
     valueInputOption: 'RAW',
 
     resource: {
-      values: [account[0],account[1],account[2]]
+      values: [[account[0]],[account[1]],[account[2]]]
     }
   };
 
