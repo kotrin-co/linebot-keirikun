@@ -190,6 +190,7 @@ const createSheet = async (address,userName,ev) => {
   
     await sheets.spreadsheets.create(request, (err,response)=>{
 
+            console.log(JSON.stringify(response,null,2));
             const spreadsheetId = response.data.spreadsheetId;
             gmailAccountAdd(spreadsheetId,'owner','kentaro523@gmail.com')
                 .then((ssId)=>{
