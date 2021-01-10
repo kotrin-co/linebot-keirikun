@@ -289,10 +289,10 @@ const initialInput = async (auth,ssID) => {
   }
   const request = {
     spreadsheetId: ssID,
-    range: 'Sheet0!B1',
+    range: 'Sheet0!A1:F1',
     valueInputOption: 'RAW',
     resource: {
-      values: [datesArray]
+      values: [[0,0,0,1,2,3]]
     }
   };
 
