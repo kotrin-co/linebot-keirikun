@@ -201,7 +201,7 @@ const createSheet = async (address,userName,ev) => {
           
                       connection.query(update_query)
                           .then(async ()=>{
-                              await initialInput(ssID);
+                              await initialInput(jwtClient,ssID);
                               console.log('user情報更新成功');
                               return client.replyMessage(ev.replyToken,{
                                   "type":"text",
@@ -278,10 +278,10 @@ const gmailAccountAdd = async (ssID,role,gmail) => {
     })
 }
 
-const initialInput = async (ssID) => {
-  const auth = await google.auth.getClient({
-    scopes: ['https://www.googleapis.com/auth/spreadsheets']
-  });
+const initialInput = async (auth,ssID) => {
+  // const auth = await google.auth.getClient({
+  //   scopes: ['https://www.googleapis.com/auth/spreadsheets']
+  // });
   const sheets = google.sheets({version: 'v4', auth});
   const datesArray = [];
   for(let i=0;i<365;i++){
@@ -289,7 +289,7 @@ const initialInput = async (ssID) => {
   }
   const request = {
     spreadsheetId: ssID,
-    range: 'Sheet0!B1:NC1',
+    range: 'Sheet0!B1',
     valueInputOption: 'RAW',
     resource: {
       values: [datesArray]
