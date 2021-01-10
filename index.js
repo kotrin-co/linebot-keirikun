@@ -201,8 +201,8 @@ const createSheet = async (address,userName,ev) => {
           
                       connection.query(update_query)
                           .then(()=>{
+                              await initialInput(ssID);
                               console.log('user情報更新成功');
-                              initialInput(ssID);
                               return client.replyMessage(ev.replyToken,{
                                   "type":"text",
                                   "text":`${userName}さん、会計シートが正しく作れました\uDBC0\uDC04`
