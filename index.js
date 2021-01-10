@@ -324,15 +324,16 @@ const initialInput = async (auth,ssID) => {
   //   }
   // };
 
-  const copy_request = {
-    spreadsheetId: '1ywCoA14h_Ei3Wkicln75beM25I5kLOKFVOVWALvwNgY',
-    sheetId: 0,
-    resource: {
-      destinationSpreadsheetId: ssID
-    }
-  };
-
-  await sheets.spreadsheets.sheets.copyTo(copy_request);
+  for(let i=0;i<2;i++){
+    const copy_request = {
+      spreadsheetId: '1ywCoA14h_Ei3Wkicln75beM25I5kLOKFVOVWALvwNgY',
+      sheetId: i,
+      resource: {
+        destinationSpreadsheetId: ssID
+      }
+    };
+    await sheets.spreadsheets.sheets.copyTo(copy_request);
+  }
 
   const delete_request = {
     spreadsheetId: ssID,
