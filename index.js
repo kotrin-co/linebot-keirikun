@@ -316,7 +316,7 @@ const initialInput = async (auth,ssID) => {
 
   const request_row = {
     spreadsheetId: ssID,
-    range: '入力用シート!2:16',
+    range: '入力用シート!A2:A16',
     valueInputOption: 'RAW',
     resource: {
       values: [account]
