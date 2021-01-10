@@ -2,6 +2,7 @@ const express = require('express');
 const line = require('@line/bot-sdk');
 const { Client } = require('pg');
 const { google } = require('googleapis');
+const privatekey = require('./client_secret.json');
 
 const PORT = process.env.PORT || 5000;
 
