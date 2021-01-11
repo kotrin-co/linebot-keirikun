@@ -2,6 +2,8 @@ const { Client } = require('pg');
 const { google } = require('googleapis');
 const privatekey = require('../client_secret.json');
 
+const ACCOUNTS = ['収入','売上','支出','源泉所得税','交通費','会議費','接待交際費','通信費','衣装費','郵便代','保険料','年金','家賃','従業員報酬','その他'];
+
 const connection = new Client({
   connectionString: process.env.DATABASE_URL,
   ssl: {
@@ -63,12 +65,15 @@ module.exports = {
     
           const sheets = google.sheets({version: 'v4', auth: jwtClient});
 
+          const rowNumber = ACCOUNTS.indexOf(accountSelect)+2;
+          console.log('rowNum',rowNumber);
+
           const request = {
             spreadsheetId: ssId,
-            range: '入力用シート!A1',
+            range: `入力用シート!C${rowNumber}`,
             valueInputOption: 'RAW',
             resource: {
-              values: [[inputSheetId]]
+              values: [[amountInput]]
             }
           }
           await sheets.spreadsheets.values.update(request);
