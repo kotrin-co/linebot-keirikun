@@ -107,6 +107,7 @@ module.exports = {
           console.log('target',target);
 
           //対象のセルの値を取得
+          //セルの値がからの時は何も戻ってこない(dataの中に何もない)
           const get_request = {
             spreadsheetId: ssId,
             range: `入力用シート!${target}`
@@ -114,7 +115,7 @@ module.exports = {
           const response = await sheets.spreadsheets.values.get(get_request);
           let newValue;
           console.log('response.data',response.data);
-          if(response.data.values.length[0]){
+          if('values' in response.data){
             const oldValue = parseInt(response.data.values[0][0]);
             newValue = oldValue+parseInt(amountInput);
             console.log('newValue',newValue);
