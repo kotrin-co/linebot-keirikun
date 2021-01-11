@@ -372,19 +372,19 @@ const initialTreat = async (auth,ssID,line_uid) => {
   });
 
   //空白シートの削除
-  const delete_request = {
-    spreadsheetId: ssID,
-    resource: {
-      requests: [
-        {
-          'deleteSheet': {
-            'sheetId': 0
-          }
-        }
-      ]
-    }
-  }
-  await sheets.spreadsheets.batchUpdate(delete_request);
+  // const delete_request = {
+  //   spreadsheetId: ssID,
+  //   resource: {
+  //     requests: [
+  //       {
+  //         'deleteSheet': {
+  //           'sheetId': 0
+  //         }
+  //       }
+  //     ]
+  //   }
+  // }
+  // await sheets.spreadsheets.batchUpdate(delete_request);
   // await sheets.spreadsheets.values.update(request_column);
   // await sheets.spreadsheets.values.update(request_row);
 }
