@@ -16,9 +16,10 @@ module.exports = {
         text:`SELECT * FROM users WHERE line_uid='${line_uid}';`
       }
       connection.query(pickup_query)
-        .then(userData=>{
-          if(userData.rows.length){
-            resolve(userData.rows[0])
+        .then(user=>{
+          if(user.rows.length){
+            console.log('user.rows',user.rows);
+            resolve(user.rows[0]);
           }else{
             resolve('');
           }
