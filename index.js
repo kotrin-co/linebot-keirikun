@@ -212,7 +212,7 @@ const createSheet = async (address,userName,ev) => {
           
                       connection.query(update_query)
                           .then(async ()=>{
-                              // await initialTreat(jwtClient,ssID,ev.source.userId);
+                              await initialTreat(jwtClient,ssID,ev.source.userId);
                               console.log('user情報更新成功');
                               return client.replyMessage(ev.replyToken,{
                                   "type":"text",
