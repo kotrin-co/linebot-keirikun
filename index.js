@@ -121,7 +121,7 @@ const handleMessageEvent = async (ev) => {
             console.log('res.rows[0]:',res.rows[0]);
             if( text === '消す'){
               const update_query = {
-                text:`UPDATE users SET (gmail,ssid,sid1,sid2) = ('','','','') WHERE line_uid='${ev.source.userId}';`
+                text:`UPDATE users SET (gmail,ssid) = ('','') WHERE line_uid='${ev.source.userId}';`
               };
               connection.query(update_query)
                 .then(()=>console.log('消した！！'))
@@ -212,7 +212,7 @@ const createSheet = async (address,userName,ev) => {
           
                       connection.query(update_query)
                           .then(async ()=>{
-                              await initialTreat(jwtClient,ssID);
+                              await initialTreat(jwtClient,ssID,ev.source.userId);
                               console.log('user情報更新成功');
                               return client.replyMessage(ev.replyToken,{
                                   "type":"text",
@@ -289,7 +289,7 @@ const gmailAccountAdd = async (ssID,role,gmail) => {
     })
 }
 
-const initialTreat = async (auth,ssID) => {
+const initialTreat = async (auth,ssID,line_uid) => {
   // const auth = await google.auth.getClient({
   //   scopes: ['https://www.googleapis.com/auth/spreadsheets']
   // });
@@ -361,10 +361,10 @@ const initialTreat = async (auth,ssID) => {
     }
     await sheets.spreadsheets.batchUpdate(title_change_request);
 
-    const insert_query = {
-      text: `INSERT INTO users (sid${index+1}) VALUES(${id});`
-    }
-    connection.query(insert_query)
+    const update_query = {
+      text:`UPDATE users SET sid${index+1} = ${id} WHERE line_uid='${line_uid}';`
+    };
+    connection.query(update_query)
       .then(()=>{
         console.log('usersテーブル更新成功')
       })
