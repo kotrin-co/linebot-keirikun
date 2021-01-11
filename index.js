@@ -340,8 +340,8 @@ const initialTreat = (auth,ssID,line_uid) => {
       }
     }
     const res0 = await sheets.spreadsheets.sheets.copyTo(copy_request0);
-    console.log('res0.data.sheetId',res0.data.sheetId);
-    copied_SID.push(res0.data.sheetId);
+    console.log('res0.data.sheetId',res0.data);
+    // copied_SID.push(res0.data.sheetId);
 
     const copy_request1 = {
       spreadsheetId: original_SSID,
@@ -351,10 +351,10 @@ const initialTreat = (auth,ssID,line_uid) => {
       }
     }
     const res1 = await sheets.spreadsheets.sheets.copyTo(copy_request1);
-    console.log('res1.data.sheetId',res1.data.sheetId);
-    copied_SID.push(res1.data.sheetId);
+    console.log('res1.data.sheetId',res1.data);
+    // copied_SID.push(res1.data.sheetId);
 
-    console.log('copied_SID',copied_SID);
+    // console.log('copied_SID',copied_SID);
 
     resolve();
 
