@@ -332,7 +332,7 @@ const initialInput = async (auth,ssID) => {
     }
   };
   const res0 = await sheets.spreadsheets.sheets.copyTo(copy_request0);
-  console.log('res0',res0);
+  console.log('res0',res0.data);
 
   const copy_request1 = {
     spreadsheetId: '1ywCoA14h_Ei3Wkicln75beM25I5kLOKFVOVWALvwNgY',
@@ -359,14 +359,14 @@ const initialInput = async (auth,ssID) => {
   await sheets.spreadsheets.batchUpdate(delete_request);
 
   const title_request = {
-    spreadsheetId: ssID,
+    spreadsheetId: '1w5-dNC382yxDk6w1PggW1GYsGnMMshgX6e7vFO4sBPM',
     resource: {
       requests: [
         {
           'updateSheetProperties': {
             'properties': {
-              'sheetId': 893374851,
-              'title': '入力用シート'
+              'sheetId': 1829681260,
+              'title': '入力用シートへ変更'
             },
             'fields': 'title'
           }
