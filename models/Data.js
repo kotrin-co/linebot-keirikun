@@ -112,9 +112,14 @@ module.exports = {
             range: `入力用シート!${target}`
           }
           const response = await sheets.spreadsheets.values.get(get_request);
-          const oldValue = parseInt(response.data.values[0][0]);
-          const newValue = !oldValue ? parseInt(amountInput) : oldValue+parseInt(amountInput);
-          console.log('newValue',newValue);
+          let newValue;
+          if(response.data.values.length){
+            const oldValue = parseInt(response.data.values[0][0]);
+            newValue = oldValue+parseInt(amountInput);
+            console.log('newValue',newValue);
+          }else{
+            newValue = parseInt(amountInput);
+          }
 
           //対象のセルの値を更新
           const update_request = {
