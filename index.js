@@ -356,6 +356,8 @@ const initialTreat = (auth,ssID,line_uid) => {
 
     console.log('copied_SID',copied_SID);
 
+    resolve();
+
     // copied_SID.forEach(async (id,index) =>{
     //   const title_change_request = {
     //     spreadsheetId: SSID,
