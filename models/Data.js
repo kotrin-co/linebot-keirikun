@@ -113,7 +113,7 @@ module.exports = {
           }
           const response = await sheets.spreadsheets.values.get(get_request);
           const oldValue = parseInt(response.data.values[0][0]);
-          const newValue = oldValue+parseInt(amountInput);
+          const newValue = !oldValue ? parseInt(amountInput) : oldValue+parseInt(amountInput);
           console.log('newValue',newValue);
 
           //対象のセルの値を更新
