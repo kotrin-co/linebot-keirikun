@@ -4,6 +4,9 @@ const { Client } = require('pg');
 const { google } = require('googleapis');
 const privatekey = require('./client_secret.json');
 
+const original_SSID = '1ywCoA14h_Ei3Wkicln75beM25I5kLOKFVOVWALvwNgY';
+const original_SID = [0,1785812525];
+
 const PORT = process.env.PORT || 5000;
 
 
@@ -118,7 +121,7 @@ const handleMessageEvent = async (ev) => {
             console.log('res.rows[0]:',res.rows[0]);
             if( text === '消す'){
               const update_query = {
-                text:`UPDATE users SET (gmail,ssid) = ('','') WHERE line_uid='${ev.source.userId}';`
+                text:`UPDATE users SET (gmail,ssid,sid1,sid2) = ('','','','') WHERE line_uid='${ev.source.userId}';`
               };
               connection.query(update_query)
                 .then(()=>console.log('消した！！'))
@@ -175,7 +178,7 @@ const createSheet = async (address,userName,ev) => {
         resource : {
           //spreadsheetId: '',
           properties: {
-            title: `${name}の会計シート`,
+            title: `${name}さんの会計シート`,
             locale: 'ja_JP',
             timeZone:'Asia/Tokyo'
           },
@@ -209,7 +212,7 @@ const createSheet = async (address,userName,ev) => {
           
                       connection.query(update_query)
                           .then(async ()=>{
-                              await initialInput(jwtClient,ssID);
+                              await initialTreat(jwtClient,ssID);
                               console.log('user情報更新成功');
                               return client.replyMessage(ev.replyToken,{
                                   "type":"text",
@@ -286,25 +289,25 @@ const gmailAccountAdd = async (ssID,role,gmail) => {
     })
 }
 
-const initialInput = async (auth,ssID) => {
+const initialTreat = async (auth,ssID) => {
   // const auth = await google.auth.getClient({
   //   scopes: ['https://www.googleapis.com/auth/spreadsheets']
   // });
   const sheets = google.sheets({version: 'v4', auth});
 
   //列データの生成
-  const datesArray = [];
-  const thisYear = new Date().getFullYear();
-  const oneDay = 24*60*60*1000;
-  const start = new Date(`${thisYear}/1/1 00:00`).getTime();
-  console.log('start=',start);
-  for(let i=0;i<365;i++){
-    const date = (new Date(start+i*oneDay).getMonth()+1) + '/' + new Date(start+i*oneDay).getDate();
-    datesArray.push(date);
-  }
+  // const datesArray = [];
+  // const thisYear = new Date().getFullYear();
+  // const oneDay = 24*60*60*1000;
+  // const start = new Date(`${thisYear}/1/1 00:00`).getTime();
+  // console.log('start=',start);
+  // for(let i=0;i<365;i++){
+  //   const date = (new Date(start+i*oneDay).getMonth()+1) + '/' + new Date(start+i*oneDay).getDate();
+  //   datesArray.push(date);
+  // }
 
   //行データの生成
-  const account = ['収入','売上','支出','源泉所得税','交通費','会議費','接待交際費','通信費','衣装費','郵便代','保険料','年金','家賃','従業員報酬','その他']
+  // const account = ['収入','売上','支出','源泉所得税','交通費','会議費','接待交際費','通信費','衣装費','郵便代','保険料','年金','家賃','従業員報酬','その他']
   // const request_column = {
   //   spreadsheetId: ssID,
   //   range: '入力用シート!B1',
@@ -324,25 +327,22 @@ const initialInput = async (auth,ssID) => {
   //   }
   // };
 
-  const copy_request0 = {
-    spreadsheetId: '1ywCoA14h_Ei3Wkicln75beM25I5kLOKFVOVWALvwNgY',
-    sheetId: 0,
-    resource: {
-      destinationSpreadsheetId: ssID
-    }
-  };
-  const res0 = await sheets.spreadsheets.sheets.copyTo(copy_request0);
-  console.log('res0',res0.data);
+  const copied_SID = [];
+  const title_SID = ['入力用シート','確定申告B 第一表']
 
-  const copy_request1 = {
-    spreadsheetId: '1ywCoA14h_Ei3Wkicln75beM25I5kLOKFVOVWALvwNgY',
-    sheetId: 1785812525,
-    resource: {
-      destinationSpreadsheetId: ssID
+  original_SID.forEach(id=>{
+    const copy_request = {
+      spreadsheetId: original_SSID,
+      sheetId: id,
+      resource: {
+        destinationSpreadsheetId: ssID
+      }
     }
-  };
-  await sheets.spreadsheets.sheets.copyTo(copy_request1);
+    const res = await sheets.spreadsheets.sheets.copyTo(copy_request);
+    copied_SID.push(res.data.sheetId);
+  });
 
+  //空白シートの削除
   const delete_request = {
     spreadsheetId: ssID,
     resource: {
@@ -355,26 +355,35 @@ const initialInput = async (auth,ssID) => {
       ]
     }
   }
-
   await sheets.spreadsheets.batchUpdate(delete_request);
 
-  const title_request = {
-    spreadsheetId: '1w5-dNC382yxDk6w1PggW1GYsGnMMshgX6e7vFO4sBPM',
-    resource: {
-      requests: [
-        {
-          'updateSheetProperties': {
-            'properties': {
-              'sheetId': 1829681260,
-              'title': '入力用シートへ変更'
-            },
-            'fields': 'title'
+  copied_SID.forEach((id,index)=>{
+    const title_change_request = {
+      spreadsheetId: SSID,
+      resource: {
+        requests: [
+          {
+            'updateSheetProperties': {
+              'properties': {
+                'sheetId': id,
+                'title': title_SID[index]
+              },
+              'fields': 'title'
+            }
           }
-        }
-      ]
+        ]
+      }
     }
-  }
-  await sheets.spreadsheets.batchUpdate(title_request);
+    await sheets.spreadsheets.batchUpdate(title_change_request);
+
+    const insert_query = {
+      text: `INSERT INTO users (sid${index+1}) VALUES(${id});`
+    }
+    connection.query(insert_query)
+      .then(()=>console.log('usersテーブル更新成功'))
+      .catch(e=>console.log(e));
+  });
+
   // await sheets.spreadsheets.values.update(request_column);
   // await sheets.spreadsheets.values.update(request_row);
 }
