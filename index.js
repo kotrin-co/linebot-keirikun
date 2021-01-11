@@ -331,8 +331,7 @@ const initialInput = async (auth,ssID) => {
       destinationSpreadsheetId: ssID
     }
   };
-  const res0 = await sheets.spreadsheets.sheets.copyTo(copy_request0);
-  console.log('res0',res0);
+  await sheets.spreadsheets.sheets.copyTo(copy_request0);
 
   const copy_request1 = {
     spreadsheetId: '1ywCoA14h_Ei3Wkicln75beM25I5kLOKFVOVWALvwNgY',
@@ -356,8 +355,7 @@ const initialInput = async (auth,ssID) => {
     }
   }
 
-  const res2 = await sheets.spreadsheets.batchUpdate(delete_request);
-  console.log('res2',res2);
+  await sheets.spreadsheets.batchUpdate(delete_request);
 
   const title_request = {
     spreadsheetId: ssID,
@@ -368,7 +366,8 @@ const initialInput = async (auth,ssID) => {
             'properties': {
               'title': '入力用のシート',
               'index': 1
-            }
+            },
+            'fields': 'title'
           }
         }
       ]
