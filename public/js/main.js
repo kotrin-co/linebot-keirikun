@@ -1,5 +1,5 @@
 window.onload = () => {
-  import liff from '@line/liff';
+  // import liff from '@line/liff';
   const myLiffId = '1655219547-2QEXPwR1';
   const divPage = document.getElementById('input-page');
 
