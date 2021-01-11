@@ -11,7 +11,7 @@ window.onload = () => {
         .then(profile=>{
           const lineId = profile.userId;
           const userLabel = document.getElementById('user-name');
-          userLable.innerHTML = lineId;
+          userLabel.innerHTML = lineId;
         })
         .catch(err=>console.log(err));
     })
