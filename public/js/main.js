@@ -75,7 +75,7 @@ window.onload = () => {
           //日時ラベル
           const label_date = document.createElement('label');
           label_date.setAttribute('class','label-date');
-          label_date.innerHTML = '日時：';
+          label_date.innerHTML = '日付：';
           div_form_date.appendChild(label_date);
 
           //月Select

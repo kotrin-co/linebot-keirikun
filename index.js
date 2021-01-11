@@ -217,13 +217,16 @@ const createSheet = async (address,userName,ev) => {
                       };
           
                       connection.query(update_query)
-                          .then(async ()=>{
-                              await initialTreat(jwtClient,ssID,ev.source.userId);
-                              console.log('user情報更新成功');
-                              return client.replyMessage(ev.replyToken,{
-                                  "type":"text",
-                                  "text":`${userName}さん、会計シートが正しく作れました\uDBC0\uDC04`
-                              });
+                          .then(()=>{
+                              initialTreat(jwtClient,ssID,ev.source.userId)
+                                .then(message=>{
+                                  console.log('message',message);
+                                  return client.replyMessage(ev.replyToken,{
+                                    "type":"text",
+                                    "text":`${userName}さん、会計シートが正しく作れました\uDBC0\uDC04`
+                                  });
+                                })
+                                .catch(e=>console.log(e));
                           })
                           .catch(e=>console.log(e.stack));
                   })
@@ -334,11 +337,9 @@ const initialTreat = (auth,ssID,line_uid) => {
     //     values: [[account[0]],[account[1]],[account[2]]]
     //   }
     // };
-
-    const copied_SID = [];
     const title_SID = ['入力用シート','確定申告B 第一表']
 
-    original_SID.forEach(async(id)=>{
+    original_SID.forEach((id,index)=>{
       const copy_request = {
         spreadsheetId: original_SSID,
         sheetId: id,
@@ -346,57 +347,60 @@ const initialTreat = (auth,ssID,line_uid) => {
           destinationSpreadsheetId: ssID
         }
       }
-      const res = await sheets.spreadsheets.sheets.copyTo(copy_request);
-      console.log('res1.data.sheetId',res.data.sheetId);
-      copied_SID.push(res.data.sheetId);
-    });
-
-    console.log('copied_SID',copied_SID);
-
-    copied_SID.forEach(async (id,index) =>{
-      const title_change_request = {
-        spreadsheetId: SSID,
-        resource: {
-          requests: [
-            {
-              'updateSheetProperties': {
-                'properties': {
-                  'sheetId': id,
-                  'title': title_SID[index]
-                },
-                'fields': 'title'
-              }
+      sheets.spreadsheets.sheets.copyTo(copy_request)
+        .then(response=>{
+          console.log('sheetId',response.data.sheetId);
+          const title_change_request = {
+            spreadsheetId: SSID,
+            resource: {
+              requests: [
+                {
+                  'updateSheetProperties': {
+                    'properties': {
+                      'sheetId': response.data.sheetId,
+                      'title': title_SID[index]
+                    },
+                    'fields': 'title'
+                  }
+                }
+              ]
             }
-          ]
-        }
-      }
-      await sheets.spreadsheets.batchUpdate(title_change_request);
-
-      const update_query = {
-        text:`UPDATE users SET sid${index+1} = ${id} WHERE line_uid='${line_uid}';`
-      };
-      await connection.query(update_query);
-        // .then(()=>{
-        //   console.log('usersテーブル更新成功')
-        // })
-        // .catch(e=>console.log(e));
+          }
+          sheets.spreadsheets.batchUpdate(title_change_request)
+            .then(res=>{
+              const update_query = {
+                text:`UPDATE users SET sid${index+1} = ${response.data.sheetId} WHERE line_uid='${line_uid}';`
+              };
+              connection.query(update_query)
+                .then(()=>{
+                  console.log('usersテーブル更新成功')
+                  if(index === original_SID.length-1){
+                    // 空白シートの削除
+                    const delete_request = {
+                      spreadsheetId: ssID,
+                      resource: {
+                        requests: [
+                          {
+                            'deleteSheet': {
+                              'sheetId': 0
+                            }
+                          }
+                        ]
+                      }
+                    }
+                    sheets.spreadsheets.batchUpdate(delete_request)
+                      .then(res=>{
+                        console.log('不要シート削除成功');
+                        resolve('initial treat successfully');
+                      })
+                      .catch(e=>console.log(e));
+                  }
+                })
+                .catch(e=>console.log(e));
+            })
+            .catch(e=>console.log(e));
+        })
+        .catch(e=>console.log(e));
     });
-
-    //空白シートの削除
-    // const delete_request = {
-    //   spreadsheetId: ssID,
-    //   resource: {
-    //     requests: [
-    //       {
-    //         'deleteSheet': {
-    //           'sheetId': 0
-    //         }
-    //       }
-    //     ]
-    //   }
-    // }
-    // await sheets.spreadsheets.batchUpdate(delete_request);
-    // await sheets.spreadsheets.values.update(request_column);
-    // await sheets.spreadsheets.values.update(request_row);
-  })
+  });
 }
