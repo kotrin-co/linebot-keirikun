@@ -128,8 +128,10 @@ window.onload = () => {
           postButton.addEventListener('click',()=>{
             const formData = new FormData(formElement);
             // console.log('formData',...formData.entries());
-            const testData = formData.get('accountSelect');
-            document.getElementById('test-display').innerHTML = testData;
+            document.getElementById('test-display1').innerHTML = formData.get('amountInput');
+            document.getElementById('test-display2').innerHTML = formData.get('accountSelect');
+            document.getElementById('test-display3').innerHTML = formData.get('selectedMonth');
+            document.getElementById('test-display4').innerHTML = formData.get('selectedDay');
             // fetch('/api',{
             //   method:'POST',
             //   body:formData,
