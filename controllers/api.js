@@ -14,6 +14,11 @@ module.exports = {
 
   postData: (req,res) => {
     // const {amountInput,accountSelect,selectedMonth,selectedDay} = req.body;
-    console.log('data',req.body);
+    try{
+      console.log('data',req.body);
+    }catch(error){
+      res.status(400).json({message:error.message});
+    }
+    
   }
 }
