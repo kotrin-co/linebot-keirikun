@@ -33,7 +33,7 @@ window.onload = () => {
           const input_amount = document.createElement('input');
           input_amount.setAttribute('type','text');
           input_amount.setAttribute('class','form-control amount-input');
-          input_amount.name = 'amount-input';
+          input_amount.name = 'amountInput';
           input_amount.onkeypress = (e) => {
             const key = e.keyCode || e.charCode || 0;
             if(key===13){
@@ -57,7 +57,7 @@ window.onload = () => {
           //勘定科目のselect
           const select_account = document.createElement('select');
           select_account.setAttribute('class','form-control account-selector');
-          select_account.name = 'account-select';
+          select_account.name = 'accountSelect';
           ACCOUNTS.forEach(account=>{
             const option = document.createElement('option');
             option.innerHTML = account;
