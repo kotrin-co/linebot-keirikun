@@ -65,12 +65,50 @@ module.exports = {
     
           const sheets = google.sheets({version: 'v4', auth: jwtClient});
 
+          //行番号の取得
           const rowNumber = ACCOUNTS.indexOf(accountSelect)+2;
           console.log('rowNum',rowNumber);
 
+          //列用アルファベット配列の生成
+          const alphabets = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+          const columns = [];
+          for(let i=0; i<15; i++){
+            for(let j=0; j<26; j++){
+              if(i===0){
+                columns.push(alphabets[j]);
+              }else{
+                columns.push(alphabets[i-1]+alphabets[j]);
+              }
+            }
+          }
+          
+          //列番号の計算
+          //各月日数配列の生成
+          const year = new Date().getFullYear();
+          const daysEveryMonth = [];
+          for(let i=0; i<12; i++){
+            daysEveryMonth.push(new Date(year,i+1,0).getDate());
+          }
+          const m = parseInt(selectedMonth);
+          const d = parseInt(selectedDay);
+
+          let column = '';
+          if(m === 1){
+            column = columns[d];
+          }else{
+            let counts = d;
+            for(let i=1; i<m; i++){
+              counts += daysEveryMonth[i-1];
+            }
+            column = columns[counts];
+          }
+
+          const target = column + rowNumber;
+          console.log('target',target);
+          
           const request = {
             spreadsheetId: ssId,
-            range: `入力用シート!C${rowNumber}`,
+            range: `入力用シート!${target}`,
             valueInputOption: 'RAW',
             resource: {
               values: [[amountInput]]
