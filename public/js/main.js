@@ -33,7 +33,7 @@ window.onload = () => {
           const input_amount = document.createElement('input');
           input_amount.setAttribute('type','text');
           input_amount.setAttribute('class','form-control amount-input');
-          input_amount.name = 'amountInput';
+          input_amount.setAttribute('name','amountInput');
           input_amount.onkeypress = (e) => {
             const key = e.keyCode || e.charCode || 0;
             if(key===13){
@@ -57,7 +57,7 @@ window.onload = () => {
           //勘定科目のselect
           const select_account = document.createElement('select');
           select_account.setAttribute('class','form-control account-selector');
-          select_account.name = 'accountSelect';
+          select_account.setAttribute('name','accountSelect');
           ACCOUNTS.forEach(account=>{
             const option = document.createElement('option');
             option.innerHTML = account;
@@ -81,7 +81,7 @@ window.onload = () => {
           //月Select
           const select_month = document.createElement('select');
           select_month.setAttribute('class','form-control date-selector');
-          select_month.name = 'selectedMonth';
+          select_month.setAttribute('name','selectedMonth');
           for(let i=0; i<12; i++){
             const option = document.createElement('option');
             option.innerHTML = i+1;
@@ -100,7 +100,7 @@ window.onload = () => {
           //日Select
           const select_day = document.createElement('select');
           select_day.setAttribute('class','form-control date-selector');
-          select_day.name = 'selectedDay';
+          select_day.setAttribute('name','selectedDay');
           //その月の最終日を求める
           // const lastDay = new Date(new Date().getFullYear(),new Date().getMonth()+1,0).getDate();
           for(let i=0; i<31; i++){
