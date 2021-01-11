@@ -13,7 +13,7 @@ module.exports = {
   },
 
   postData: (req,res) => {
-    const {amountInput,accountSelect,selectedMonth,selectedDay} = req.body;
-    console.log('data',amountInput,accountSelect,selectedMonth,selectedDay)
+    // const {amountInput,accountSelect,selectedMonth,selectedDay} = req.body;
+    console.log('data',req.body);
   }
 }
