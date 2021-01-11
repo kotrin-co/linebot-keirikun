@@ -343,34 +343,34 @@ const initialTreat = async (auth,ssID,line_uid) => {
   }
 
 
-  copied_SID.forEach(async (id,index) =>{
-    const title_change_request = {
-      spreadsheetId: SSID,
-      resource: {
-        requests: [
-          {
-            'updateSheetProperties': {
-              'properties': {
-                'sheetId': id,
-                'title': title_SID[index]
-              },
-              'fields': 'title'
-            }
-          }
-        ]
-      }
-    }
-    await sheets.spreadsheets.batchUpdate(title_change_request);
+  // copied_SID.forEach(async (id,index) =>{
+  //   const title_change_request = {
+  //     spreadsheetId: SSID,
+  //     resource: {
+  //       requests: [
+  //         {
+  //           'updateSheetProperties': {
+  //             'properties': {
+  //               'sheetId': id,
+  //               'title': title_SID[index]
+  //             },
+  //             'fields': 'title'
+  //           }
+  //         }
+  //       ]
+  //     }
+  //   }
+  //   await sheets.spreadsheets.batchUpdate(title_change_request);
 
-    const update_query = {
-      text:`UPDATE users SET sid${index+1} = ${id} WHERE line_uid='${line_uid}';`
-    };
-    connection.query(update_query)
-      .then(()=>{
-        console.log('usersテーブル更新成功')
-      })
-      .catch(e=>console.log(e));
-  });
+  //   const update_query = {
+  //     text:`UPDATE users SET sid${index+1} = ${id} WHERE line_uid='${line_uid}';`
+  //   };
+  //   connection.query(update_query)
+  //     .then(()=>{
+  //       console.log('usersテーブル更新成功')
+  //     })
+  //     .catch(e=>console.log(e));
+  // });
 
   //空白シートの削除
   // const delete_request = {
