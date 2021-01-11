@@ -112,9 +112,9 @@ module.exports = {
             range: `入力用シート!${target}`
           }
           const response = await sheets.spreadsheets.values.get(get_request);
-          const oldValue = response.data.values[0][0];
-          console.log('old',response.data.values[0]);
-          console.log('oldValue',oldValue);
+          const oldValue = parseInt(response.data.values[0][0]);
+          const newValue = oldValue+amountInput;
+          console.log('newValue',newValue);
 
           //対象のセルの値を更新
           const update_request = {
@@ -122,10 +122,11 @@ module.exports = {
             range: `入力用シート!${target}`,
             valueInputOption: 'RAW',
             resource: {
-              values: [[oldValue+amountInput]]
+              values: [[newValue]]
             }
           }
           await sheets.spreadsheets.values.update(update_request);
+          resolve(newValue);
         })
         .catch(e=>console.log(e));
     });

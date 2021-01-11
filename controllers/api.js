@@ -15,7 +15,11 @@ module.exports = {
   postData: (req,res) => {
     const {amountInput,accountSelect,selectedMonth,selectedDay,line_uid} = req.body;
     try{
-      Data.inputSS({amountInput,accountSelect,selectedMonth,selectedDay,line_uid});
+      Data.inputSS({amountInput,accountSelect,selectedMonth,selectedDay,line_uid})
+        .then(value=>{
+          console.log(`${value}へ更新しました!`);
+          res.status(200).send(value);
+        })
     }catch(error){
       res.status(400).json({message:error.message});
     }
