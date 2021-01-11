@@ -11,7 +11,7 @@ window.onload = () => {
     })
     .then(()=>{
       liff.getProfile()
-        .then(profile=>{
+        .then(async(profile)=>{
           const lineId = profile.userId;
           const userData = await fetch(`api?line_uid=${lineId}`);
           document.getElementById('user-name').innerHTML=`${userData.display_name}さん、会計データを入力してください`;
