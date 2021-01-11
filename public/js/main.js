@@ -9,6 +9,8 @@ window.onload = () => {
     .then(()=>{
       liff.getProfile()
         .then(profile=>{
+          const title = document.getElementById('top-font');
+          title.innerHTML = '会計データ入力';
           const lineId = profile.userId;
           const userLabel = document.getElementById('user-name');
           userLabel.innerHTML = lineId;
