@@ -332,19 +332,29 @@ const initialTreat = (auth,ssID,line_uid) => {
     const copied_SID = [];
     const title_SID = ['入力用シート','確定申告B 第一表']
 
-    for(let i=0;i<original_SID.length;i++){
-      const copy_request = {
-        spreadsheetId: original_SSID,
-        sheetId: original_SID[i],
-        resource: {
-          destinationSpreadsheetId: ssID
-        }
+    const copy_request0 = {
+      spreadsheetId: original_SSID,
+      sheetId: original_SID[0],
+      resource: {
+        destinationSpreadsheetId: ssID
       }
-      const res = await sheets.spreadsheets.sheets.copyTo(copy_request);
-      console.log('res.data.sheetId',res.data.sheetId);
-      if(i === original_SID.length-1) resolve();
     }
+    const res0 = await sheets.spreadsheets.sheets.copyTo(copy_request0);
+    console.log('res0.data.sheetId',res0.data.sheetId);
+    copied_SID.push(res0.data.sheetId);
 
+    const copy_request1 = {
+      spreadsheetId: original_SSID,
+      sheetId: original_SID[1],
+      resource: {
+        destinationSpreadsheetId: ssID
+      }
+    }
+    const res1 = await sheets.spreadsheets.sheets.copyTo(copy_request1);
+    console.log('res1.data.sheetId',res1.data.sheetId);
+    copied_SID.push(res1.data.sheetId);
+
+    console.log('copied_SID',copied_SID);
 
     // copied_SID.forEach(async (id,index) =>{
     //   const title_change_request = {
