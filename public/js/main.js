@@ -127,6 +127,7 @@ window.onload = () => {
           postButton.setAttribute('class','btn btn-primary post-button');
           postButton.addEventListener('click',()=>{
             const formData = new FormData(formElement);
+            formData.append('line_uid',lineId);
             // console.log('formData',...formData.entries());
             fetch('/api',{
               method:'POST',
