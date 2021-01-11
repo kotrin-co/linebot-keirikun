@@ -13,9 +13,9 @@ module.exports = {
   },
 
   postData: (req,res) => {
-    // const {amountInput,accountSelect,selectedMonth,selectedDay} = req.body;
+    const {amountInput,accountSelect,selectedMonth,selectedDay,line_uid} = req.body;
     try{
-      console.log('data',req.body);
+      Data.inputSS({amountInput,accountSelect,selectedMonth,selectedDay,line_uid});
     }catch(error){
       res.status(400).json({message:error.message});
     }
