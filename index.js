@@ -342,21 +342,6 @@ const initialTreat = async (auth,ssID) => {
     copied_SID.push(res.data.sheetId);
   });
 
-  //空白シートの削除
-  const delete_request = {
-    spreadsheetId: ssID,
-    resource: {
-      requests: [
-        {
-          'deleteSheet': {
-            'sheetId': 0
-          }
-        }
-      ]
-    }
-  }
-  await sheets.spreadsheets.batchUpdate(delete_request);
-
   copied_SID.forEach(async (id,index) =>{
     const title_change_request = {
       spreadsheetId: SSID,
@@ -380,7 +365,23 @@ const initialTreat = async (auth,ssID) => {
       text: `INSERT INTO users (sid${index+1}) VALUES(${id});`
     }
     connection.query(insert_query)
-      .then(()=>console.log('usersテーブル更新成功'))
+      .then(()=>{
+        console.log('usersテーブル更新成功')
+        //空白シートの削除
+        const delete_request = {
+          spreadsheetId: ssID,
+          resource: {
+            requests: [
+              {
+                'deleteSheet': {
+                  'sheetId': 0
+                }
+              }
+            ]
+          }
+        }
+        await sheets.spreadsheets.batchUpdate(delete_request);
+      })
       .catch(e=>console.log(e));
   });
 
