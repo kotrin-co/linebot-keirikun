@@ -26,3 +26,11 @@
   width:30%;
 }
 
+.label-amount{
+  width:25%;
+  text-align:right;
+}
+.label-account{
+  width:25%;
+  text-align:right;
+}
