@@ -4,8 +4,8 @@ const { Client } = require('pg');
 const { google } = require('googleapis');
 const privatekey = require('./client_secret.json');
 
-const original_SSID = '1ywCoA14h_Ei3Wkicln75beM25I5kLOKFVOVWALvwNgY';
-const original_SID = [0,1785812525];
+const original_SSID = '13Y2AZYNHWnQNKdSzK5Vxna_YPdf4YnT61imptdiM_MU';
+const original_SID = [0,1686142823];
 
 const PORT = process.env.PORT || 5000;
 
@@ -291,7 +291,7 @@ const gmailAccountAdd = async (ssID,role,gmail) => {
 
 const initialTreat = (auth,ssID,line_uid) => {
 
-  return new Promise(async (resolve,reject) => {
+  return new Promise((resolve,reject) => {
     // const auth = await google.auth.getClient({
     //   scopes: ['https://www.googleapis.com/auth/spreadsheets']
     // });
@@ -332,63 +332,49 @@ const initialTreat = (auth,ssID,line_uid) => {
     const copied_SID = [];
     const title_SID = ['入力用シート','確定申告B 第一表']
 
-    const copy_request0 = {
-      spreadsheetId: original_SSID,
-      sheetId: original_SID[0],
-      resource: {
-        destinationSpreadsheetId: ssID
+    original_SID.forEach(async(id)=>{
+      const copy_request = {
+        spreadsheetId: original_SSID,
+        sheetId: id,
+        resource: {
+          destinationSpreadsheetId: ssID
+        }
       }
-    }
-    sheets.spreadsheets.sheets.copyTo(copy_request0)
-      .then(res=>{
-        console.log('res.data',res.data);
-        resolve();
-      })
-      .catch(e=>console.log(e));
-    // const res0 = await sheets.spreadsheets.sheets.copyTo(copy_request0);
-    // copied_SID.push(res0.data.sheetId);
+      const res = await sheets.spreadsheets.sheets.copyTo(copy_request);
+      console.log('res1.data.sheetId',res.data.sheetId);
+      copied_SID.push(res.data.sheetId);
+    });
 
-    // const copy_request1 = {
-    //   spreadsheetId: original_SSID,
-    //   sheetId: original_SID[1],
-    //   resource: {
-    //     destinationSpreadsheetId: ssID
-    //   }
-    // }
-    // const res1 = await sheets.spreadsheets.sheets.copyTo(copy_request1);
-    // console.log('res1.data.sheetId',res1.data);
-    // copied_SID.push(res1.data.sheetId);
+    console.log('copied_SID',copied_SID);
 
-    // console.log('copied_SID',copied_SID);
+    copied_SID.forEach(async (id,index) =>{
+      const title_change_request = {
+        spreadsheetId: SSID,
+        resource: {
+          requests: [
+            {
+              'updateSheetProperties': {
+                'properties': {
+                  'sheetId': id,
+                  'title': title_SID[index]
+                },
+                'fields': 'title'
+              }
+            }
+          ]
+        }
+      }
+      await sheets.spreadsheets.batchUpdate(title_change_request);
 
-    // copied_SID.forEach(async (id,index) =>{
-    //   const title_change_request = {
-    //     spreadsheetId: SSID,
-    //     resource: {
-    //       requests: [
-    //         {
-    //           'updateSheetProperties': {
-    //             'properties': {
-    //               'sheetId': id,
-    //               'title': title_SID[index]
-    //             },
-    //             'fields': 'title'
-    //           }
-    //         }
-    //       ]
-    //     }
-    //   }
-    //   await sheets.spreadsheets.batchUpdate(title_change_request);
-
-    //   const update_query = {
-    //     text:`UPDATE users SET sid${index+1} = ${id} WHERE line_uid='${line_uid}';`
-    //   };
-    //   connection.query(update_query)
-    //     .then(()=>{
-    //       console.log('usersテーブル更新成功')
-    //     })
-    //     .catch(e=>console.log(e));
-    // });
+      const update_query = {
+        text:`UPDATE users SET sid${index+1} = ${id} WHERE line_uid='${line_uid}';`
+      };
+      await connection.query(update_query);
+        // .then(()=>{
+        //   console.log('usersテーブル更新成功')
+        // })
+        // .catch(e=>console.log(e));
+    });
 
     //空白シートの削除
     // const delete_request = {
