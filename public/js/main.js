@@ -127,29 +127,30 @@ window.onload = () => {
           postButton.setAttribute('class','btn btn-primary post-button');
           postButton.addEventListener('click',()=>{
             const formData = new FormData(formElement);
-            console.log('formData',...formData.entries());
-
-            fetch('/api',{
-              method:'POST',
-              body:formData,
-              credentials:'same-origin'
-            })
-            .then(response=>{
-              if(response.ok){
-                response.text()
-                  .then(text=>{
-                    alert(text);
-                    document.location.reload();
-                  })
-                  .catch(e=>console.log(e));
-              }else{
-                alert('HTTPレスポンスエラー');
-              }
-            })
-            .catch(error=>{
-              alert(error);
-              throw error;
-            });
+            // console.log('formData',...formData.entries());
+            const testData = formData.get('accountSelect');
+            document.getElementById('test-display').innerHTML = testData;
+            // fetch('/api',{
+            //   method:'POST',
+            //   body:formData,
+            //   credentials:'same-origin'
+            // })
+            // .then(response=>{
+            //   if(response.ok){
+            //     response.text()
+            //       .then(text=>{
+            //         alert(text);
+            //         document.location.reload();
+            //       })
+            //       .catch(e=>console.log(e));
+            //   }else{
+            //     alert('HTTPレスポンスエラー');
+            //   }
+            // })
+            // .catch(error=>{
+            //   alert(error);
+            //   throw error;
+            // });
 
             //formDataが適正かのチェックを入れる
             // let check = postCheck(formData,staffsData[staffs.indexOf(staffName)]);
