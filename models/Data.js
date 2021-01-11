@@ -105,8 +105,9 @@ module.exports = {
 
           const target = column + rowNumber;
           console.log('target',target);
-          
-          const request = {
+
+          //対象のセルの値を取得
+          const get_request = {
             spreadsheetId: ssId,
             range: `入力用シート!${target}`,
             valueInputOption: 'RAW',
@@ -114,7 +115,19 @@ module.exports = {
               values: [[amountInput]]
             }
           }
-          await sheets.spreadsheets.values.update(request);
+          const response = await sheets.spreadsheets.values.get(get_request);
+          console.log('response',response);
+
+          //対象のセルの値を更新
+          const update_request = {
+            spreadsheetId: ssId,
+            range: `入力用シート!${target}`,
+            valueInputOption: 'RAW',
+            resource: {
+              values: [[amountInput]]
+            }
+          }
+          await sheets.spreadsheets.values.update(update_request);
         })
         .catch(e=>console.log(e));
     });
