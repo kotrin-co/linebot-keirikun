@@ -13,7 +13,8 @@ window.onload = () => {
       liff.getProfile()
         .then(profile=>{
           const lineId = profile.userId;
-          document.getElementById('user-name').innerHTML=lineId;
+          const userData = await fetch(`api?line_uid=${lineId}`);
+          document.getElementById('user-name').innerHTML=`${userData.display_name}さん、会計データを入力してください`;
 
           //form要素の生成
           const formElement = document.createElement('form');

@@ -5,7 +5,7 @@ const { Client } = require('pg');
 const { google } = require('googleapis');
 const privatekey = require('./client_secret.json');
 const router = require('./routers/index');
-
+const apiRouter = require('./routers/api');
 const original_SSID = '13Y2AZYNHWnQNKdSzK5Vxna_YPdf4YnT61imptdiM_MU';
 const original_SID = [0,1686142823];
 
@@ -41,6 +41,7 @@ express()
   .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'ejs')
   .use('/',router)
+  .use('/api',apiRouter)
   .post('/hook',line.middleware(config),(req,res)=> lineBot(req,res))
   .listen(PORT,()=>console.log(`Listening on ${PORT}`));
 
