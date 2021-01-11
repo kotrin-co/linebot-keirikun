@@ -331,7 +331,8 @@ const initialInput = async (auth,ssID) => {
       destinationSpreadsheetId: ssID
     }
   };
-  await sheets.spreadsheets.sheets.copyTo(copy_request0);
+  const res0 = await sheets.spreadsheets.sheets.copyTo(copy_request0);
+  console.log('res0',res0);
 
   const copy_request1 = {
     spreadsheetId: '1ywCoA14h_Ei3Wkicln75beM25I5kLOKFVOVWALvwNgY',
@@ -364,8 +365,8 @@ const initialInput = async (auth,ssID) => {
         {
           'updateSheetProperties': {
             'properties': {
-              'title': '入力用のシート',
-              'index': 1
+              'sheetId': 893374851,
+              'title': '入力用シート'
             },
             'fields': 'title'
           }
