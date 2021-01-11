@@ -32,6 +32,12 @@ window.onload = () => {
           input_amount.setAttribute('type','text');
           input_amount.setAttribute('class','form-control amount-input');
           input_amount.name = 'amount-input';
+          input_amount.onkeypress = (e) => {
+            const key = e.keyCode || e.charCode || 0;
+            if(key===13){
+              e.preventDefault();
+            }
+          }
           div_form_amount.appendChild(input_amount);
 
           formElement.appendChild(div_form_amount);
