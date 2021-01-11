@@ -341,6 +341,7 @@ const initialTreat = async (auth,ssID,line_uid) => {
     const res = await sheets.spreadsheets.sheets.copyTo(copy_request);
     copied_SID.push(res.data.sheetId);
   });
+  console.log('copied id',copied_SID);
 
   copied_SID.forEach(async (id,index) =>{
     const title_change_request = {
