@@ -289,103 +289,107 @@ const gmailAccountAdd = async (ssID,role,gmail) => {
     })
 }
 
-const initialTreat = async (auth,ssID,line_uid) => {
-  // const auth = await google.auth.getClient({
-  //   scopes: ['https://www.googleapis.com/auth/spreadsheets']
-  // });
-  const sheets = google.sheets({version: 'v4', auth});
+const initialTreat = (auth,ssID,line_uid) => {
 
-  //列データの生成
-  // const datesArray = [];
-  // const thisYear = new Date().getFullYear();
-  // const oneDay = 24*60*60*1000;
-  // const start = new Date(`${thisYear}/1/1 00:00`).getTime();
-  // console.log('start=',start);
-  // for(let i=0;i<365;i++){
-  //   const date = (new Date(start+i*oneDay).getMonth()+1) + '/' + new Date(start+i*oneDay).getDate();
-  //   datesArray.push(date);
-  // }
+  return new Promise(async (resolve,reject) => {
+    // const auth = await google.auth.getClient({
+    //   scopes: ['https://www.googleapis.com/auth/spreadsheets']
+    // });
+    const sheets = google.sheets({version: 'v4', auth});
 
-  //行データの生成
-  // const account = ['収入','売上','支出','源泉所得税','交通費','会議費','接待交際費','通信費','衣装費','郵便代','保険料','年金','家賃','従業員報酬','その他']
-  // const request_column = {
-  //   spreadsheetId: ssID,
-  //   range: '入力用シート!B1',
-  //   valueInputOption: 'RAW',
-  //   resource: {
-  //     values: [datesArray]
-  //   }
-  // };
+    //列データの生成
+    // const datesArray = [];
+    // const thisYear = new Date().getFullYear();
+    // const oneDay = 24*60*60*1000;
+    // const start = new Date(`${thisYear}/1/1 00:00`).getTime();
+    // console.log('start=',start);
+    // for(let i=0;i<365;i++){
+    //   const date = (new Date(start+i*oneDay).getMonth()+1) + '/' + new Date(start+i*oneDay).getDate();
+    //   datesArray.push(date);
+    // }
 
-  // const request_row = {
-  //   spreadsheetId: ssID,
-  //   range: '入力用シート!A2',
-  //   valueInputOption: 'RAW',
+    //行データの生成
+    // const account = ['収入','売上','支出','源泉所得税','交通費','会議費','接待交際費','通信費','衣装費','郵便代','保険料','年金','家賃','従業員報酬','その他']
+    // const request_column = {
+    //   spreadsheetId: ssID,
+    //   range: '入力用シート!B1',
+    //   valueInputOption: 'RAW',
+    //   resource: {
+    //     values: [datesArray]
+    //   }
+    // };
 
-  //   resource: {
-  //     values: [[account[0]],[account[1]],[account[2]]]
-  //   }
-  // };
+    // const request_row = {
+    //   spreadsheetId: ssID,
+    //   range: '入力用シート!A2',
+    //   valueInputOption: 'RAW',
 
-  const copied_SID = [];
-  const title_SID = ['入力用シート','確定申告B 第一表']
+    //   resource: {
+    //     values: [[account[0]],[account[1]],[account[2]]]
+    //   }
+    // };
 
-  for(let i=0;i<original_SID.length;i++){
-    const copy_request = {
-      spreadsheetId: original_SSID,
-      sheetId: original_SID[i],
-      resource: {
-        destinationSpreadsheetId: ssID
+    const copied_SID = [];
+    const title_SID = ['入力用シート','確定申告B 第一表']
+
+    for(let i=0;i<original_SID.length;i++){
+      const copy_request = {
+        spreadsheetId: original_SSID,
+        sheetId: original_SID[i],
+        resource: {
+          destinationSpreadsheetId: ssID
+        }
       }
+      const res = await sheets.spreadsheets.sheets.copyTo(copy_request);
+      console.log('res.data.sheetId',res.data.sheetId);
+      if(i === original_SID.length-1) resolve();
     }
-    const res = await sheets.spreadsheets.sheets.copyTo(copy_request);
-    console.log('res.data.sheetId',res.data.sheetId);
-  }
 
 
-  // copied_SID.forEach(async (id,index) =>{
-  //   const title_change_request = {
-  //     spreadsheetId: SSID,
-  //     resource: {
-  //       requests: [
-  //         {
-  //           'updateSheetProperties': {
-  //             'properties': {
-  //               'sheetId': id,
-  //               'title': title_SID[index]
-  //             },
-  //             'fields': 'title'
-  //           }
-  //         }
-  //       ]
-  //     }
-  //   }
-  //   await sheets.spreadsheets.batchUpdate(title_change_request);
+    // copied_SID.forEach(async (id,index) =>{
+    //   const title_change_request = {
+    //     spreadsheetId: SSID,
+    //     resource: {
+    //       requests: [
+    //         {
+    //           'updateSheetProperties': {
+    //             'properties': {
+    //               'sheetId': id,
+    //               'title': title_SID[index]
+    //             },
+    //             'fields': 'title'
+    //           }
+    //         }
+    //       ]
+    //     }
+    //   }
+    //   await sheets.spreadsheets.batchUpdate(title_change_request);
 
-  //   const update_query = {
-  //     text:`UPDATE users SET sid${index+1} = ${id} WHERE line_uid='${line_uid}';`
-  //   };
-  //   connection.query(update_query)
-  //     .then(()=>{
-  //       console.log('usersテーブル更新成功')
-  //     })
-  //     .catch(e=>console.log(e));
-  // });
+    //   const update_query = {
+    //     text:`UPDATE users SET sid${index+1} = ${id} WHERE line_uid='${line_uid}';`
+    //   };
+    //   connection.query(update_query)
+    //     .then(()=>{
+    //       console.log('usersテーブル更新成功')
+    //     })
+    //     .catch(e=>console.log(e));
+    // });
 
-  //空白シートの削除
-  // const delete_request = {
-  //   spreadsheetId: ssID,
-  //   resource: {
-  //     requests: [
-  //       {
-  //         'deleteSheet': {
-  //           'sheetId': 0
-  //         }
-  //       }
-  //     ]
-  //   }
-  // }
-  // await sheets.spreadsheets.batchUpdate(delete_request);
-  // await sheets.spreadsheets.values.update(request_column);
-  // await sheets.spreadsheets.values.update(request_row);
+    //空白シートの削除
+    // const delete_request = {
+    //   spreadsheetId: ssID,
+    //   resource: {
+    //     requests: [
+    //       {
+    //         'deleteSheet': {
+    //           'sheetId': 0
+    //         }
+    //       }
+    //     ]
+    //   }
+    // }
+    // await sheets.spreadsheets.batchUpdate(delete_request);
+    // await sheets.spreadsheets.values.update(request_column);
+    // await sheets.spreadsheets.values.update(request_row);
+  })
 }
