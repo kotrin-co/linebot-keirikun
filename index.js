@@ -3,6 +3,7 @@ const line = require('@line/bot-sdk');
 const path = require('path');
 const { Client } = require('pg');
 const { google } = require('googleapis');
+const multipart = require('connect-multiparty');
 const privatekey = require('./client_secret.json');
 const router = require('./routers/index');
 const apiRouter = require('./routers/api');
@@ -40,6 +41,9 @@ express()
   .use(express.static(path.join(__dirname, 'public')))
   .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'ejs')
+  .use(multipart())
+  .use(express.json()) //これが/apiルーティングの前にこないと、ダメ
+  .use(express.urlencoded({extended:true}))　//これが/apiルーティングの前にこないと、ダメ
   .use('/',router)
   .use('/api',apiRouter)
   .post('/hook',line.middleware(config),(req,res)=> lineBot(req,res))

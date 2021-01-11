@@ -126,10 +126,8 @@ window.onload = () => {
           postButton.value = 'データ送信';
           postButton.setAttribute('class','btn btn-primary post-button');
           postButton.addEventListener('click',()=>{
-            // const formData = new FormData(formElement);
+            const formData = new FormData(formElement);
             // console.log('formData',...formData.entries());
-            const formData = new FormData();
-            formData.append('id','ken');
             fetch('/api',{
               method:'POST',
               body:formData,
