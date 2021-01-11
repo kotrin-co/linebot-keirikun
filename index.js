@@ -339,24 +339,27 @@ const initialTreat = (auth,ssID,line_uid) => {
         destinationSpreadsheetId: ssID
       }
     }
-    const res0 = await sheets.spreadsheets.sheets.copyTo(copy_request0);
-    console.log('res0.data.sheetId',res0.data);
+    sheets.spreadsheets.sheets.copyTo(copy_request0)
+      .then(res=>{
+        console.log('res.data',res.data);
+        resolve();
+      })
+      .catch(e=>console.log(e));
+    // const res0 = await sheets.spreadsheets.sheets.copyTo(copy_request0);
     // copied_SID.push(res0.data.sheetId);
 
-    const copy_request1 = {
-      spreadsheetId: original_SSID,
-      sheetId: original_SID[1],
-      resource: {
-        destinationSpreadsheetId: ssID
-      }
-    }
-    const res1 = await sheets.spreadsheets.sheets.copyTo(copy_request1);
-    console.log('res1.data.sheetId',res1.data);
+    // const copy_request1 = {
+    //   spreadsheetId: original_SSID,
+    //   sheetId: original_SID[1],
+    //   resource: {
+    //     destinationSpreadsheetId: ssID
+    //   }
+    // }
+    // const res1 = await sheets.spreadsheets.sheets.copyTo(copy_request1);
+    // console.log('res1.data.sheetId',res1.data);
     // copied_SID.push(res1.data.sheetId);
 
     // console.log('copied_SID',copied_SID);
-
-    resolve();
 
     // copied_SID.forEach(async (id,index) =>{
     //   const title_change_request = {
