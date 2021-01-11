@@ -330,18 +330,18 @@ const initialTreat = async (auth,ssID,line_uid) => {
   const copied_SID = [];
   const title_SID = ['入力用シート','確定申告B 第一表']
 
-  original_SID.forEach(async (id) =>{
+  for(let i=0;i<original_SID.length;i++){
     const copy_request = {
       spreadsheetId: original_SSID,
-      sheetId: id,
+      sheetId: original_SID[i],
       resource: {
         destinationSpreadsheetId: ssID
       }
     }
     const res = await sheets.spreadsheets.sheets.copyTo(copy_request);
-    console.log('res.data',res.data);
-  });
-  // console.log('copied id',copied_SID);
+    console.log('res.data.sheetId',res.data.sheetId);
+  }
+
 
   copied_SID.forEach(async (id,index) =>{
     const title_change_request = {
