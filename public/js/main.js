@@ -112,6 +112,48 @@ window.onload = () => {
 
           formElement.appendChild(div_form_date);
 
+          //postボタン
+          const postButton = document.createElement('input');
+          postButton.type = 'button';
+          postButton.value = 'データ送信';
+          postButton.setAttribute('class','btn btn-primary post-button');
+          postButton.addEventListener('click',()=>{
+            const formData = new FormData(formElement);
+            console.log('formData',...formData.entries());
+
+            fetch('/api',{
+              method:'POST',
+              body:formData,
+              credentials:'same-origin'
+            })
+            .then(response=>{
+              if(response.ok){
+                response.text()
+                  .then(text=>{
+                    alert(text);
+                    document.location.reload();
+                  })
+                  .catch(e=>console.log(e));
+              }else{
+                alert('HTTPレスポンスエラー');
+              }
+            })
+            .catch(error=>{
+              alert(error);
+              throw error;
+            });
+
+            //formDataが適正かのチェックを入れる
+            // let check = postCheck(formData,staffsData[staffs.indexOf(staffName)]);
+            // console.log('check',check);
+            // if(check === 'ok'){
+              
+            // }else{
+            //   alert(check);
+            // }
+          });
+          formElement.appendChild(postButton);
+
           divPage.appendChild(formElement);
 
         })
