@@ -109,11 +109,7 @@ module.exports = {
           //対象のセルの値を取得
           const get_request = {
             spreadsheetId: ssId,
-            range: `入力用シート!${target}`,
-            valueInputOption: 'RAW',
-            resource: {
-              values: [[amountInput]]
-            }
+            range: `入力用シート!${target}`
           }
           const response = await sheets.spreadsheets.values.get(get_request);
           console.log('response',response);
