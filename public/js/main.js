@@ -30,7 +30,7 @@ window.onload = () => {
 
           const input_amount = document.createElement('input');
           input_amount.setAttribute('type','text');
-          input_amount.setAttribute('class','form-control customer-input');
+          input_amount.setAttribute('class','form-control amount-input');
           input_amount.name = 'amount-input';
           div_form_amount.appendChild(input_amount);
 

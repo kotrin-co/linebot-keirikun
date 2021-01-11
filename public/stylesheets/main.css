@@ -9,3 +9,12 @@
 #user-name{
   font-size: 1rem;
 }
+
+.label-amount{
+  width: 30%;
+}
+
+.amount-input{
+  width:50%;
+}
+
