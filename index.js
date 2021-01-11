@@ -358,6 +358,23 @@ const initialInput = async (auth,ssID) => {
 
   const res2 = await sheets.spreadsheets.batchUpdate(delete_request);
   console.log('res2',res2);
+
+  const title_request = {
+    spreadsheetId: ssID,
+    resource: {
+      requests: [
+        {
+          'updateSheetProperties': {
+            'properties': {
+              'title': '入力用のシート',
+              'index': 1
+            }
+          }
+        }
+      ]
+    }
+  }
+  await sheets.spreadsheets.batchUpdate(title_request);
   // await sheets.spreadsheets.values.update(request_column);
   // await sheets.spreadsheets.values.update(request_row);
 }
