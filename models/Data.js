@@ -40,7 +40,7 @@ module.exports = {
         );
 
       //リクエストの承認をチェックする
-      jwtClient.authorize(function (err, tokens) {
+      await jwtClient.authorize(function (err, tokens) {
         if (err) {
             console.log(err);
             return;
@@ -57,9 +57,9 @@ module.exports = {
       }
       connection.query(select_query)
         .then(res=>{
-          console.log('res.rows',res.rows[0]);
           const ssId = res.rows[0].ssid;
           const inputSheetId = res.rows[0].sid1;
+          console.log('ssid sid',ssId,inputSheetId);
         })
         .catch(e=>console.log(e));
     });
