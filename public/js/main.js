@@ -66,7 +66,7 @@ window.onload = () => {
 
           //月Select
           const select_month = document.createElement('select');
-          select_month.setAttribute('class','form-control');
+          select_month.setAttribute('class','form-control date-selector');
           select_month.name = 'selectedMonth';
           for(let i=0; i<12; i++){
             const option = document.createElement('option');
@@ -85,7 +85,7 @@ window.onload = () => {
 
           //日Select
           const select_day = document.createElement('select');
-          select_day.setAttribute('class','form-control');
+          select_day.setAttribute('class','form-control date-selector');
           select_day.name = 'selectedDay';
           //その月の最終日を求める
           // const lastDay = new Date(new Date().getFullYear(),new Date().getMonth()+1,0).getDate();
