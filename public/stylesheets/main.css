@@ -10,11 +10,15 @@
   font-size: 1rem;
 }
 
-.label-amount{
+/* .label-amount{
   width: 30%;
-}
+} */
 
 .amount-input{
-  width:50%;
+  width:60%;
+}
+
+.account-selector{
+  width:60%;
 }
 

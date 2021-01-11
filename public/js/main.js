@@ -48,7 +48,7 @@ window.onload = () => {
           
           //勘定科目のselect
           const select_account = document.createElement('select');
-          select_account.setAttribute('class','form-control selector');
+          select_account.setAttribute('class','form-control account-selector');
           select_account.name = 'account-select';
           ACCOUNTS.forEach(account=>{
             const option = document.createElement('option');
