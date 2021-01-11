@@ -6,6 +6,7 @@ module.exports = {
     const line_uid = req.query.line_uid;
     User.getUserData(line_uid)
       .then(data=>{
+        console.log('data in controller',data);
         res.status(200).json(data);
       })
       .catch(e=>console.log(e));

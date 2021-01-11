@@ -18,7 +18,6 @@ module.exports = {
       connection.query(pickup_query)
         .then(user=>{
           if(user.rows.length){
-            console.log('user.rows',user.rows);
             resolve(user.rows[0]);
           }else{
             resolve('');
