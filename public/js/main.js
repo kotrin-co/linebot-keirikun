@@ -25,7 +25,7 @@ window.onload = () => {
 
           const label_amount = document.createElement('label');
           label_amount.setAttribute('class','label-amount');
-          label_amount.innerHTML = '金額';
+          label_amount.innerHTML = '金額：';
           div_form_amount.appendChild(label_amount);
 
           const input_amount = document.createElement('input');
@@ -43,7 +43,7 @@ window.onload = () => {
           //勘定科目ラベル
           const label_account = document.createElement('label');
           label_account.setAttribute('class','label-account');
-          label_account.innerHTML = '勘定科目';
+          label_account.innerHTML = '勘定科目：';
           div_form_account.appendChild(label_account);
           
           //勘定科目のselect
@@ -60,9 +60,15 @@ window.onload = () => {
           div_form_account.appendChild(select_account);
           formElement.appendChild(div_form_account);
           
-          //勘定科目の選択
+          //日時の選択
           const div_form_date = document.createElement('div');
           div_form_date.setAttribute('class','form-group form-inline');
+
+          //日時ラベル
+          const label_date = document.createElement('label');
+          label_date.setAttribute('class','label-date');
+          label_date.innerHTML = '日時：';
+          div_form_date.appendChild(label_date);
 
           //月Select
           const select_month = document.createElement('select');

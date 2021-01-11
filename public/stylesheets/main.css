@@ -23,7 +23,7 @@
 }
 
 .date-selector{
-  width:30%;
+  width:20%;
 }
 
 .label-amount{
@@ -34,3 +34,8 @@
   width:25%;
   text-align:right;
 }
+.label-date{
+  width:25%;
+  text-align:right;
+}
+
