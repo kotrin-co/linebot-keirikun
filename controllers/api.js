@@ -18,7 +18,7 @@ module.exports = {
       Data.inputSS({amountInput,accountSelect,selectedMonth,selectedDay,line_uid})
         .then(value=>{
           console.log(`${value}へ更新しました!`);
-          res.status(200).send(value);
+          res.status(200).send(`${value}へ更新しました`);
         })
     }catch(error){
       res.status(400).json({message:error.message});
