@@ -113,7 +113,7 @@ module.exports = {
           }
           const response = await sheets.spreadsheets.values.get(get_request);
           let newValue;
-          if(response.data.values.length){
+          if(response.data.values.length[0]){
             const oldValue = parseInt(response.data.values[0][0]);
             newValue = oldValue+parseInt(amountInput);
             console.log('newValue',newValue);
