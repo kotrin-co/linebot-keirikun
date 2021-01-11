@@ -13,8 +13,9 @@ window.onload = () => {
       liff.getProfile()
         .then(async(profile)=>{
           const lineId = profile.userId;
-          const userData = await fetch(`api?line_uid=${lineId}`);
-          document.getElementById('user-name').innerHTML=`${userData.display_name}さん、会計データを入力してください`;
+          const response = await fetch(`api?line_uid=${lineId}`);
+          const data = await response.json();
+          document.getElementById('user-name').innerHTML=`${data.display_name}さん、会計データを入力してください`;
 
           //form要素の生成
           const formElement = document.createElement('form');
