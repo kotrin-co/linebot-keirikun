@@ -351,7 +351,7 @@ const initialTreat = (auth,ssID,line_uid) => {
         .then(response=>{
           console.log('sheetId',response.data.sheetId);
           const title_change_request = {
-            spreadsheetId: SSID,
+            spreadsheetId: ssID,
             resource: {
               requests: [
                 {
