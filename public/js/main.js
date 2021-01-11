@@ -128,40 +128,36 @@ window.onload = () => {
           postButton.addEventListener('click',()=>{
             const formData = new FormData(formElement);
             // console.log('formData',...formData.entries());
-            document.getElementById('test-display1').innerHTML = formData.get('amountInput');
-            document.getElementById('test-display2').innerHTML = formData.get('accountSelect');
-            document.getElementById('test-display3').innerHTML = formData.get('selectedMonth');
-            document.getElementById('test-display4').innerHTML = formData.get('selectedDay');
-            // fetch('/api',{
-            //   method:'POST',
-            //   body:formData,
-            //   credentials:'same-origin'
-            // })
-            // .then(response=>{
-            //   if(response.ok){
-            //     response.text()
-            //       .then(text=>{
-            //         alert(text);
-            //         document.location.reload();
-            //       })
-            //       .catch(e=>console.log(e));
-            //   }else{
-            //     alert('HTTPレスポンスエラー');
-            //   }
-            // })
-            // .catch(error=>{
-            //   alert(error);
-            //   throw error;
-            // });
+            fetch('/api',{
+              method:'POST',
+              body:formData,
+              credentials:'same-origin'
+            })
+            .then(response=>{
+              if(response.ok){
+                response.text()
+                  .then(text=>{
+                    alert(text);
+                    document.location.reload();
+                  })
+                  .catch(e=>console.log(e));
+              }else{
+                alert('HTTPレスポンスエラー');
+              }
+            })
+            .catch(error=>{
+              alert(error);
+              throw error;
+            });
 
-            //formDataが適正かのチェックを入れる
-            // let check = postCheck(formData,staffsData[staffs.indexOf(staffName)]);
-            // console.log('check',check);
-            // if(check === 'ok'){
+            formDataが適正かのチェックを入れる
+            let check = postCheck(formData,staffsData[staffs.indexOf(staffName)]);
+            console.log('check',check);
+            if(check === 'ok'){
               
-            // }else{
-            //   alert(check);
-            // }
+            }else{
+              alert(check);
+            }
           });
           formElement.appendChild(postButton);
 
