@@ -1,8 +1,10 @@
 const express = require('express');
 const line = require('@line/bot-sdk');
+const path = require('path');
 const { Client } = require('pg');
 const { google } = require('googleapis');
 const privatekey = require('./client_secret.json');
+const router = require('./routers/index');
 
 const original_SSID = '13Y2AZYNHWnQNKdSzK5Vxna_YPdf4YnT61imptdiM_MU';
 const original_SID = [0,1686142823];
