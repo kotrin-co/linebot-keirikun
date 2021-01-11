@@ -330,7 +330,7 @@ const initialTreat = async (auth,ssID) => {
   const copied_SID = [];
   const title_SID = ['入力用シート','確定申告B 第一表']
 
-  original_SID.forEach(id=>{
+  original_SID.forEach(async (id) =>{
     const copy_request = {
       spreadsheetId: original_SSID,
       sheetId: id,
@@ -357,7 +357,7 @@ const initialTreat = async (auth,ssID) => {
   }
   await sheets.spreadsheets.batchUpdate(delete_request);
 
-  copied_SID.forEach((id,index)=>{
+  copied_SID.forEach(async (id,index) =>{
     const title_change_request = {
       spreadsheetId: SSID,
       resource: {
