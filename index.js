@@ -43,11 +43,11 @@ express()
   .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'ejs')
   .use(multipart())
+  .post('/hook',line.middleware(config),(req,res)=> lineBot(req,res))
   .use(express.json()) //これが/apiルーティングの前にこないと、ダメ
   .use(express.urlencoded({extended:true}))　//これが/apiルーティングの前にこないと、ダメ
   .use('/',router)
   .use('/api',apiRouter)
-  .post('/hook',line.middleware(config),(req,res)=> lineBot(req,res))
   .listen(PORT,()=>console.log(`Listening on ${PORT}`));
 
 const lineBot = (req,res) => {
@@ -477,7 +477,7 @@ const handlePostbackEvent = (ev) => {
       .then(newValue=>{
         return client.replyMessage(ev.replyToken,{
           "type":"text",
-          "text":`会計表を${ev.source.userId}へ更新しました！`
+          "text":`会計表を${newValue}へ更新しました！`
         });
       })
       .catch(e=>console.log(e));
