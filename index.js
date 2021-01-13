@@ -7,6 +7,7 @@ const multipart = require('connect-multiparty');
 const privatekey = require('./client_secret.json');
 const router = require('./routers/index');
 const apiRouter = require('./routers/api');
+const Data = require('./models/Data');
 const original_SSID = '13Y2AZYNHWnQNKdSzK5Vxna_YPdf4YnT61imptdiM_MU';
 const original_SID = [0,1686142823];
 
@@ -69,6 +70,10 @@ const lineBot = (req,res) => {
             
             case 'message':
                 promises.push(handleMessageEvent(ev));
+                break;
+            
+            case 'postback':
+                promises.push(handlePostbackEvent(ev));
                 break;
         }
     }
@@ -136,7 +141,263 @@ const handleMessageEvent = async (ev) => {
               connection.query(update_query)
                 .then(()=>console.log('消した！！'))
                 .catch(e=>console.log(e));
-            }else{
+            }
+
+            else if( text === '会計'){
+              return client.replyMessage(ev.replyToken,{
+                "type":"text",
+                "text":"金額を半角数値で入力してください！"
+              });
+            }
+
+            else if(/^([1-9]\d*|0)$/.test(text)){
+              return client.replyMessage(ev.replyToken,{
+                "type":"flex",
+                "altText":"勘定科目選択",
+                "contents":
+                {
+                  "type": "carousel",
+                  "contents": [
+                    {
+                      "type": "bubble",
+                      "header": {
+                        "type": "box",
+                        "layout": "vertical",
+                        "contents": [
+                          {
+                            "type": "text",
+                            "text": "勘定科目を選んでください",
+                            "size": "md",
+                            "align": "center"
+                          }
+                        ]
+                      },
+                      "body": {
+                        "type": "box",
+                        "layout": "vertical",
+                        "contents": [
+                          {
+                            "type": "button",
+                            "action": {
+                              "type": "postback",
+                              "label": "収入",
+                              "data": `account&${text}&0`
+                            }
+                          },
+                          {
+                            "type": "separator"
+                          },
+                          {
+                            "type": "button",
+                            "action": {
+                              "type": "postback",
+                              "label": "売上",
+                              "data": `account&${text}&1`
+                            }
+                          },
+                          {
+                            "type": "separator"
+                          },
+                          {
+                            "type": "button",
+                            "action": {
+                              "type": "postback",
+                              "label": "支出",
+                              "data": `account&${text}&2`
+                            }
+                          },
+                          {
+                            "type": "separator"
+                          },
+                          {
+                            "type": "button",
+                            "action": {
+                              "type": "postback",
+                              "label": "源泉所得税",
+                              "data": `account&${text}&3`
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "bubble",
+                      "header": {
+                        "type": "box",
+                        "layout": "vertical",
+                        "contents": [
+                          {
+                            "type": "text",
+                            "text": "勘定科目を選んでください",
+                            "align": "center"
+                          }
+                        ]
+                      },
+                      "body": {
+                        "type": "box",
+                        "layout": "vertical",
+                        "contents": [
+                          {
+                            "type": "button",
+                            "action": {
+                              "type": "postback",
+                              "label": "交通費",
+                              "data": `account&${text}&4`
+                            }
+                          },
+                          {
+                            "type": "separator"
+                          },
+                          {
+                            "type": "button",
+                            "action": {
+                              "type": "postback",
+                              "label": "会議費",
+                              "data": `account&${text}&5`
+                            }
+                          },
+                          {
+                            "type": "separator"
+                          },
+                          {
+                            "type": "button",
+                            "action": {
+                              "type": "postback",
+                              "label": "接待交際費",
+                              "data": `account&${text}&6`
+                            }
+                          },
+                          {
+                            "type": "separator"
+                          },
+                          {
+                            "type": "button",
+                            "action": {
+                              "type": "postback",
+                              "label": "通信費",
+                              "data": `account&${text}&7`
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "bubble",
+                      "header": {
+                        "type": "box",
+                        "layout": "vertical",
+                        "contents": [
+                          {
+                            "type": "text",
+                            "text": "勘定科目を選んでください",
+                            "align": "center"
+                          }
+                        ]
+                      },
+                      "body": {
+                        "type": "box",
+                        "layout": "vertical",
+                        "contents": [
+                          {
+                            "type": "button",
+                            "action": {
+                              "type": "postback",
+                              "data": `account&${text}&8`,
+                              "label": "衣装費"
+                            }
+                          },
+                          {
+                            "type": "separator"
+                          },
+                          {
+                            "type": "button",
+                            "action": {
+                              "type": "postback",
+                              "label": "郵便代",
+                              "data": `account&${text}&9`
+                            }
+                          },
+                          {
+                            "type": "separator"
+                          },
+                          {
+                            "type": "button",
+                            "action": {
+                              "type": "postback",
+                              "label": "保険料",
+                              "data": `account&${text}&10`
+                            }
+                          },
+                          {
+                            "type": "separator"
+                          },
+                          {
+                            "type": "button",
+                            "action": {
+                              "type": "postback",
+                              "label": "年金",
+                              "data": `account&${text}&11`
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "bubble",
+                      "header": {
+                        "type": "box",
+                        "layout": "vertical",
+                        "contents": [
+                          {
+                            "type": "text",
+                            "text": "勘定科目を選んでください",
+                            "align": "center"
+                          }
+                        ]
+                      },
+                      "body": {
+                        "type": "box",
+                        "layout": "vertical",
+                        "contents": [
+                          {
+                            "type": "button",
+                            "action": {
+                              "type": "postback",
+                              "label": "家賃",
+                              "data": `account&${text}&12`
+                            }
+                          },
+                          {
+                            "type": "separator"
+                          },
+                          {
+                            "type": "button",
+                            "action": {
+                              "type": "postback",
+                              "label": "従業員報酬",
+                              "data": `account&${text}&13`
+                            }
+                          },
+                          {
+                            "type": "separator"
+                          },
+                          {
+                            "type": "button",
+                            "action": {
+                              "type": "postback",
+                              "label": "その他",
+                              "data": `account&${text}&14`
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              });
+            }
+            
+            else{
               if(!res.rows[0].gmail){
                 const reg = /^[A-Za-z0-9]{1}[A-Za-z0-9_.-]*@gmail.com/;
                 if(reg.test(text)){
@@ -160,6 +421,67 @@ const handleMessageEvent = async (ev) => {
             }
         })
         .catch(e=>console.log(e));
+}
+
+const handlePostbackEvent = (ev) => {
+  const data = ev.postback.data.split('&');
+
+  if(data[0] === 'account'){
+    const amount = parseInt(data[1]);
+    const selectedAccount = parseInt(data[2]);
+    return client.replyMessage(ev.replyToken,{
+      "type":"flex",
+      "altText":"日付選択",
+      "contents":
+      {
+        "type": "bubble",
+        "body": {
+          "type": "box",
+          "layout": "vertical",
+          "contents": [
+            {
+              "type": "text",
+              "text": "来店希望日を選んでください。",
+              "size": "md",
+              "align": "center"
+            }
+          ]
+        },
+        "footer": {
+          "type": "box",
+          "layout": "vertical",
+          "contents": [
+            {
+              "type": "button",
+              "action": {
+                "type": "datetimepicker",
+                "label": "日付を選択する",
+                "data": `date&${amount}&${selectedAccount}`,
+                "mode": "date"
+              }
+            }
+          ]
+        }
+      }
+    })
+  }
+
+  else if(data[0] === 'date'){
+    const amount = data[1]
+    const selectedAccount = data[2];
+    const selectedDate = ev.postback.params.date;
+    const selectedMonth = selectedDate.split('-')[1];
+    const selectedDay = selectedDate.split('-')[2];
+    const line_uid = ev.source.userId;
+    Data.inputSS({amount,selectedAccount,selectedMonth,selectedDay,line_uid})
+      .then(newValue=>{
+        return client.replyMessage(ev.replyToken,{
+          "type":"text",
+          "text":`会計表を${ev.source.userId}へ更新しました！`
+        });
+      })
+      .catch(e=>console.log(e));
+  }
 }
 
 const createSheet = async (address,userName,ev) => {
