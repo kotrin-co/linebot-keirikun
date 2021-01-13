@@ -34,6 +34,7 @@ module.exports = {
   inputSS: ({amountInput,accountSelect,selectedMonth,selectedDay,line_uid}) => {
     return new Promise((resolve,reject)=>{
 
+      console.log('各種値',amountInput,accountSelect,selectedMonth,selectedDay,line_uid);
       //ユーザーデータの抜き出し
       const select_query = {
         text: `SELECT * FROM users WHERE line_uid='${line_uid}';`
