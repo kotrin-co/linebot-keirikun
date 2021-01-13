@@ -149,8 +149,8 @@ const handleMessageEvent = async (ev) => {
                 "text":"金額を半角数値で入力してください！"
               });
             }
-
-            else if(/^([1-9]\d*|0)$/.test(text)){
+            else if(text.match(/^([1-9]\d*|0)$/)){
+            // else if(/^([1-9]\d*|0)$/.test(text)){
               return client.replyMessage(ev.replyToken,{
                 "type":"flex",
                 "altText":"勘定科目選択",
