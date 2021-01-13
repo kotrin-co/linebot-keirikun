@@ -424,11 +424,11 @@ const handleMessageEvent = async (ev) => {
 }
 
 const handlePostbackEvent = (ev) => {
-  const data = ev.postback.data.split('&');
+  const postbackData = ev.postback.data.split('&');
 
-  if(data[0] === 'account'){
-    const amount = parseInt(data[1]);
-    const selectedAccount = parseInt(data[2]);
+  if(postbackData[0] === 'account'){
+    const amount = parseInt(postbackData[1]);
+    const selectedAccount = parseInt(postbackData[2]);
     return client.replyMessage(ev.replyToken,{
       "type":"flex",
       "altText":"日付選択",
@@ -466,9 +466,9 @@ const handlePostbackEvent = (ev) => {
     })
   }
 
-  else if(data[0] === 'date'){
-    const amount = data[1]
-    const selectedAccount = data[2];
+  else if(postbackData[0] === 'date'){
+    const amount = postbackData[1]
+    const selectedAccount = postbackData[2];
     const selectedDate = ev.postback.params.date;
     const selectedMonth = selectedDate.split('-')[1];
     const selectedDay = selectedDate.split('-')[2];
