@@ -10,6 +10,7 @@ const apiRouter = require('./routers/api');
 const Data = require('./models/Data');
 const original_SSID = '13Y2AZYNHWnQNKdSzK5Vxna_YPdf4YnT61imptdiM_MU';
 const original_SID = [0,1686142823];
+const ACCOUNTS = ['収入','売上','支出','源泉所得税','交通費','会議費','接待交際費','通信費','衣装費','郵便代','保険料','年金','家賃','従業員報酬','その他'];
 
 const PORT = process.env.PORT || 5000;
 
@@ -468,7 +469,7 @@ const handlePostbackEvent = (ev) => {
 
   else if(postbackData[0] === 'date'){
     const amount = postbackData[1]
-    const selectedAccount = postbackData[2];
+    const selectedAccount = ACCOUNTS[parseInt(postbackData[2])];
     const selectedDate = ev.postback.params.date;
     const selectedMonth = selectedDate.split('-')[1];
     const selectedDay = selectedDate.split('-')[2];
