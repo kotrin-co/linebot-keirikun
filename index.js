@@ -516,7 +516,7 @@ const createSheet = async (address,userName,ev) => {
                 {
               'properties': {
                 'sheetId': 0,
-                'title': '入力用シート',
+                'title': 'デフォルト',
                 'index': 1,
                 'sheetType': 'GRID',
                 'gridProperties': {
