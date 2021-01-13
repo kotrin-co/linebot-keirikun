@@ -34,12 +34,6 @@ window.onload = () => {
           input_amount.setAttribute('type','text');
           input_amount.setAttribute('class','form-control amount-input');
           input_amount.setAttribute('name','amountInput');
-          input_amount.onkeypress = (e) => {
-            const key = e.keyCode || e.charCode || 0;
-            if(key===13){
-              e.preventDefault();
-            }
-          }
           div_form_amount.appendChild(input_amount);
 
           formElement.appendChild(div_form_amount);
@@ -68,6 +62,14 @@ window.onload = () => {
           div_form_account.appendChild(select_account);
           formElement.appendChild(div_form_account);
           
+          input_amount.onkeydown = (e) => {
+            const key = e.keyCode || e.charCode || 0;
+            if(key===13){
+              select_account.focus();
+              // e.preventDefault();
+            }
+          }
+
           //日時の選択
           const div_form_date = document.createElement('div');
           div_form_date.setAttribute('class','form-group form-inline');
@@ -129,34 +131,37 @@ window.onload = () => {
             const formData = new FormData(formElement);
             formData.append('line_uid',lineId);
             // console.log('formData',...formData.entries());
-            fetch('/api',{
-              method:'POST',
-              body:formData,
-              credentials:'same-origin'
-            })
-            .then(response=>{
-              if(response.ok){
-                response.text()
-                  .then(text=>{
-                    alert(text);
-                  })
-                  .catch(e=>console.log(e));
-              }else{
-                alert('HTTPレスポンスエラー');
-              }
-            })
-            .catch(error=>{
-              alert(error);
-              throw error;
-            });
 
-            formDataが適正かのチェックを入れる
-            let check = postCheck(formData,staffsData[staffs.indexOf(staffName)]);
-            console.log('check',check);
-            if(check === 'ok'){
-              
+            //金額入力値が適正か評価する
+            const checkedInput = formData.get('amountInput').match(/^([1-9]\d*|0)$/);
+            if(checkedInput){
+              fetch('/api',{
+                method:'POST',
+                body:formData,
+                credentials:'same-origin'
+              })
+              .then(response=>{
+                if(response.ok){
+                  response.text()
+                    .then(text=>{
+                      alert(text);
+                      //入力値のクリア
+                      input_amount.value = '';
+                      select_account.selectedIndex = -1;
+                      select_month.selectedIndex = -1;
+                      select_day.selectedIndex = -1;
+                    })
+                    .catch(e=>console.log(e));
+                }else{
+                  alert('HTTPレスポンスエラー');
+                }
+              })
+              .catch(error=>{
+                alert(error);
+                throw error;
+              });
             }else{
-              alert(check);
+              alert('金額には半角数値を入力してください');
             }
           });
           formElement.appendChild(postButton);
