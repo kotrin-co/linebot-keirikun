@@ -144,7 +144,7 @@ const handleMessageEvent = async (ev) => {
                 .catch(e=>console.log(e));
             }
 
-            else if( text === '会計'){
+            else if( text === 'けーり君と話して会計入力したい！'){
               return client.replyMessage(ev.replyToken,{
                 "type":"text",
                 "text":"金額を半角数値で入力してください！"
@@ -416,7 +416,7 @@ const handleMessageEvent = async (ev) => {
               else{
                   return client.replyMessage(ev.replyToken,{
                       "type":"text",
-                      "text":"メルアドとシート作成ができましたので、これからサービスの中身を実装していきます^^"
+                      "text":"半角数字をメッセージで送ると、会計データを入力できますよ^^"
                   });
               }
             }
