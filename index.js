@@ -135,288 +135,285 @@ const handleMessageEvent = async (ev) => {
     connection.query(select_query)
         .then(res=>{
             console.log('res.rows[0]:',res.rows[0]);
-            if( text === '消す'){
-              const update_query = {
-                text:`UPDATE users SET (gmail,ssid) = ('','') WHERE line_uid='${ev.source.userId}';`
-              };
-              connection.query(update_query)
-                .then(()=>console.log('消した！！'))
-                .catch(e=>console.log(e));
-            }
-
-            else if( text === 'けーり君と話して会計入力したい！'){
-              return client.replyMessage(ev.replyToken,{
-                "type":"text",
-                "text":"金額を半角数値で入力してください！"
-              });
-            }
-            else if(text.match(/^([1-9]\d*|0)$/)){
-            // else if(/^([1-9]\d*|0)$/.test(text)){
-              return client.replyMessage(ev.replyToken,{
-                "type":"flex",
-                "altText":"勘定科目選択",
-                "contents":
-                {
-                  "type": "carousel",
-                  "contents": [
-                    {
-                      "type": "bubble",
-                      "header": {
-                        "type": "box",
-                        "layout": "vertical",
-                        "contents": [
-                          {
-                            "type": "text",
-                            "text": "勘定科目を選んでください",
-                            "size": "md",
-                            "align": "center"
-                          }
-                        ]
-                      },
-                      "body": {
-                        "type": "box",
-                        "layout": "vertical",
-                        "contents": [
-                          {
-                            "type": "button",
-                            "action": {
-                              "type": "postback",
-                              "label": "収入",
-                              "data": `account&${text}&0`
-                            }
-                          },
-                          {
-                            "type": "separator"
-                          },
-                          {
-                            "type": "button",
-                            "action": {
-                              "type": "postback",
-                              "label": "売上",
-                              "data": `account&${text}&1`
-                            }
-                          },
-                          {
-                            "type": "separator"
-                          },
-                          {
-                            "type": "button",
-                            "action": {
-                              "type": "postback",
-                              "label": "支出",
-                              "data": `account&${text}&2`
-                            }
-                          },
-                          {
-                            "type": "separator"
-                          },
-                          {
-                            "type": "button",
-                            "action": {
-                              "type": "postback",
-                              "label": "源泉所得税",
-                              "data": `account&${text}&3`
-                            }
-                          }
-                        ]
-                      }
-                    },
-                    {
-                      "type": "bubble",
-                      "header": {
-                        "type": "box",
-                        "layout": "vertical",
-                        "contents": [
-                          {
-                            "type": "text",
-                            "text": "勘定科目を選んでください",
-                            "align": "center"
-                          }
-                        ]
-                      },
-                      "body": {
-                        "type": "box",
-                        "layout": "vertical",
-                        "contents": [
-                          {
-                            "type": "button",
-                            "action": {
-                              "type": "postback",
-                              "label": "交通費",
-                              "data": `account&${text}&4`
-                            }
-                          },
-                          {
-                            "type": "separator"
-                          },
-                          {
-                            "type": "button",
-                            "action": {
-                              "type": "postback",
-                              "label": "会議費",
-                              "data": `account&${text}&5`
-                            }
-                          },
-                          {
-                            "type": "separator"
-                          },
-                          {
-                            "type": "button",
-                            "action": {
-                              "type": "postback",
-                              "label": "接待交際費",
-                              "data": `account&${text}&6`
-                            }
-                          },
-                          {
-                            "type": "separator"
-                          },
-                          {
-                            "type": "button",
-                            "action": {
-                              "type": "postback",
-                              "label": "通信費",
-                              "data": `account&${text}&7`
-                            }
-                          }
-                        ]
-                      }
-                    },
-                    {
-                      "type": "bubble",
-                      "header": {
-                        "type": "box",
-                        "layout": "vertical",
-                        "contents": [
-                          {
-                            "type": "text",
-                            "text": "勘定科目を選んでください",
-                            "align": "center"
-                          }
-                        ]
-                      },
-                      "body": {
-                        "type": "box",
-                        "layout": "vertical",
-                        "contents": [
-                          {
-                            "type": "button",
-                            "action": {
-                              "type": "postback",
-                              "data": `account&${text}&8`,
-                              "label": "衣装費"
-                            }
-                          },
-                          {
-                            "type": "separator"
-                          },
-                          {
-                            "type": "button",
-                            "action": {
-                              "type": "postback",
-                              "label": "郵便代",
-                              "data": `account&${text}&9`
-                            }
-                          },
-                          {
-                            "type": "separator"
-                          },
-                          {
-                            "type": "button",
-                            "action": {
-                              "type": "postback",
-                              "label": "保険料",
-                              "data": `account&${text}&10`
-                            }
-                          },
-                          {
-                            "type": "separator"
-                          },
-                          {
-                            "type": "button",
-                            "action": {
-                              "type": "postback",
-                              "label": "年金",
-                              "data": `account&${text}&11`
-                            }
-                          }
-                        ]
-                      }
-                    },
-                    {
-                      "type": "bubble",
-                      "header": {
-                        "type": "box",
-                        "layout": "vertical",
-                        "contents": [
-                          {
-                            "type": "text",
-                            "text": "勘定科目を選んでください",
-                            "align": "center"
-                          }
-                        ]
-                      },
-                      "body": {
-                        "type": "box",
-                        "layout": "vertical",
-                        "contents": [
-                          {
-                            "type": "button",
-                            "action": {
-                              "type": "postback",
-                              "label": "家賃",
-                              "data": `account&${text}&12`
-                            }
-                          },
-                          {
-                            "type": "separator"
-                          },
-                          {
-                            "type": "button",
-                            "action": {
-                              "type": "postback",
-                              "label": "従業員報酬",
-                              "data": `account&${text}&13`
-                            }
-                          },
-                          {
-                            "type": "separator"
-                          },
-                          {
-                            "type": "button",
-                            "action": {
-                              "type": "postback",
-                              "label": "その他",
-                              "data": `account&${text}&14`
-                            }
-                          }
-                        ]
-                      }
-                    }
-                  ]
-                }
-              });
-            }
-            
-            else{
-              if(!res.rows[0].gmail){
-                const reg = /^[A-Za-z0-9]{1}[A-Za-z0-9_.-]*@gmail.com/;
-                if(reg.test(text)){
-                    console.log('メアドOK');
-                    const userName = profile.displayName;
-                    createSheet(text,userName,ev);
-                }else{
-                    console.log('間違っている');
-                    return client.replyMessage(ev.replyToken,{
-                        "type":"text",
-                        "text":"まずはメールアドレスを登録しましょう。（Gmailアドレスのみを送ってください。）"
-                    });
-                }
+            if(res.rows[0].gmail){
+              if( text === '消す'){
+                const update_query = {
+                  text:`UPDATE users SET (gmail,ssid) = ('','') WHERE line_uid='${ev.source.userId}';`
+                };
+                connection.query(update_query)
+                  .then(()=>console.log('消した！！'))
+                  .catch(e=>console.log(e));
               }
-              else{
+  
+              else if( text === 'けーり君と話して会計入力したい！'){
+                return client.replyMessage(ev.replyToken,{
+                  "type":"text",
+                  "text":"金額を半角数値で入力してください！"
+                });
+              }
+              else if(text.match(/^([1-9]\d*|0)$/)){
+              // else if(/^([1-9]\d*|0)$/.test(text)){
+                return client.replyMessage(ev.replyToken,{
+                  "type":"flex",
+                  "altText":"勘定科目選択",
+                  "contents":
+                  {
+                    "type": "carousel",
+                    "contents": [
+                      {
+                        "type": "bubble",
+                        "header": {
+                          "type": "box",
+                          "layout": "vertical",
+                          "contents": [
+                            {
+                              "type": "text",
+                              "text": "勘定科目を選んでください",
+                              "size": "md",
+                              "align": "center"
+                            }
+                          ]
+                        },
+                        "body": {
+                          "type": "box",
+                          "layout": "vertical",
+                          "contents": [
+                            {
+                              "type": "button",
+                              "action": {
+                                "type": "postback",
+                                "label": "収入",
+                                "data": `account&${text}&0`
+                              }
+                            },
+                            {
+                              "type": "separator"
+                            },
+                            {
+                              "type": "button",
+                              "action": {
+                                "type": "postback",
+                                "label": "売上",
+                                "data": `account&${text}&1`
+                              }
+                            },
+                            {
+                              "type": "separator"
+                            },
+                            {
+                              "type": "button",
+                              "action": {
+                                "type": "postback",
+                                "label": "支出",
+                                "data": `account&${text}&2`
+                              }
+                            },
+                            {
+                              "type": "separator"
+                            },
+                            {
+                              "type": "button",
+                              "action": {
+                                "type": "postback",
+                                "label": "源泉所得税",
+                                "data": `account&${text}&3`
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "type": "bubble",
+                        "header": {
+                          "type": "box",
+                          "layout": "vertical",
+                          "contents": [
+                            {
+                              "type": "text",
+                              "text": "勘定科目を選んでください",
+                              "align": "center"
+                            }
+                          ]
+                        },
+                        "body": {
+                          "type": "box",
+                          "layout": "vertical",
+                          "contents": [
+                            {
+                              "type": "button",
+                              "action": {
+                                "type": "postback",
+                                "label": "交通費",
+                                "data": `account&${text}&4`
+                              }
+                            },
+                            {
+                              "type": "separator"
+                            },
+                            {
+                              "type": "button",
+                              "action": {
+                                "type": "postback",
+                                "label": "会議費",
+                                "data": `account&${text}&5`
+                              }
+                            },
+                            {
+                              "type": "separator"
+                            },
+                            {
+                              "type": "button",
+                              "action": {
+                                "type": "postback",
+                                "label": "接待交際費",
+                                "data": `account&${text}&6`
+                              }
+                            },
+                            {
+                              "type": "separator"
+                            },
+                            {
+                              "type": "button",
+                              "action": {
+                                "type": "postback",
+                                "label": "通信費",
+                                "data": `account&${text}&7`
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "type": "bubble",
+                        "header": {
+                          "type": "box",
+                          "layout": "vertical",
+                          "contents": [
+                            {
+                              "type": "text",
+                              "text": "勘定科目を選んでください",
+                              "align": "center"
+                            }
+                          ]
+                        },
+                        "body": {
+                          "type": "box",
+                          "layout": "vertical",
+                          "contents": [
+                            {
+                              "type": "button",
+                              "action": {
+                                "type": "postback",
+                                "data": `account&${text}&8`,
+                                "label": "衣装費"
+                              }
+                            },
+                            {
+                              "type": "separator"
+                            },
+                            {
+                              "type": "button",
+                              "action": {
+                                "type": "postback",
+                                "label": "郵便代",
+                                "data": `account&${text}&9`
+                              }
+                            },
+                            {
+                              "type": "separator"
+                            },
+                            {
+                              "type": "button",
+                              "action": {
+                                "type": "postback",
+                                "label": "保険料",
+                                "data": `account&${text}&10`
+                              }
+                            },
+                            {
+                              "type": "separator"
+                            },
+                            {
+                              "type": "button",
+                              "action": {
+                                "type": "postback",
+                                "label": "年金",
+                                "data": `account&${text}&11`
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "type": "bubble",
+                        "header": {
+                          "type": "box",
+                          "layout": "vertical",
+                          "contents": [
+                            {
+                              "type": "text",
+                              "text": "勘定科目を選んでください",
+                              "align": "center"
+                            }
+                          ]
+                        },
+                        "body": {
+                          "type": "box",
+                          "layout": "vertical",
+                          "contents": [
+                            {
+                              "type": "button",
+                              "action": {
+                                "type": "postback",
+                                "label": "家賃",
+                                "data": `account&${text}&12`
+                              }
+                            },
+                            {
+                              "type": "separator"
+                            },
+                            {
+                              "type": "button",
+                              "action": {
+                                "type": "postback",
+                                "label": "従業員報酬",
+                                "data": `account&${text}&13`
+                              }
+                            },
+                            {
+                              "type": "separator"
+                            },
+                            {
+                              "type": "button",
+                              "action": {
+                                "type": "postback",
+                                "label": "その他",
+                                "data": `account&${text}&14`
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                });
+              }else{
+                return client.replyMessage(ev.replyToken,{
+                  "type":"text",
+                  "text":"半角数字をメッセージで送ると、会計データを入力できますよ^^"
+                });
+              }
+            }else{
+              const reg = /^[A-Za-z0-9]{1}[A-Za-z0-9_.-]*@gmail.com/;
+              if(reg.test(text)){
+                  console.log('メアドOK');
+                  const userName = profile.displayName;
+                  createSheet(text,userName,ev);
+              }else{
+                  console.log('間違っている');
                   return client.replyMessage(ev.replyToken,{
                       "type":"text",
-                      "text":"半角数字をメッセージで送ると、会計データを入力できますよ^^"
+                      "text":"まずはメールアドレスを登録しましょう。（Gmailアドレスのみを送ってください。）"
                   });
               }
             }
