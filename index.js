@@ -468,13 +468,13 @@ const handlePostbackEvent = (ev) => {
   }
 
   else if(postbackData[0] === 'date'){
-    const amount = postbackData[1]
-    const selectedAccount = ACCOUNTS[parseInt(postbackData[2])];
+    const amountInput = postbackData[1]
+    const accountSelect = ACCOUNTS[parseInt(postbackData[2])];
     const selectedDate = ev.postback.params.date;
     const selectedMonth = parseInt(selectedDate.split('-')[1]);
     const selectedDay = parseInt(selectedDate.split('-')[2]);
     const line_uid = ev.source.userId;
-    Data.inputSS({amount,selectedAccount,selectedMonth,selectedDay,line_uid})
+    Data.inputSS({amountInput,accountSelect,selectedMonth,selectedDay,line_uid})
       .then(newValue=>{
         return client.replyMessage(ev.replyToken,{
           "type":"text",
