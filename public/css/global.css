@@ -211,7 +211,7 @@ input[type="number"]::placeholder {
 }
 .sr-select:invalid {
   color: var(--gray-light);
-  background-opacity: 0.4;
+  /* background-opacity: 0.4; */
 }
 
 /* Combo inputs */

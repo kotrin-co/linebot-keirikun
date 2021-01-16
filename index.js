@@ -7,10 +7,14 @@ const multipart = require('connect-multiparty');
 const privatekey = require('./client_secret.json');
 const router = require('./routers/index');
 const apiRouter = require('./routers/api');
+const settlementRouter = require('./routers/settlement');
 const Data = require('./models/Data');
 const original_SSID = '13Y2AZYNHWnQNKdSzK5Vxna_YPdf4YnT61imptdiM_MU';
 const original_SID = [0,1686142823];
 const ACCOUNTS = ['収入','売上','支出','源泉所得税','交通費','会議費','接待交際費','通信費','衣装費','郵便代','保険料','年金','家賃','従業員報酬','その他'];
+
+//stripeの設定
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 const PORT = process.env.PORT || 5000;
 
@@ -49,6 +53,94 @@ express()
   .use(express.urlencoded({extended:true}))　//これが/apiルーティングの前にこないと、ダメ
   .use('/',router)
   .use('/api',apiRouter)
+  .use(
+    express.json({
+      verify: (req,res,buf)=>{
+        if(req.originalUrl.startsWith('/webhook')){
+          req.rawBody = buf.toString();
+        }
+      }
+    })
+  )
+  .get('/settlement',settlementRouter)
+  .get('/checkout-session',async (req,res)=>{
+    const { sessionId } = req.query;
+    const session = await stripe.checkout.sessions.retrieve(sessionId);
+    res.send(session);
+  })
+  .post('/create-checkout-session',async(req,res)=>{
+    const domainURL = 'https://lienbot-keiri.herokuapp.com';
+    const { priceId } = req.body;
+
+    try{
+      const session = await stripe.checkout.sessions.create({
+        mode: 'subscription',
+        payment_method_types: ['card'],
+        line_items: [
+          {
+            price: priceId,
+            quantity: 1
+          }
+        ],
+        success_url: `${domainURL}/success.html?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${domainURL}/canceled.html`
+      });
+      res.send({
+        sessionId: session.id
+      });
+
+    }catch(e){
+      res.status(400);
+      return res.send({
+        error: {
+          message: e.message
+        }
+      });
+    }
+  })
+  .get('/setup',(req,res)=>{
+    res.send({
+      publishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
+      basicPrice: process.env.BASIC_PRICE_ID,
+      proPrice: process.env.PRO_PRICE_ID
+    });
+  })
+  .post('/customer-portal',async(req,res)=>{
+    const { sessionId } = req.body;
+    const checkoutsession = await stripe.checkout.sessions.retrieve(sessionId);
+    const returnUrl = 'https://linebot-keiri.herokuapp.com';
+    const portalsession = await stripe.billingPortal.sessions.create({
+      customer: checkoutsession.customer,
+      return_url: returnUrl
+    });
+    res.send({
+      url: portalsession.url
+    });
+  })
+  .post('/webhook',async(req,res)=>{
+    let eventType;
+    if (process.env.STRIPE_WEBHOOK_SECRET){
+      let event;
+      let signature = req.headers['stripe-signature'];
+
+      try{
+        event = stripe.webhooks.constructEvent(
+          req.rawBody,
+          signature,
+          process.env.STRIPE_WEBHOOK_SECRET
+        );
+      }catch(err){
+        console.log(`⚠️  Webhook signature verification failed.`);
+        return res.sendStatus(400);
+      }
+      data = req.body.data;
+      eventType = req.body.type;
+    }
+    if(eventType === 'checkout.session.completed'){
+      console.log(`🔔  Payment received!`);
+    }
+    res.sendStatus(200);
+  })
   .listen(PORT,()=>console.log(`Listening on ${PORT}`));
 
 const lineBot = (req,res) => {
