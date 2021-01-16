@@ -48,7 +48,7 @@ fetch('/setup')
 
     const stripe = Stripe(publishableKey);
 
-    document.getElementById('basic-plan-button')
+    document.getElementById('basic-plan-btn')
       .addEventListener('click',(e)=>{
         createCheckoutSession(basicPriceId)
           .then((data)=>{
