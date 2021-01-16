@@ -82,8 +82,8 @@ express()
             quantity: 1
           }
         ],
-        success_url: `${domainURL}/success.html?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${domainURL}/canceled.html`
+        success_url: `${domainURL}/success.ejs?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${domainURL}/canceled.ejs`
       });
       res.send({
         sessionId: session.id
