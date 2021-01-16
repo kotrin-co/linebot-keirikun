@@ -82,8 +82,8 @@ express()
             quantity: 1
           }
         ],
-        success_url: `${domainURL}/success?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${domainURL}/canceled`
+        success_url: `${domainURL}/success.html?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${domainURL}/canceled.html`
       });
       res.send({
         sessionId: session.id
@@ -141,9 +141,9 @@ express()
     }
     res.sendStatus(200);
   })
-  .get('/success',(req,res)=>{
-    res.render('pages/success');
-  })
+  // .get('/success',(req,res)=>{
+  //   res.render('pages/success');
+  // })
   .listen(PORT,()=>console.log(`Listening on ${PORT}`));
 
 const lineBot = (req,res) => {
