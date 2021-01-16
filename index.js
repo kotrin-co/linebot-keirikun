@@ -68,6 +68,9 @@ express()
     const session = await stripe.checkout.sessions.retrieve(sessionId);
     res.send(session);
   })
+  .get('/success',(req,res)=>{
+    res.render('pages/success');
+  })
   .post('/create-checkout-session',async(req,res)=>{
     const domainURL = 'https://lienbot-keiri.herokuapp.com';
     const { priceId } = req.body;
@@ -82,8 +85,8 @@ express()
             quantity: 1
           }
         ],
-        success_url: `${domainURL}/success.html?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${domainURL}/canceled.html`
+        success_url: `${domainURL}/success?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${domainURL}/canceled`
       });
       res.send({
         sessionId: session.id
@@ -141,9 +144,6 @@ express()
     }
     res.sendStatus(200);
   })
-  // .get('/success',(req,res)=>{
-  //   res.render('pages/success');
-  // })
   .listen(PORT,()=>console.log(`Listening on ${PORT}`));
 
 const lineBot = (req,res) => {
