@@ -82,8 +82,8 @@ express()
             quantity: 1
           }
         ],
-        success_url: `${domainURL}/success.ejs?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${domainURL}/canceled.ejs`
+        success_url: `${domainURL}/success?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${domainURL}/canceled`
       });
       res.send({
         sessionId: session.id
@@ -140,6 +140,9 @@ express()
       console.log(`🔔  Payment received!`);
     }
     res.sendStatus(200);
+  })
+  .get('/success',(req,res)=>{
+    res.render('pages/success');
   })
   .listen(PORT,()=>console.log(`Listening on ${PORT}`));
 
