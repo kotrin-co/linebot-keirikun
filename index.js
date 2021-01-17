@@ -68,9 +68,6 @@ express()
     const session = await stripe.checkout.sessions.retrieve(sessionId);
     res.send(session);
   })
-  // .get('/success',(req,res)=>{
-  //   res.render('pages/success');
-  // })
   .post('/create-checkout-session',async(req,res)=>{
     const domainURL = 'https://lienbot-keiri.herokuapp.com';
     const { priceId } = req.body;
@@ -85,9 +82,9 @@ express()
             quantity: 1
           }
         ],
-        success_url: 'https://google.com',
+        success_url: `${domainURL}/success`,
         // success_url: `${domainURL}/success.ejs?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${domainURL}/canceled.ejs`
+        cancel_url: `${domainURL}/canceled`
       });
       res.send({
         sessionId: session.id
@@ -102,6 +99,7 @@ express()
       });
     }
   })
+  .get('/success',settlementRouter)
   .get('/setup',(req,res)=>{
     res.send({
       publishableKey: process.env.STRIPE_PUBLISHABLE_KEY,

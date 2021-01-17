@@ -7,4 +7,9 @@ router
         res.render('pages/settlement')
     })
 
+router
+    .get('/success',(req,res)=>{
+      res.render('pages/success')
+    })
+
 module.exports = router;
