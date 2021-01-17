@@ -63,6 +63,7 @@ express()
     })
   )
   .get('/settlement',settlementRouter)
+  .get('/success',settlementRouter)
   .get('/checkout-session',async (req,res)=>{
     const { sessionId } = req.query;
     const session = await stripe.checkout.sessions.retrieve(sessionId);
