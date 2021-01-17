@@ -63,7 +63,7 @@ express()
     })
   )
   .get('/settlement',settlementRouter)
-  .get('/success',settlementRouter)
+  // .get('/success',settlementRouter)
   .get('/checkout-session',async (req,res)=>{
     const { sessionId } = req.query;
     const session = await stripe.checkout.sessions.retrieve(sessionId);
@@ -83,7 +83,7 @@ express()
             quantity: 1
           }
         ],
-        success_url: 'https://linebot-schedule.herokuapp.com/',
+        success_url: 'https://linebot-schedule.herokuapp.com?session_id={CHECKOUT_SESSION_ID}',
         // success_url: `${domainURL}/success.ejs?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${domainURL}/canceled`
       });
