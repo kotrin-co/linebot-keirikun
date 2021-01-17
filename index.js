@@ -85,7 +85,8 @@ express()
             quantity: 1
           }
         ],
-        success_url: `${domainURL}/success.ejs?session_id={CHECKOUT_SESSION_ID}`,
+        success_url: 'https://google.com',
+        // success_url: `${domainURL}/success.ejs?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${domainURL}/canceled.ejs`
       });
       res.send({
