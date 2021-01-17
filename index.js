@@ -83,7 +83,7 @@ express()
             quantity: 1
           }
         ],
-        success_url: 'https://lienbot-keiri.herokuapp.com/settlement',
+        success_url: 'https://linebot-schedule.herokuapp.com/',
         // success_url: `${domainURL}/success.ejs?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${domainURL}/canceled`
       });
