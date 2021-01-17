@@ -10,7 +10,7 @@ if(sessionId){
     .then((session)=>{
       customerId = session.customer;
       const sessionJSON = JSON.stringify(session,null,2);
-      document.querySelector('pre').textContent= session.id+','+session.customer+','+session.customer_details.email
+      document.querySelector('pre').textContent= session.id+','+session.customer+','+session.customer_details.email;
       // document.querySelector('pre').textContent = sessionJSON;
     })
     .catch(err=>{

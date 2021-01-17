@@ -10,6 +10,11 @@ router
 router
     .get('/success',(req,res)=>{
       res.render('pages/success')
-    })
+    });
+
+router
+  .get('/canceled',(req,res)=>{
+    res.render('pages/canceled')
+  });
 
 module.exports = router;
