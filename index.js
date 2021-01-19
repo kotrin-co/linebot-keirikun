@@ -144,6 +144,12 @@ express()
     }
     res.sendStatus(200);
   })
+  .get('/cancel-subscription',(req,res)=>{
+    const subscription = req.query.sub;
+    console.log('subsc',subscription);
+    const stripe = Stripe(process.env.SECRET_KEY);
+    stripe.subscriptions.del(subscription);
+  })
   .listen(PORT,()=>console.log(`Listening on ${PORT}`));
 
 const lineBot = (req,res) => {

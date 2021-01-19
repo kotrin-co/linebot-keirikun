@@ -3,6 +3,7 @@ const sessionId = urlParams.get('session_id');
 let customerId;
 
 if(sessionId){
+  let subscription;
   fetch('/checkout-session?sessionId='+sessionId)
     .then((result)=>{
       return result.json();
@@ -12,6 +13,7 @@ if(sessionId){
       const sessionJSON = JSON.stringify(session,null,2);
       // document.querySelector('pre').textContent= session.id+','+session.customer+','+session.customer_details.email;
       document.querySelector('pre').textContent = sessionJSON;
+      subscription = session.subscription;
     })
     .catch(err=>{
       console.log('Error when fetching Checkout session', err);
@@ -40,6 +42,6 @@ if(sessionId){
 
     const cancelButton = document.getElementById('cancel-button').addEventListener('click',(e)=>{
       e.preventDefault();
-      fetch('/cancel-subscription')
+      fetch(`/cancel-subscription?sub=${subscription}`);
     })
 }
