@@ -1,6 +1,7 @@
+const divPage = document.getElementById('payment-page');
+
 window.onload = () => {
   const myLiffId = '1655219547-eobVGLdB';
-  const divPage = document.getElementById('payment-page');
 
   liff
     .init({
@@ -15,9 +16,40 @@ window.onload = () => {
 
           //タイトル生成
           const title = document.createElement('p');
-          title.innerHTML = `${data.display_name}さんの「けーりくん」お支払いページ`;
+          title.innerHTML = `ようこそ${data.display_name}さん!<br>「けーりくん」お支払いページ`;
           divPage.appendChild(title);
 
+          //課金しているかどうかで表示コンテンツを変える
+          if(!data.subscription){
+            createPaymentPage(); //未課金
+          }else{
+            createCancelPage(); //すでに課金
+          }
         })
+        .catch(e=>console.log(e));
     })
+}
+
+const createPaymentPage = () => {
+  //メニュー１
+  const divMenu1 = document.createElement('div');
+  const pMenu1 = document.createElement('p');
+  pMenu1.innerHTML = '月額 ¥500';
+  divMenu1.appendChild(pMenu1);
+  const btnMenu1 = document.createElement('button');
+  btnMenu1.setAttribute('class','btn btn-secondary');
+  btnMenu1.value = '購入する';
+  divMenu1.appendChild(btnMenu1);
+  divPage.appendChild(divMenu1);
+
+  //メニュー２
+  const divMenu2 = document.createElement('div');
+  const pMenu2 = document.createElement('p');
+  pMenu2.innerHTML = '年額 ¥3,000';
+  divMenu2.appendChild(pMenu2);
+  const btnMenu2 = document.createElement('button');
+  btnMenu2.setAttribute('class','btn btn-secondary');
+  btnMenu2.value = '購入する';
+  divMenu2.appendChild(btnMenu2);
+  divPage.appendChild(divMenu2);
 }
