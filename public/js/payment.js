@@ -33,22 +33,26 @@ window.onload = () => {
 const createPaymentPage = () => {
   //メニュー１
   const divMenu1 = document.createElement('div');
+  divMenu1.setAttribute('class','menu-contents');
   const pMenu1 = document.createElement('p');
   pMenu1.innerHTML = '月額 ¥500';
+  pMenu1.setAttribute('class','p-menu');
   divMenu1.appendChild(pMenu1);
   const btnMenu1 = document.createElement('button');
-  btnMenu1.setAttribute('class','btn btn-secondary');
+  btnMenu1.setAttribute('class','btn btn-secondary pay-button');
   btnMenu1.innerHTML = '購入する';
   divMenu1.appendChild(btnMenu1);
   divPage.appendChild(divMenu1);
 
   //メニュー２
   const divMenu2 = document.createElement('div');
+  divMenu2.setAttribute('class','menu-contents');
   const pMenu2 = document.createElement('p');
   pMenu2.innerHTML = '年額 ¥3,000';
+  pMenu2.setAttribute('class','p-menu');
   divMenu2.appendChild(pMenu2);
   const btnMenu2 = document.createElement('button');
-  btnMenu2.setAttribute('class','btn btn-secondary');
+  btnMenu2.setAttribute('class','btn btn-secondary pay-button');
   btnMenu2.innerHTML = '購入する';
   divMenu2.appendChild(btnMenu2);
   divPage.appendChild(divMenu2);

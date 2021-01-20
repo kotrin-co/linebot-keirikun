@@ -44,3 +44,15 @@
 #payment-page{
   text-align: center;
 }
+
+.pay-button{
+  width: 40%;
+}
+
+.p-menu{
+  margin-bottom: 0;
+}
+
+.menu-contents{
+  margin-bottom: 2rem;
+}
