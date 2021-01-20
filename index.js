@@ -105,8 +105,8 @@ express()
   .get('/setup',(req,res)=>{
     res.send({
       publishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
-      basicPrice: process.env.BASIC_PRICE_ID,
-      proPrice: process.env.PRO_PRICE_ID
+      monthlyPrice: process.env.MONTHLY_PRICE_ID,
+      yearlyPrice: process.env.YEARLY_PRICE_ID
     });
   })
   .post('/customer-portal',async(req,res)=>{

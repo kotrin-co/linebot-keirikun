@@ -44,6 +44,27 @@ const createPaymentPage = () => {
   divMenu1.appendChild(btnMenu1);
   divPage.appendChild(divMenu1);
 
+  //クリック時の動作
+  btnMenu1.addEventListener('click',(e)=>{
+    e.preventDefault();
+    fetch('/setup')
+      .then(handleFetchResult)
+      .then(json=>{
+        const publishableKey = json.publishablekey;
+        const monthlyPriceId = json.monthlyPrice;
+        // const yearlyPriceId = json.yearlyPrice;
+
+        const stripe = Stripe(publishableKey);
+
+        createCheckoutSession(monthlyPriceId)
+          .then(data=>{
+            stripe.redirectToCheckout({
+              sessionId: data.sessionId
+            })
+            .then(handleResult);
+          });
+      });
+  });
   //メニュー２
   const divMenu2 = document.createElement('div');
   divMenu2.setAttribute('class','menu-contents');
@@ -56,4 +77,66 @@ const createPaymentPage = () => {
   btnMenu2.innerHTML = '購入する';
   divMenu2.appendChild(btnMenu2);
   divPage.appendChild(divMenu2);
+
+  btnMenu2.addEventListener('click',(e)=>{
+    e.preventDefault();
+    fetch('/setup')
+      .then(handleFetchResult)
+      .then(json=>{
+        const publishableKey = json.publishablekey;
+        // const monthlyPriceId = json.monthlyPrice;
+        const yearlyPriceId = json.yearlyPrice;
+
+        const stripe = Stripe(publishableKey);
+
+        createCheckoutSession(yearlyPriceId)
+          .then(data=>{
+            stripe.redirectToCheckout({
+              sessionId: data.sessionId
+            })
+            .then(handleResult);
+          });
+      });
+  });
+}
+
+const createCheckoutSession = (yearlyPriceId) => {
+  return fetch('/create-checkout-session',{
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      priceId: yearlyPriceId
+    })
+  })
+  .then(handleFetchResult);
+}
+
+const handleFetchResult = (result) => {
+  if(!result.ok){
+    return result.json()
+      .then(json=>{
+        if(json.error && json.error.message){
+          throw new Error(result.url+' '+result.status+' '+json.error.message);
+        }
+      })
+      .catch(err=>{
+        showErrorMessage(err);
+        throw err;
+      });
+  }
+  return result.json();
+}
+
+const handleResult = (result) => {
+  if(result.error){
+    showErrorMessage(result.error.message);
+  }
+}
+
+const showErrorMessage = (message) => {
+  const errorEl = document.createElement('div');
+  errorEl.textContent = message;
+  errorEl.style.display = 'block';
 }
