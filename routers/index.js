@@ -7,4 +7,9 @@ router
         res.render('pages/index');
     });
 
+router
+    .get('/payment',(req,res)=>{
+        res.render('pages/payment');
+    });
+
 module.exports = router;

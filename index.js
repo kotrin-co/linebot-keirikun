@@ -52,6 +52,7 @@ express()
   .use(express.json()) //これが/apiルーティングの前にこないと、ダメ
   .use(express.urlencoded({extended:true}))　//これが/apiルーティングの前にこないと、ダメ
   .use('/',router)
+  .use('/payment',router)
   .use('/api',apiRouter)
   .use(
     express.json({
