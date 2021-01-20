@@ -8,7 +8,7 @@ window.onload = () => {
     })
     .then(()=>{
       liff.getProfile()
-        .then(profile=>{
+        .then(async(profile) => {
           const lineId = profile.userId;
           const response = await fetch(`api?line_uid=${lineId}`);
           const data = await response.json();
@@ -17,7 +17,7 @@ window.onload = () => {
           const title = document.createElement('p');
           title.innerHTML = `${data.display_name}さんの「けーりくん」お支払いページ`;
           divPage.appendChild(title);
-          
+
         })
     })
 }
