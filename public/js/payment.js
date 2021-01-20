@@ -38,7 +38,7 @@ const createPaymentPage = () => {
   divMenu1.appendChild(pMenu1);
   const btnMenu1 = document.createElement('button');
   btnMenu1.setAttribute('class','btn btn-secondary');
-  btnMenu1.value = '購入する';
+  btnMenu1.innerHTML = '購入する';
   divMenu1.appendChild(btnMenu1);
   divPage.appendChild(divMenu1);
 
@@ -49,7 +49,7 @@ const createPaymentPage = () => {
   divMenu2.appendChild(pMenu2);
   const btnMenu2 = document.createElement('button');
   btnMenu2.setAttribute('class','btn btn-secondary');
-  btnMenu2.value = '購入する';
+  btnMenu2.innerHTML = '購入する';
   divMenu2.appendChild(btnMenu2);
   divPage.appendChild(divMenu2);
 }
