@@ -23,7 +23,7 @@ window.onload = () => {
           if(!data.subscription){
             createPaymentPage(); //未課金
           }else{
-            createCancelPage(); //すでに課金
+            createCancelPage(data.subscription); //すでに課金
           }
         })
         .catch(e=>console.log(e));
@@ -100,10 +100,29 @@ const createPaymentPage = () => {
   });
 }
 
-const createCancelPage = () => {
+const createCancelPage = (subscription) => {
   const p = document.createElement('p');
-  p.innerHTML = 'キャンセルページ';
+  p.innerHTML = 'すでにご契約いただいております';
   divPage.appendChild(p);
+
+  const btnCancel = document.createElement('button');
+  btnCancel.setAttribute('class','btn btn-danger pay-button');
+  btnCancel.innerHTML ='解約する';
+  btnCancel.addEventListener('click',()=>{
+    fetch(`/cancel-subscription?sub=${subscription}`)
+      .then(response=>{
+        if(response.ok){
+          response.text()
+            .then(text=>{
+              alert(text);
+            })
+            .catch(e=>console.log(e));
+        }else{
+          alert('HTTPレスポンスエラーです');
+        }
+      })
+  })
+  divPage.appendChild(btnCancel);
 }
 
 const createCheckoutSession = (yearlyPriceId) => {
