@@ -86,7 +86,7 @@ express()
           }
         ],
         // success_url: 'https://linebot-keiri.herokuapp.com/success?session_id={CHECKOUT_SESSION_ID}',
-        success_url: 'https://liff.line.me/1655219547-2EG4LMYx',
+        success_url: 'https://liff.line.me/1655219547-2EG4LMYx?session_id={CHECKOUT_SESSION_ID}',
         cancel_url: `${domainURL}/canceled`
       });
       res.send({
