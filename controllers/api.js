@@ -34,5 +34,21 @@ module.exports = {
     }catch(error){
       res.status(400).json({message:error.message});
     }
+  },
+
+  cancelSubscription: (req,res) => {
+    const lineId = req.params.lineId;
+    const subscription = req.query.sub;
+    console.log('line sub',lineId,subscription);
+    try{
+      Data.cancellation(lineId,subscription)
+        .then(()=>{
+          stripe.subscriptions.update(subscription,{cancel_at_period_end: true});
+          res.status(200).send('解約しました');
+        })
+        .catch(e=>console.log(e));
+    }catch(error){
+      res.status(400).json({message:error.message});
+    }
   }
 }

@@ -14,4 +14,8 @@ router
   .route('/')
   .put(controller.updateUser);
 
+router
+  .route('/cancel/:lineId')
+  .get(controller.cancelSubscription);
+
 module.exports = router;

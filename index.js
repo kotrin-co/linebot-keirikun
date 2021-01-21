@@ -145,12 +145,12 @@ express()
     }
     res.sendStatus(200);
   })
-  .get('/cancel-subscription',(req,res)=>{
-    const subscription = req.query.sub;
-    console.log('subsc',subscription);
-    stripe.subscriptions.update(subscription,{cancel_at_period_end: true});
-    res.status(200).send('解約しました');
-  })
+  // .get('/cancel-subscription',(req,res)=>{
+  //   const subscription = req.query.sub;
+  //   console.log('subsc',subscription);
+  //   stripe.subscriptions.update(subscription,{cancel_at_period_end: true});
+  //   res.status(200).send('解約しました');
+  // })
   .listen(PORT,()=>console.log(`Listening on ${PORT}`));
 
 const lineBot = (req,res) => {

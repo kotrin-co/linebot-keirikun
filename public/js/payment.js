@@ -23,7 +23,7 @@ window.onload = () => {
           if(!data.subscription){
             createPaymentPage(); //未課金
           }else{
-            createCancelPage(data.subscription); //すでに課金
+            createCancelPage(data.subscription,lineId); //すでに課金
           }
         })
         .catch(e=>console.log(e));
@@ -100,7 +100,7 @@ const createPaymentPage = () => {
   });
 }
 
-const createCancelPage = (subscription) => {
+const createCancelPage = (subscription,lineId) => {
   const p = document.createElement('p');
   p.innerHTML = 'すでにご契約いただいております';
   divPage.appendChild(p);
@@ -109,12 +109,16 @@ const createCancelPage = (subscription) => {
   btnCancel.setAttribute('class','btn btn-danger pay-button');
   btnCancel.innerHTML ='解約する';
   btnCancel.addEventListener('click',()=>{
-    fetch(`/cancel-subscription?sub=${subscription}`)
+    fetch(`/api/cancel/${lineId}?sub=${subscription}`)
       .then(response=>{
         if(response.ok){
           response.text()
             .then(text=>{
               alert(text);
+              liff.openWindow({
+                url: 'https://liff.line.me/1655219547-eobVGLdB',
+                external: false
+              });
             })
             .catch(e=>console.log(e));
         }else{

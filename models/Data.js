@@ -153,5 +153,19 @@ module.exports = {
         })
         .catch(e=>console.log(e))
     });
+  },
+
+  cancellation: (lineId,subscription) => {
+    return new Promise((resolve,reject)=> {
+      const update_query = {
+        text: `UPDATE users SET subscription=null WHERE line_uid='${lineId}';`
+      }
+      connection.query(update_query)
+        .then(()=>{
+          console.log('subscription削除');
+          resolve();
+        })
+        .catch(e=>console.log(e));
+    })
   }
 }
