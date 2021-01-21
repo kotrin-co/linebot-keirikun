@@ -16,6 +16,11 @@ window.onload = () => {
           const response = await fetch(`api?line_uid=${lineId}`);
           const data = await response.json();
 
+          //タイトル生成
+          const title = document.createElement('p');
+          title.innerHTML = `${data.display_name}さん!<br>「けーりくん」ご契約ありがとうございます！`;
+          divPage.appendChild(title);
+
           if(sessionId){
             let subscription;
             fetch('/checkout-session?sessionId='+sessionId)

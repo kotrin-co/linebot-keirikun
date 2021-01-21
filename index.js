@@ -112,7 +112,7 @@ express()
   .post('/customer-portal',async(req,res)=>{
     const { sessionId } = req.body;
     const checkoutsession = await stripe.checkout.sessions.retrieve(sessionId);
-    const returnUrl = 'https://linebot-keiri.herokuapp.com';
+    const returnUrl = 'https://liff.line.me/1655219547-eobVGLdB';
     const portalsession = await stripe.billingPortal.sessions.create({
       customer: checkoutsession.customer,
       return_url: returnUrl
