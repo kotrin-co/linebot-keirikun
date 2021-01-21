@@ -85,8 +85,8 @@ express()
             quantity: 1
           }
         ],
-        success_url: 'https://linebot-keiri.herokuapp.com/success?session_id={CHECKOUT_SESSION_ID}',
-        // success_url: `${domainURL}/success.ejs?session_id={CHECKOUT_SESSION_ID}`,
+        // success_url: 'https://linebot-keiri.herokuapp.com/success?session_id={CHECKOUT_SESSION_ID}',
+        success_url: 'https://liff.line.me/1655219547-2EG4LMYx',
         cancel_url: `${domainURL}/canceled`
       });
       res.send({
