@@ -53,7 +53,7 @@ const createPaymentPage = () => {
         const publishableKey = json.publishablekey;
         const monthlyPriceId = json.monthlyPrice;
         // const yearlyPriceId = json.yearlyPrice;
-        const debug = docuement.getElementById('debug');
+        const debug = document.getElementById('debug');
         debug.textContent = publishableKey+'&&@@'+monthlyPriceId;
 
         const stripe = Stripe(publishableKey);
