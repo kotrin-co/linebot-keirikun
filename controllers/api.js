@@ -39,6 +39,7 @@ module.exports = {
   cancelSubscription: (req,res) => {
     const lineId = req.params.lineId;
     const subscription = req.query.sub;
+    const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
     console.log('line sub',lineId,subscription);
     try{
       Data.cancellation(lineId,subscription)

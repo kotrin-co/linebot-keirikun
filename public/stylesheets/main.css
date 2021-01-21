@@ -56,3 +56,9 @@
 .menu-contents{
   margin-bottom: 2rem;
 }
+
+/* 支払成功ページ */
+
+#paid-success-page{
+  text-align: center;
+}
