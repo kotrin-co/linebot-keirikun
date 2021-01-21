@@ -50,7 +50,7 @@ const createPaymentPage = () => {
     fetch('/setup')
       .then(handleFetchResult)
       .then(json=>{
-        const publishableKey = json.publishablekey;
+        const publishableKey = json.publishableKey;
         const monthlyPriceId = json.monthlyPrice;
         // const yearlyPriceId = json.yearlyPrice;
         const debug = document.getElementById('debug');
