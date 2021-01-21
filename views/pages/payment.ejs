@@ -2,6 +2,10 @@
 <html lang="ja">
 <head>
     <%- include ("../partials/header.ejs") %>
+    <!-- liffを使うためのCDN -->
+    <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src='js/payment.js'></script>
 </head>
 <body>
     <div id="payment-page">
@@ -9,9 +13,5 @@
 
     <%- include ("../partials/footer.ejs") %>
 
-    <!-- liffを使うためのCDN -->
-    <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
-    <script src="https://js.stripe.com/v3/"></script>
-    <script src='js/payment.js'></script>
 </body>
 </html>
