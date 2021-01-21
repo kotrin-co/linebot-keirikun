@@ -53,8 +53,6 @@ const createPaymentPage = () => {
         const publishableKey = json.publishableKey;
         const monthlyPriceId = json.monthlyPrice;
         // const yearlyPriceId = json.yearlyPrice;
-        const debug = document.getElementById('debug');
-        debug.textContent = publishableKey+'&&@@'+monthlyPriceId;
 
         const stripe = Stripe(publishableKey);
 
@@ -85,7 +83,7 @@ const createPaymentPage = () => {
     fetch('/setup')
       .then(handleFetchResult)
       .then(json=>{
-        const publishableKey = json.publishablekey;
+        const publishableKey = json.publishableKey;
         // const monthlyPriceId = json.monthlyPrice;
         const yearlyPriceId = json.yearlyPrice;
 
