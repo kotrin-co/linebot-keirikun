@@ -138,5 +138,20 @@ module.exports = {
         })
         .catch(e=>console.log(e));
     });
+  },
+
+  updateUser: ({subscription,lineId}) => {
+    return new Promise((resolve,reject) => {
+      console.log('subscription',subscription);
+      const update_query = {
+        text: `UPDATE users SET subscription='${subscription}' WHERE line_uid='${lineId}';`
+      };
+      connection.query(update_query)
+        .then(()=>{
+          console.log('users更新しました！');
+          resolve('subscription更新成功');
+        })
+        .catch(e=>console.log(e))
+    });
   }
 }

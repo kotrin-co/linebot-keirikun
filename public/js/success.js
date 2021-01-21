@@ -32,37 +32,60 @@ window.onload = () => {
                 const sessionJSON = JSON.stringify(session,null,2);
                 const pre = document.createElement('pre');
                 pre.textContent = sessionJSON;
-                subscription = session.subscription;
 
-                const manageBillingForm = document.createElement('form');
-                const submitButton = document.createElement('button');
-                manageBillingForm.appendChild(submitButton);
-                // const manageBillingForm = document.querySelector('#manage-billing-form');
-                manageBillingForm.addEventListener('submit',(e)=>{
-                  e.preventDefault();
-                  fetch('/customer-portal',{
-                    method: 'POST',
-                    headers: {
-                      'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                      sessionId: sessionId
-                    })
+                //subscriptionのPUT
+                subscription = session.subscription;
+                fetch('/api',{
+                  method: 'PUT',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({
+                    subscription,
+                    lineId
                   })
-                  .then(response=>response.json())
-                  .then(data=>{
+                })
+                .then(message=>{
+                  alert(message);
+                  const backButton = document.createElement('button');
+                  backButton.setAttribute('class','btn btn-secondary');
+                  backButton.innerHTML = '戻る';
+                  backButton.addEventListener('click',()=>{
                     liff.openWindow({
-                      url: data.url,
+                      url:'https://liff.line.me/1655219547-eobVGLdB',
                       external: false
                     });
-                    // window.location.href=data.url;
-                  })
-                  .catch(error=>{
-                    console.error('error:',error);
                   });
-                });
-                divPage.appendChild(manageBillingForm);
-                divPage.appendChild(pre);
+                })
+                //カスターマーポータルの生成(本番環境でないとできない)
+                // const manageBillingForm = document.createElement('form');
+                // const submitButton = document.createElement('button');
+                // manageBillingForm.appendChild(submitButton);
+                // manageBillingForm.addEventListener('submit',(e)=>{
+                //   e.preventDefault();
+                //   fetch('/customer-portal',{
+                //     method: 'POST',
+                //     headers: {
+                //       'Content-Type': 'application/json'
+                //     },
+                //     body: JSON.stringify({
+                //       sessionId: sessionId
+                //     })
+                //   })
+                //   .then(response=>response.json())
+                //   .then(data=>{
+                //     liff.openWindow({
+                //       url: data.url,
+                //       external: false
+                //     });
+                //     // window.location.href=data.url;
+                //   })
+                //   .catch(error=>{
+                //     console.error('error:',error);
+                //   });
+                // });
+                // divPage.appendChild(manageBillingForm);
+                // divPage.appendChild(pre);
               })
               .catch(err=>{
                 console.log('Error when fetching Checkout session', err);

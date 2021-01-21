@@ -10,4 +10,8 @@ router
   .route('/')
   .post(controller.postData);
 
+router
+  .route('/')
+  .put(controller.updateUser);
+
 module.exports = router;

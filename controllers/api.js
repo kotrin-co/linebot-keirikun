@@ -23,6 +23,16 @@ module.exports = {
     }catch(error){
       res.status(400).json({message:error.message});
     }
-    
+  },
+
+  updateUser: (req,res) => {
+    const { subscription, lineId } = req.body;
+    try{
+      Data.updateUser({subscription,lineId})
+        .then(message=>res.status(200).send(message))
+        .catch(e=>console.log(e));
+    }catch(error){
+      res.status(400).json({message:error.message});
+    }
   }
 }
