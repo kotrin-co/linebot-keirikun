@@ -11,7 +11,6 @@ if(sessionId){
     .then((session)=>{
       customerId = session.customer;
       const sessionJSON = JSON.stringify(session,null,2);
-      // document.querySelector('pre').textContent= session.id+','+session.customer+','+session.customer_details.email;
       document.querySelector('pre').textContent = sessionJSON;
       subscription = session.subscription;
     })
@@ -19,29 +18,29 @@ if(sessionId){
       console.log('Error when fetching Checkout session', err);
     });
 
-    const manageBillingForm = document.querySelector('#manage-billing-form');
-    manageBillingForm.addEventListener('submit',(e)=>{
-      e.preventDefault();
-      fetch('/customer-portal',{
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          sessionId: sessionId
-        })
-      })
-      .then(response=>response.json())
-      .then(data=>{
-        window.location.href=data.url;
-      })
-      .catch(error=>{
-        console.error('error:',error);
-      });
-    });
+    // const manageBillingForm = document.querySelector('#manage-billing-form');
+    // manageBillingForm.addEventListener('submit',(e)=>{
+    //   e.preventDefault();
+    //   fetch('/customer-portal',{
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify({
+    //       sessionId: sessionId
+    //     })
+    //   })
+    //   .then(response=>response.json())
+    //   .then(data=>{
+    //     window.location.href=data.url;
+    //   })
+    //   .catch(error=>{
+    //     console.error('error:',error);
+    //   });
+    // });
 
-    const cancelButton = document.getElementById('cancel-button').addEventListener('click',(e)=>{
-      e.preventDefault();
-      fetch(`/cancel-subscription?sub=${subscription}`);
-    })
+    // const cancelButton = document.getElementById('cancel-button').addEventListener('click',(e)=>{
+    //   e.preventDefault();
+    //   fetch(`/cancel-subscription?sub=${subscription}`);
+    // })
 }

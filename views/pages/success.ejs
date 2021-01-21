@@ -1,12 +1,31 @@
 <!DOCTYPE html>
+<html lang="ja">
+<head>
+    <%- include ("../partials/header.ejs") %>
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src='js/success.js' defer></script>
+</head>
+<body>
+    <div id="paid-success-page">
+      <pre></pre>
+    </div>
+
+    <%- include ("../partials/footer.ejs") %>
+    <!-- liffを使うためのCDN -->
+    <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+</body>
+</html>
+
+
+<!-- <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <title>Stripe Checkout Sample</title>
-    <meta name="description" content="A demo of Stripe Payment Intents" />
+    <meta name="description" content="A demo of Stripe Payment Intents" /> -->
 
     <!-- <link rel="icon" href="favicon.ico" type="image/x-icon" /> -->
-    <link rel="stylesheet" href="css/normalize.css" />
+    <!-- <link rel="stylesheet" href="css/normalize.css" />
     <link rel="stylesheet" href="css/global.css" />
 
     <script src="js/success.js" defer></script>
@@ -29,10 +48,10 @@
             <pre>
 
             </pre>
-            <button id="cancel-button">cancel</button>
+            <button id="cancel-button">cancel</button> -->
             <!-- <button onclick="window.location.href = '/canceled';">cancel</button> -->
 
-            <form id="manage-billing-form">
+            <!-- <form id="manage-billing-form">
               <button>Manage Billing</button>
             </form>
           </div>
@@ -42,4 +61,4 @@
       </div>
     </div>
   </body>
-</html>
+</html> -->

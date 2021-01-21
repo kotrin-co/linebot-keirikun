@@ -100,6 +100,12 @@ const createPaymentPage = () => {
   });
 }
 
+const createCancelPage = () => {
+  const p = document.createElement('p');
+  p.innerHTML = 'キャンセルページ';
+  divPage.appendChild(p);
+}
+
 const createCheckoutSession = (yearlyPriceId) => {
   return fetch('/create-checkout-session',{
     method: 'POST',
