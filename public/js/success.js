@@ -45,17 +45,26 @@ window.onload = () => {
                     lineId
                   })
                 })
-                .then(message=>{
-                  alert(message);
-                  const backButton = document.createElement('button');
-                  backButton.setAttribute('class','btn btn-secondary');
-                  backButton.innerHTML = '戻る';
-                  backButton.addEventListener('click',()=>{
-                    liff.openWindow({
-                      url:'https://liff.line.me/1655219547-eobVGLdB',
-                      external: false
-                    });
-                  });
+                .then(response=>{
+                  if(response.ok){
+                    response.text()
+                      .then(text=>{
+                        alert(text);
+                        const backButton = document.createElement('button');
+                        backButton.setAttribute('class','btn btn-secondary');
+                        backButton.innerHTML = '戻る';
+                        backButton.addEventListener('click',()=>{
+                          liff.openWindow({
+                            url:'https://liff.line.me/1655219547-eobVGLdB',
+                            external: false
+                          });
+                        });
+                        divPage.appendChild(backButton);
+                        divPage.appendChild(pre);
+                      })
+                  }else{
+                    alert('HTTPレスポンスエラーです');
+                  }
                 })
                 //カスターマーポータルの生成(本番環境でないとできない)
                 // const manageBillingForm = document.createElement('form');
@@ -85,7 +94,6 @@ window.onload = () => {
                 //   });
                 // });
                 // divPage.appendChild(manageBillingForm);
-                // divPage.appendChild(pre);
               })
               .catch(err=>{
                 console.log('Error when fetching Checkout session', err);
