@@ -246,8 +246,11 @@ module.exports = {
                 value:response.data.values[0][0]
               });
             }
-            // console.log('foundValues in',foundValues);
-            if(index === ACCOUNTS.length-1) resolve(foundValues);
+            console.log('foundValues in',foundValues);
+            if(index === ACCOUNTS.length-1){
+              console.log('foundvalues last',foundValues);
+              resolve(foundValues);
+            }
           });
         })
         .catch(e=>console.log(e));
