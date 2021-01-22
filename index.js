@@ -7,7 +7,7 @@ const multipart = require('connect-multiparty');
 const privatekey = require('./client_secret.json');
 const router = require('./routers/index');
 const apiRouter = require('./routers/api');
-const settlementRouter = require('./routers/settlement');
+// const settlementRouter = require('./routers/settlement');
 const Data = require('./models/Data');
   const original_SSID = '13Y2AZYNHWnQNKdSzK5Vxna_YPdf4YnT61imptdiM_MU';
   const original_SID = [0,1686142823];
@@ -63,9 +63,6 @@ express()
       }
     })
   )
-  .get('/settlement',settlementRouter)
-  .get('/success',settlementRouter)
-  .get('/canceled',settlementRouter)
   .get('/checkout-session',async (req,res)=>{
     const { sessionId } = req.query;
     const session = await stripe.checkout.sessions.retrieve(sessionId);
@@ -145,12 +142,6 @@ express()
     }
     res.sendStatus(200);
   })
-  // .get('/cancel-subscription',(req,res)=>{
-  //   const subscription = req.query.sub;
-  //   console.log('subsc',subscription);
-  //   stripe.subscriptions.update(subscription,{cancel_at_period_end: true});
-  //   res.status(200).send('解約しました');
-  // })
   .listen(PORT,()=>console.log(`Listening on ${PORT}`));
 
 const lineBot = (req,res) => {
