@@ -7,7 +7,7 @@ const multipart = require('connect-multiparty');
 const privatekey = require('./client_secret.json');
 const router = require('./routers/index');
 const apiRouter = require('./routers/api');
-// const settlementRouter = require('./routers/settlement');
+const checkoutRouter = require('./routers/payment');
 const Data = require('./models/Data');
   const original_SSID = '13Y2AZYNHWnQNKdSzK5Vxna_YPdf4YnT61imptdiM_MU';
   const original_SID = [0,1686142823];
@@ -63,6 +63,7 @@ express()
       }
     })
   )
+  .use('/checkout',checkoutRouter)
   .get('/checkout-session',async (req,res)=>{
     const { sessionId } = req.query;
     const session = await stripe.checkout.sessions.retrieve(sessionId);
