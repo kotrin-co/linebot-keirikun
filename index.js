@@ -310,6 +310,7 @@ const handlePostbackEvent = (ev) => {
     const line_uid = ev.source.userId;
     Data.findValues({selectedMonth,selectedDay,line_uid})
       .then(foundValues=>{
+        console.log('foundValues in index',foundValues);
         let message = ''
         if(foundValues.length){
           foundValues.forEach((object,index)=>{
