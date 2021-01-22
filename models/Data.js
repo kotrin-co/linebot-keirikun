@@ -246,8 +246,9 @@ module.exports = {
                 value:response.data.values[0][0]
               });
             }
+            console.log('foundValues in',foundValues);
           });
-          console.log('foundValues',foundValues);
+          console.log('foundValues out',foundValues);
           resolve(foundValues);
         })
         .catch(e=>console.log(e));
