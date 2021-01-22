@@ -502,41 +502,45 @@ const handlePostbackEvent = (ev) => {
   if(postbackData[0] === 'account'){
     const amount = parseInt(postbackData[1]);
     const selectedAccount = parseInt(postbackData[2]);
-    return client.replyMessage(ev.replyToken,{
-      "type":"flex",
-      "altText":"日付選択",
-      "contents":
-      {
-        "type": "bubble",
-        "body": {
-          "type": "box",
-          "layout": "vertical",
-          "contents": [
-            {
-              "type": "text",
-              "text": "来店希望日を選んでください。",
-              "size": "md",
-              "align": "center"
-            }
-          ]
-        },
-        "footer": {
-          "type": "box",
-          "layout": "vertical",
-          "contents": [
-            {
-              "type": "button",
-              "action": {
-                "type": "datetimepicker",
-                "label": "日付を選択する",
-                "data": `date&${amount}&${selectedAccount}`,
-                "mode": "date"
-              }
-            }
-          ]
-        }
-      }
-    })
+    const flexMessage = Flex.makeDateChoice(amount,selectedAccount);
+    return client.replyMessage(ev.replyToken,flexMessage);
+    // return client.replyMessage(ev.replyToken,
+    //   {
+    //   "type":"flex",
+    //   "altText":"日付選択",
+    //   "contents":
+    //   {
+    //     "type": "bubble",
+    //     "body": {
+    //       "type": "box",
+    //       "layout": "vertical",
+    //       "contents": [
+    //         {
+    //           "type": "text",
+    //           "text": "来店希望日を選んでください。",
+    //           "size": "md",
+    //           "align": "center"
+    //         }
+    //       ]
+    //     },
+    //     "footer": {
+    //       "type": "box",
+    //       "layout": "vertical",
+    //       "contents": [
+    //         {
+    //           "type": "button",
+    //           "action": {
+    //             "type": "datetimepicker",
+    //             "label": "日付を選択する",
+    //             "data": `date&${amount}&${selectedAccount}`,
+    //             "mode": "date"
+    //           }
+    //         }
+    //       ]
+    //     }
+    //   }
+    // }
+    // )
   }
 
   else if(postbackData[0] === 'date'){
