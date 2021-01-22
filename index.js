@@ -273,7 +273,7 @@ const handleMessageEvent = async (ev) => {
                               "action": {
                                 "type": "postback",
                                 "label": "売上",
-                                "data": "hello"
+                                "data": `account&${text}&0`
                               }
                             },
                             {
@@ -284,7 +284,7 @@ const handleMessageEvent = async (ev) => {
                               "action": {
                                 "type": "postback",
                                 "label": "源泉所得税",
-                                "data": "hello"
+                                "data": `account&${text}&1`
                               }
                             },
                             {
@@ -295,7 +295,7 @@ const handleMessageEvent = async (ev) => {
                               "action": {
                                 "type": "postback",
                                 "label": "交通費",
-                                "data": "hello"
+                                "data": `account&${text}&2`
                               }
                             },
                             {
@@ -306,7 +306,7 @@ const handleMessageEvent = async (ev) => {
                               "action": {
                                 "type": "postback",
                                 "label": "会議費",
-                                "data": "hello"
+                                "data": `account&${text}&3`
                               }
                             }
                           ]
@@ -334,7 +334,7 @@ const handleMessageEvent = async (ev) => {
                               "action": {
                                 "type": "postback",
                                 "label": "接待交際費",
-                                "data": "hello"
+                                "data": `account&${text}&4`
                               }
                             },
                             {
@@ -345,7 +345,7 @@ const handleMessageEvent = async (ev) => {
                               "action": {
                                 "type": "postback",
                                 "label": "通信費",
-                                "data": "hello"
+                                "data": `account&${text}&5`
                               }
                             },
                             {
@@ -356,7 +356,7 @@ const handleMessageEvent = async (ev) => {
                               "action": {
                                 "type": "postback",
                                 "label": "衣装費",
-                                "data": "hello"
+                                "data": `account&${text}&6`
                               }
                             },
                             {
@@ -367,7 +367,7 @@ const handleMessageEvent = async (ev) => {
                               "action": {
                                 "type": "postback",
                                 "label": "郵便代",
-                                "data": "hello"
+                                "data": `account&${text}&7`
                               }
                             }
                           ]
@@ -395,7 +395,7 @@ const handleMessageEvent = async (ev) => {
                               "action": {
                                 "type": "postback",
                                 "label": "保険料",
-                                "data": "hello"
+                                "data": `account&${text}&8`
                               }
                             },
                             {
@@ -406,7 +406,7 @@ const handleMessageEvent = async (ev) => {
                               "action": {
                                 "type": "postback",
                                 "label": "年金",
-                                "data": "hello"
+                                "data": `account&${text}&9`
                               }
                             },
                             {
@@ -417,7 +417,7 @@ const handleMessageEvent = async (ev) => {
                               "action": {
                                 "type": "postback",
                                 "label": "家賃",
-                                "data": "hello"
+                                "data": `account&${text}&10`
                               }
                             },
                             {
@@ -428,7 +428,7 @@ const handleMessageEvent = async (ev) => {
                               "action": {
                                 "type": "postback",
                                 "label": "従業員報酬",
-                                "data": "hello"
+                                "data": `account&${text}&11`
                               }
                             }
                           ]
@@ -456,7 +456,7 @@ const handleMessageEvent = async (ev) => {
                               "action": {
                                 "type": "postback",
                                 "label": "その他",
-                                "data": "hello"
+                                "data": `account&${text}&12`
                               }
                             },
                             {
