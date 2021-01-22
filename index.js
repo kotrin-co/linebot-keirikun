@@ -464,6 +464,36 @@ const handleMessageEvent = async (ev) => {
                                 },
                                 {
                                   "type": "separator"
+                                },
+                                {
+                                  "type": "button",
+                                  "action": {
+                                    "type": "postback",
+                                    "label": " ",
+                                    "data": ``
+                                  }
+                                },
+                                {
+                                  "type": "separator"
+                                },
+                                {
+                                  "type": "button",
+                                  "action": {
+                                    "type": "postback",
+                                    "label": " ",
+                                    "data": ``
+                                  }
+                                },
+                                {
+                                  "type": "separator"
+                                },
+                                {
+                                  "type": "button",
+                                  "action": {
+                                    "type": "postback",
+                                    "label": " ",
+                                    "data": ``
+                                  }
                                 }
                               ]
                             }
