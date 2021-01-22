@@ -64,7 +64,7 @@ express()
     })
   )
   // .get('/settlement',settlementRouter)
-  .get('/success',settlementRouter)
+  // .get('/success',settlementRouter)
   // .get('/canceled',settlementRouter)
   .get('/checkout-session',async (req,res)=>{
     const { sessionId } = req.query;

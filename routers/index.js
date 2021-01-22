@@ -12,4 +12,9 @@ router
         res.render('pages/payment');
     });
 
+router
+    .get('/success',(req,res)=>{
+        res.render('pages/success');
+    });
+
 module.exports = router;
