@@ -247,9 +247,9 @@ module.exports = {
               });
             }
             console.log('foundValues in',foundValues);
+            if(index === ACCOUNTS.length-1) resolve(foundValues);
           });
           console.log('foundValues out',foundValues);
-          resolve(foundValues);
         })
         .catch(e=>console.log(e));
     })
