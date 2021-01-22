@@ -3,7 +3,7 @@ const router = express.Router();
 // const controller = require('../controllers/api');
 
 router
-  .route('/success',(req,res)=>{
+  .get('/success',(req,res)=>{
     res.render('pages/success');
   });
 
