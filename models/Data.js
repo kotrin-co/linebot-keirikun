@@ -12,6 +12,28 @@ const connection = new Client({
 });
 connection.connect();
 
+const authorize = () => {
+  //authの設定
+  const jwtClient = new google.auth.JWT(
+    privatekey.client_email,
+    null,
+    privatekey.private_key,
+    ['https://www.googleapis.com/auth/spreadsheets']
+    );
+
+  //リクエストの承認をチェックする
+  jwtClient.authorize(function (err, tokens) {
+    if (err) {
+        console.log(err);
+        return;
+    } else {
+        console.log('OK!!');
+    }
+  });
+
+  return google.sheets({version: 'v4', auth: jwtClient});
+}
+
 module.exports = {
 
   getUserData: (line_uid) => {
@@ -153,6 +175,83 @@ module.exports = {
         })
         .catch(e=>console.log(e))
     });
+  },
+
+  findValues: ({selectedMonth,selectedDay,line_uid}) => {
+    return new Promise((resolve,reject) => {
+      console.log('hikisuu',selectedMonth,selectedDay,line_uid);
+
+      const select_query = {
+        text: `SELECT * FROM users WHERE line_uid='${line_uid}';`
+      }
+
+      connection.query(select_query)
+        .then(async(res)=>{
+          //スプレッドシートidとシートidの抜き出し
+          const ssId = res.rows[0].ssid;
+          const inputSheetId = res.rows[0].sid1;
+          console.log('ssid sid',ssId,inputSheetId);
+
+          //auth
+          const sheets = authorize();
+
+          //列用アルファベット配列の生成
+          const alphabets = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+          const columns = [];
+          for(let i=0; i<15; i++){
+            for(let j=0; j<26; j++){
+              if(i===0){
+                columns.push(alphabets[j]);
+              }else{
+                columns.push(alphabets[i-1]+alphabets[j]);
+              }
+            }
+          }
+          
+          //列番号の計算
+          //各月日数配列の生成
+          const year = new Date().getFullYear();
+          const daysEveryMonth = [];
+          for(let i=0; i<12; i++){
+            daysEveryMonth.push(new Date(year,i+1,0).getDate());
+          }
+          const m = parseInt(selectedMonth);
+          const d = parseInt(selectedDay);
+
+          let column = '';
+          if(m === 1){
+            column = columns[d];
+          }else{
+            let counts = d;
+            for(let i=1; i<m; i++){
+              counts += daysEveryMonth[i-1];
+            }
+            column = columns[counts];
+          }
+
+          // const target = column + rowNumber;
+          // console.log('target',target);
+
+          //科目ごとにセルの値を取得する
+          const foundValues = [];
+          ACCOUNTS.forEach((account,index)=>{
+            const get_request = {
+              spreadsheetId: ssId,
+              range: `入力用シート!${column}${index+2}`
+            }
+            const response = await sheets.spreadsheets.values.get(get_request);
+            if('values' in response.data){
+              foundValues.push({
+                account,
+                value:response.data.values[0][0]
+              });
+            }
+          });
+          console.log('foundValues',foundValues);
+          resolve(foundValues);
+        })
+        .catch(e=>console.log(e));
+    })
   },
 
   cancellation: (lineId,subscription) => {

@@ -242,7 +242,7 @@ module.exports = {
           "contents": [
             {
               "type": "text",
-              "text": "来店希望日を選んでください。",
+              "text": "対象日を選んでください",
               "size": "md",
               "align": "center"
             }
@@ -258,6 +258,45 @@ module.exports = {
                 "type": "datetimepicker",
                 "label": "日付を選択する",
                 "data": `date&${amount}&${selectedAccount}`,
+                "mode": "date"
+              }
+            }
+          ]
+        }
+      }
+    };
+    return flexMessage;
+  },
+
+  makeDateChoiceForConfirmation: () => {
+    const flexMessage = {
+      "type":"flex",
+      "altText":"日付選択",
+      "contents":
+      {
+        "type": "bubble",
+        "body": {
+          "type": "box",
+          "layout": "vertical",
+          "contents": [
+            {
+              "type": "text",
+              "text": "対象日を選んでください",
+              "size": "md",
+              "align": "center"
+            }
+          ]
+        },
+        "footer": {
+          "type": "box",
+          "layout": "vertical",
+          "contents": [
+            {
+              "type": "button",
+              "action": {
+                "type": "datetimepicker",
+                "label": "日付を選択する",
+                "data": 'confirmation',
                 "mode": "date"
               }
             }
