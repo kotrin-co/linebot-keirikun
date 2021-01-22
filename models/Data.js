@@ -234,7 +234,7 @@ module.exports = {
 
           //科目ごとにセルの値を取得する
           const foundValues = [];
-          ACCOUNTS.forEach((account,index)=>{
+          ACCOUNTS.forEach(async(account,index)=>{
             const get_request = {
               spreadsheetId: ssId,
               range: `入力用シート!${column}${index+2}`
