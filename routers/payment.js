@@ -1,10 +1,9 @@
 const express = require('express');
 const router = express.Router();
-// const controller = require('../controllers/api');
+const controller = require('../controllers/payment');
 
 router
-  .get('/success',(req,res)=>{
-    res.render('pages/success');
-  });
+  .route('/success')
+  .get(controller.displaySuccess);
 
 module.exports = router;
