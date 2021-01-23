@@ -578,20 +578,18 @@ const initialTreat = (auth,ssID,line_uid) => {
       });
     }
 
-    Promise.resolve()
-      .then(copySheet(0))
-      .then(copySheet(1))
-      .then(copySheet(2))
-      .then(copySheet(3))
-      .then(copySheet(4))
-      .then(copySheet(5))
-      .then(copySheet(6))
-      .then(deleteBlankSheet())
+    const promises = [];
+    for(let i=0;i<original_SID.length;i++){
+      promises.push(copySheet(i));
+    }
 
-    // const promises = [];
-    // for(let i=0;i<original_SID.length;i++){
-    //   promises.push(copySheet(i));
-    // }
+    promises.push(deleteBlankSheet());
+
+    promises.reduce((accumulator,currentValue)=>{
+      return accumulator.then(()=>{
+        return currentValue;
+      });
+    },Promise.resolve());
 
     // Promise.all(promises)
     //   .then(()=>{
