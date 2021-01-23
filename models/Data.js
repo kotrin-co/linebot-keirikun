@@ -179,7 +179,7 @@ module.exports = {
 
   findValues: ({selectedMonth,selectedDay,line_uid}) => {
     return new Promise((resolve,reject) => {
-      console.log('hikisuu',selectedMonth,selectedDay,line_uid);
+      // console.log('hikisuu',selectedMonth,selectedDay,line_uid);
 
       const select_query = {
         text: `SELECT * FROM users WHERE line_uid='${line_uid}';`
@@ -229,9 +229,6 @@ module.exports = {
             column = columns[counts];
           }
 
-          // const target = column + rowNumber;
-          // console.log('target',target);
-
           //科目ごとにセルの値を取得する
           const foundValues = [];
           ACCOUNTS.forEach((account,index)=>{
@@ -247,7 +244,7 @@ module.exports = {
                     value:response.data.values[0][0]
                   });
                 }
-                console.log('foundValues in',foundValues);
+                console.log('index',index,ACCOUNTS.length-1);
                 if(index === ACCOUNTS.length-1){
                   console.log('foundvalues last',foundValues);
                   resolve(foundValues);
