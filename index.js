@@ -583,12 +583,15 @@ const initialTreat = (auth,ssID,line_uid) => {
       promises.push(copySheet(i));
     }
 
-    promises.push(deleteBlankSheet());
-
     Promise.all(promises)
       .then(()=>{
         console.log('all promises passed!!');
-        resolve('initial treat success!!');
+        deleteBlankSheet()
+          .then(()=>{
+            console.log('シート削除成功!');
+            resolve('initial treat success!!');
+          })
+          .catch(e=>console.log(e));
       })
       .catch(e=>console.log(e));
 
