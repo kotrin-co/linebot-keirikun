@@ -69,7 +69,7 @@ const updateJournal = (ssID,selectedMonth,selectedDay,accountSelect,newValue) =>
 
     const getValue = (targetCell,num) => {
       return new Promise(resolve=>{
-        console.log('index',index);
+        console.log('cell',targetCell);
         const get_request = {
           spreadsheetId: ssID,
           range: `入力用シート!${targetCell}`
