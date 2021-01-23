@@ -547,7 +547,7 @@ const initialTreat = (auth,ssID,line_uid) => {
         sheets.spreadsheets.sheets.copyTo(copy_request)
           .then(response=>{
             console.log('index,sheetId',index,response.data.sheetId);
-            resolve(`${i} ok`);
+            resolve(`${index} ok`);
             // changeTitle(response.data.sheetId,index)
             //   .then(()=>resolve())
             //   .catch(e=>console.log(e));
