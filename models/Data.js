@@ -50,6 +50,60 @@ const authorize = () => {
   return google.sheets({version: 'v4', auth: jwtClient});
 }
 
+const updateJournal = (ssID,selectedMonth,selectedDay,accountSelect,newValue) => {
+  return new Promise(resolve=>{
+
+    const sheets = authorize();
+
+    const column = createAlphabetsArray();
+    const year = new Date().getFullYear();
+    let daysOfYear;
+    if(year%4 === 0){
+      daysOfYear = 366;
+    }else{
+      daysOfYear = 365;
+    }
+
+    const foundValues = [];
+    const promises = [];
+
+    const getValue = (targetCell,num) => {
+      return new Promise(resolve=>{
+        console.log('index',index);
+        const get_request = {
+          spreadsheetId: ssID,
+          range: `入力用シート!${targetCell}`
+        }
+        sheets.spreadsheets.values.get(get_request)
+          .then(response=>{
+            if('values' in response.data){
+              foundValues.push({
+                account:ACCOUNTS[num],
+                value:response.data.values[0][0]
+              });
+            }
+            resolve();
+          })
+          .catch(e=>console.log(e));
+      });
+    }
+
+    for(let i=0;i<daysOfYear;i++){
+      for(let j=0;j<ACCOUNTS.length;j++){
+        const targetCell = column[i+1]+j;
+        promises.push(getValue(targetCell,j));
+      }
+    }
+
+    Promise.all(promises)
+      .then(()=>{
+        console.log('all promises passed',foundValues);
+        resolve(foundValues);
+      })
+      .catch(e=>console.log(e));
+  })
+}
+
 module.exports = {
 
   getUserData: (line_uid) => {
@@ -168,7 +222,7 @@ module.exports = {
             }
           }
           await sheets.spreadsheets.values.update(update_request);
-          // await updateJournal(newValue)
+          await updateJournal(ssID,selectedMonth,selectedDay,accountSelect,newValue)
           resolve(newValue);
         })
         .catch(e=>console.log(e));
