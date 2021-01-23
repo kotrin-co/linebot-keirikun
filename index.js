@@ -578,22 +578,32 @@ const initialTreat = (auth,ssID,line_uid) => {
       });
     }
 
-    const promises = [];
-    for(let i=0;i<original_SID.length;i++){
-      promises.push(copySheet(i));
-    }
+    Promise.resolve()
+      .then(copySheet(0))
+      .then(copySheet(1))
+      .then(copySheet(2))
+      .then(copySheet(3))
+      .then(copySheet(4))
+      .then(copySheet(5))
+      .then(copySheet(6))
+      .then(deleteBlankSheet())
 
-    Promise.all(promises)
-      .then(()=>{
-        console.log('all promises passed!!');
-        deleteBlankSheet()
-          .then(()=>{
-            console.log('シート削除成功!');
-            resolve('initial treat success!!');
-          })
-          .catch(e=>console.log(e));
-      })
-      .catch(e=>console.log(e));
+    // const promises = [];
+    // for(let i=0;i<original_SID.length;i++){
+    //   promises.push(copySheet(i));
+    // }
+
+    // Promise.all(promises)
+    //   .then(()=>{
+    //     console.log('all promises passed!!');
+    //     deleteBlankSheet()
+    //       .then(()=>{
+    //         console.log('シート削除成功!');
+    //         resolve('initial treat success!!');
+    //       })
+    //       .catch(e=>console.log(e));
+    //   })
+    //   .catch(e=>console.log(e));
 
     //こっから先は不要
     // original_SID.forEach((id,index)=>{
