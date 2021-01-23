@@ -222,7 +222,7 @@ module.exports = {
             }
           }
           await sheets.spreadsheets.values.update(update_request);
-          await updateJournal(ssID,selectedMonth,selectedDay,accountSelect,newValue)
+          await updateJournal(ssId,selectedMonth,selectedDay,accountSelect,newValue)
           resolve(newValue);
         })
         .catch(e=>console.log(e));
