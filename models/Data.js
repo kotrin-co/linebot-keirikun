@@ -244,8 +244,8 @@ module.exports = {
                     value:response.data.values[0][0]
                   });
                 }
-                console.log('index',index,ACCOUNTS.length-1);
-                if(index === ACCOUNTS.length-1){
+                console.log('index',i,ACCOUNTS.length);
+                if(i === ACCOUNTS.length-1){
                   console.log('foundvalues last',foundValues);
                   resolve(foundValues);
                 }
