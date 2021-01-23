@@ -252,6 +252,10 @@ const handleMessageEvent = async (ev) => {
                 const flexMessage = Flex.makeDateChoiceForConfirmation('confirmation');
                 return client.replyMessage(ev.replyToken,flexMessage);
               }
+              else if(text === '削除'){
+                const flexMessage = Flex.makeDateChoiceForConfirmation('delete');
+                return client.replyMessage(ev.replyToken,flexMessage);
+              }
               else{
                 return client.replyMessage(ev.replyToken,{
                   "type":"text",
@@ -297,7 +301,7 @@ const handlePostbackEvent = (ev) => {
       .then(newValue=>{
         return client.replyMessage(ev.replyToken,{
           "type":"text",
-          "text":`会計表を${newValue}へ更新しました！`
+          "text":`${selectedMonth}月${selectedDay}日の「${accountSelect}」を"${newValue}"へ更新しました！`
         });
       })
       .catch(e=>console.log(e));
@@ -327,6 +331,29 @@ const handlePostbackEvent = (ev) => {
         return client.replyMessage(ev.replyToken,{
           "type":"text",
           "text":message
+        });
+      })
+      .catch(e=>console.log(e));
+  }
+
+  else if(postbackData[0] === 'delete'){
+    const selectedDate = ev.postback.params.date;
+    const flexMessage = Flex.makeAccountChoiceForDelete(selectedDate);
+    return client.replyMessage(ev.replyToken,flexMessage);
+  }
+
+  else if(postbackData[0] === 'deleteAccount'){
+    const amountInput = null;
+    const selectedDate = postbackData[1];
+    const accountSelect = ACCOUNTS[parseInt(postbackData[2])];
+    const selectedMonth = parseInt(selectedDate.split('-')[1]);
+    const selectedDay = parseInt(selectedDate.split('-')[2]);
+    const line_uid = ev.source.userId;
+    Data.inputSS({amountInput,accountSelect,selectedMonth,selectedDay,line_uid})
+      .then(newValue=>{
+        return client.replyMessage(ev.replyToken,{
+          "type":"text",
+          "text":`${selectedMonth}月${selectedDay}日の「${accountSelect}」を削除しました！`
         });
       })
       .catch(e=>console.log(e));
