@@ -10,7 +10,7 @@ const apiRouter = require('./routers/api');
 const Data = require('./models/Data');
 const Flex = require('./models/Flex');
 const original_SSID = '13Y2AZYNHWnQNKdSzK5Vxna_YPdf4YnT61imptdiM_MU';
-const original_SID = [0,1686142823,1786699057];
+const original_SID = [0,1786699057,251943700,1686142823,661995045,1312117404,550715539];
 const ACCOUNTS = ['売上','源泉所得税','交通費','会議費','接待交際費','通信費','衣装費','郵便代','保険料','年金','家賃','従業員報酬','その他'];
 
 //stripeの設定
@@ -34,7 +34,7 @@ const connection = new Client({
 connection.connect();
 
 const create_userTable = {
-    text:'CREATE TABLE IF NOT EXISTS users (id SERIAL NOT NULL, line_uid VARCHAR(50), display_name VARCHAR(50), timestamp BIGINT, gmail VARCHAR(100), ssid VARCHAR(100), sid1 INTEGER, sid2 INTEGER, sid3 INTEGER, sid4 INTEGER, sid5 INTEGER);'
+    text:'CREATE TABLE IF NOT EXISTS users (id SERIAL NOT NULL, line_uid VARCHAR(50), display_name VARCHAR(50), timestamp BIGINT, gmail VARCHAR(100), ssid VARCHAR(100),　subscription VARCHAR(50));'
 };
     
 connection.query(create_userTable)
@@ -506,70 +506,136 @@ const initialTreat = (auth,ssID,line_uid) => {
 
     const sheets = google.sheets({version: 'v4', auth});
 
-    const title_SID = ['入力用シート','確定申告B 第一表']
+    const title_SID = ['入力用シート','仕訳帳','月次集計','確定申告B 第一表','確定申告B 第一表（控）','確定申告B 第二表','確定申告B 第二表（控）'];
 
-    original_SID.forEach((id,index)=>{
-      const copy_request = {
-        spreadsheetId: original_SSID,
-        sheetId: id,
-        resource: {
-          destinationSpreadsheetId: ssID
-        }
-      }
-      sheets.spreadsheets.sheets.copyTo(copy_request)
-        .then(response=>{
-          console.log('sheetId',response.data.sheetId);
-          const title_change_request = {
-            spreadsheetId: ssID,
-            resource: {
-              requests: [
-                {
-                  'updateSheetProperties': {
-                    'properties': {
-                      'sheetId': response.data.sheetId,
-                      'title': title_SID[index]
-                    },
-                    'fields': 'title'
-                  }
-                }
-              ]
-            }
+    const copySheet = (index) => {
+      return new Promise(async(resolve)=>{
+        const copy_request = {
+          spreadsheetId: original_SSID,
+          sheetId: original_SID[index],
+          resource: {
+            destinationSpreadsheetId: ssID
           }
-          sheets.spreadsheets.batchUpdate(title_change_request)
-            .then(res=>{
-              const update_query = {
-                text:`UPDATE users SET sid${index+1} = ${response.data.sheetId} WHERE line_uid='${line_uid}';`
-              };
-              connection.query(update_query)
-                .then(()=>{
-                  console.log('usersテーブル更新成功')
-                  if(index === original_SID.length-1){
-                    // 空白シートの削除
-                    const delete_request = {
-                      spreadsheetId: ssID,
-                      resource: {
-                        requests: [
-                          {
-                            'deleteSheet': {
-                              'sheetId': 0
-                            }
-                          }
-                        ]
-                      }
+        };
+        sheets.spreadsheets.sheets.copyTo(copy_request)
+          .then(response=>{
+            console.log('index,sheetId',index,response.data.sheetId);
+            const title_change_request = {
+              spreadsheetId: ssID,
+              resource: {
+                requests: [
+                  {
+                    'updateSheetProperties': {
+                      'properties': {
+                        'sheetId': response.data.sheetId,
+                        'title': title_SID[index]
+                      },
+                      'fields': 'title'
                     }
-                    sheets.spreadsheets.batchUpdate(delete_request)
-                      .then(res=>{
-                        console.log('不要シート削除成功');
-                        resolve('initial treat successfully');
-                      })
-                      .catch(e=>console.log(e));
                   }
-                })
-                .catch(e=>console.log(e));
-            })
-            .catch(e=>console.log(e));
-        })
-        .catch(e=>console.log(e));
-    });
+                ]
+              }
+            };
+            sheets.spreadsheets.batchUpdate(title_change_request)
+              .then(res=>resolve())
+              .catch(e=>console.log(e));
+          })
+          .catch(e=>console.log(e));
+      })
+    }
+
+    const promises = [];
+    for(let i=0;i<original_SID.length;i++){
+      promises.push(copySheet(i));
+    }
+
+    Promise.all(promises)
+      .then(()=>{
+        console.log('all promises passed!!');
+        //最初に作った空白シートを削除する
+        const delete_request = {
+          spreadsheetId: ssID,
+          resource: {
+            requests: [
+              {
+                'deleteSheet': {
+                  'sheetId': 0
+                }
+              }
+            ]
+          }
+        };
+        sheets.spreadsheets.batchUpdate(delete_request)
+          .then(res=>{
+            console.log('不要シート削除成功');
+            resolve('initial treat successfully');
+          })
+          .catch(e=>console.log(e));
+      });
+
+    //こっから先は不要
+    // original_SID.forEach((id,index)=>{
+    //   const copy_request = {
+    //     spreadsheetId: original_SSID,
+    //     sheetId: id,
+    //     resource: {
+    //       destinationSpreadsheetId: ssID
+    //     }
+    //   }
+    //   sheets.spreadsheets.sheets.copyTo(copy_request)
+    //     .then(response=>{
+    //       console.log('sheetId',response.data.sheetId);
+    //       const title_change_request = {
+    //         spreadsheetId: ssID,
+    //         resource: {
+    //           requests: [
+    //             {
+    //               'updateSheetProperties': {
+    //                 'properties': {
+    //                   'sheetId': response.data.sheetId,
+    //                   'title': title_SID[index]
+    //                 },
+    //                 'fields': 'title'
+    //               }
+    //             }
+    //           ]
+    //         }
+    //       }
+    //       sheets.spreadsheets.batchUpdate(title_change_request)
+    //         .then(res=>{
+    //           const update_query = {
+    //             text:`UPDATE users SET sid${index+1} = ${response.data.sheetId} WHERE line_uid='${line_uid}';`
+    //           };
+    //           connection.query(update_query)
+    //             .then(()=>{
+    //               console.log('usersテーブル更新成功')
+    //               if(index === original_SID.length-1){
+    //                 // 空白シートの削除
+    //                 const delete_request = {
+    //                   spreadsheetId: ssID,
+    //                   resource: {
+    //                     requests: [
+    //                       {
+    //                         'deleteSheet': {
+    //                           'sheetId': 0
+    //                         }
+    //                       }
+    //                     ]
+    //                   }
+    //                 }
+    //                 sheets.spreadsheets.batchUpdate(delete_request)
+    //                   .then(res=>{
+    //                     console.log('不要シート削除成功');
+    //                     resolve('initial treat successfully');
+    //                   })
+    //                   .catch(e=>console.log(e));
+    //               }
+    //             })
+    //             .catch(e=>console.log(e));
+    //         })
+    //         .catch(e=>console.log(e));
+    //     })
+    //     .catch(e=>console.log(e));
+    // });
   });
 }
