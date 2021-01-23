@@ -231,27 +231,60 @@ module.exports = {
 
           //科目ごとにセルの値を取得する
           const foundValues = [];
-          for(let i=0;i<ACCOUNTS.length;i++){
-            const get_request = {
-              spreadsheetId: ssId,
-              range: `入力用シート!${column}${i+2}`
-            }
-            sheets.spreadsheets.values.get(get_request)
-              .then(response=>{
-                if('values' in response.data){
-                  foundValues.push({
-                    account,
-                    value:response.data.values[0][0]
-                  });
-                }
-                console.log('index',i,ACCOUNTS.length);
-                if(i === ACCOUNTS.length-1){
-                  console.log('foundvalues last',foundValues);
-                  resolve(foundValues);
-                }
-              })
-              .catch(e=>console.log(e));
+          const promises = [];
+
+          const getValue = (index) => {
+            return new Promise(async(resolve)=>{
+              console.log('index',index);
+              const get_request = {
+                spreadsheetId: ssId,
+                range: `入力用シート!${column}${index+2}`
+              }
+              sheets.spreadsheets.values.get(get_request)
+                .then(response=>{
+                  if('values' in response.data){
+                    foundValues.push({
+                      account:ACCOUNTS[index],
+                      value:response.data.values[0][0]
+                    });
+                  }
+                  resolve();
+                })
+                .catch(e=>console.log(e));
+            });
           }
+
+          for(let i=0;i<ACCOUNTS.length;i++){
+            promises.push(getValue(i));
+          }
+
+          Promise.all(promises)
+            .then(()=>{
+              console.log('all promises passed')
+              resolve(foundValues);
+            })
+            .catch(e=>console.log(e));
+          // for(let i=0;i<ACCOUNTS.length;i++){
+          //   const get_request = {
+          //     spreadsheetId: ssId,
+          //     range: `入力用シート!${column}${i+2}`
+          //   }
+          //   sheets.spreadsheets.values.get(get_request)
+          //     .then(response=>{
+          //       if('values' in response.data){
+          //         foundValues.push({
+          //           account,
+          //           value:response.data.values[0][0]
+          //         });
+          //       }
+          //       console.log('index',i,ACCOUNTS.length);
+          //       if(i === ACCOUNTS.length-1){
+          //         console.log('foundvalues last',foundValues);
+          //         resolve(foundValues);
+          //       }
+          //     })
+          //     .catch(e=>console.log(e));
+          // }
 
           // ACCOUNTS.forEach((account,index)=>{
           //   const get_request = {
