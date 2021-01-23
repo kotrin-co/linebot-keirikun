@@ -510,29 +510,29 @@ const initialTreat = (auth,ssID,line_uid) => {
     const title_SID = ['入力用シート','仕訳帳','月次集計','確定申告B 第一表','確定申告B 第一表（控）','確定申告B 第二表','確定申告B 第二表（控）'];
 
     //シートタイトル変更用メソッド
-    // const changeTitle = (sheetId,index) => {
-    //   return new Promise(resolve=>{
-    //     const title_change_request = {
-    //       spreadsheetId: ssID,
-    //       resource: {
-    //         requests: [
-    //           {
-    //             'updateSheetProperties': {
-    //               'properties': {
-    //                 'sheetId': sheetId,
-    //                 'title': title_SID[index]
-    //               },
-    //               'fields': 'title'
-    //             }
-    //           }
-    //         ]
-    //       }
-    //     };
-    //     sheets.spreadsheets.batchUpdate(title_change_request)
-    //       .then(res=>resolve())
-    //       .catch(e=>console.log(e));
-    //   });
-    // }
+    const changeTitle = (sheetId,index) => {
+      return new Promise(resolve=>{
+        const title_change_request = {
+          spreadsheetId: ssID,
+          resource: {
+            requests: [
+              {
+                'updateSheetProperties': {
+                  'properties': {
+                    'sheetId': sheetId,
+                    'title': title_SID[index]
+                  },
+                  'fields': 'title'
+                }
+              }
+            ]
+          }
+        };
+        sheets.spreadsheets.batchUpdate(title_change_request)
+          .then(res=>resolve())
+          .catch(e=>console.log(e));
+      });
+    }
 
     //シートコピー用メソッド
     const copySheet = (index) => {
@@ -547,10 +547,10 @@ const initialTreat = (auth,ssID,line_uid) => {
         sheets.spreadsheets.sheets.copyTo(copy_request)
           .then(response=>{
             console.log('index,sheetId',index,response.data.sheetId);
-            resolve(`${index} ok`);
-            // changeTitle(response.data.sheetId,index)
-            //   .then(()=>resolve())
-            //   .catch(e=>console.log(e));
+            // resolve(`${index} ok`);
+            changeTitle(response.data.sheetId,index)
+              .then(()=>resolve(`${index} ok`))
+              .catch(e=>console.log(e));
           })
           .catch(e=>console.log(e));
       });
