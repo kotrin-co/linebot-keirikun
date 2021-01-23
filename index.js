@@ -508,8 +508,9 @@ const initialTreat = (auth,ssID,line_uid) => {
 
     const title_SID = ['入力用シート','仕訳帳','月次集計','確定申告B 第一表','確定申告B 第一表（控）','確定申告B 第二表','確定申告B 第二表（控）'];
 
+    //シートコピー用メソッド
     const copySheet = (index) => {
-      return new Promise(async(resolve)=>{
+      return new Promise(resolve=>{
         const copy_request = {
           spreadsheetId: original_SSID,
           sheetId: original_SID[index],
@@ -520,39 +521,40 @@ const initialTreat = (auth,ssID,line_uid) => {
         sheets.spreadsheets.sheets.copyTo(copy_request)
           .then(response=>{
             console.log('index,sheetId',index,response.data.sheetId);
-            const title_change_request = {
-              spreadsheetId: ssID,
-              resource: {
-                requests: [
-                  {
-                    'updateSheetProperties': {
-                      'properties': {
-                        'sheetId': response.data.sheetId,
-                        'title': title_SID[index]
-                      },
-                      'fields': 'title'
-                    }
-                  }
-                ]
-              }
-            };
-            sheets.spreadsheets.batchUpdate(title_change_request)
-              .then(res=>resolve())
-              .catch(e=>console.log(e));
+            resolve();
           })
           .catch(e=>console.log(e));
-      })
+      });
     }
 
-    const promises = [];
-    for(let i=0;i<original_SID.length;i++){
-      promises.push(copySheet(i));
+    //シートタイトル変更用メソッド
+    const changeTitle = (index) => {
+      return new Promise(resolve=>{
+        const title_change_request = {
+          spreadsheetId: ssID,
+          resource: {
+            requests: [
+              {
+                'updateSheetProperties': {
+                  'properties': {
+                    'sheetId': response.data.sheetId,
+                    'title': title_SID[index]
+                  },
+                  'fields': 'title'
+                }
+              }
+            ]
+          }
+        };
+        sheets.spreadsheets.batchUpdate(title_change_request)
+          .then(res=>resolve())
+          .catch(e=>console.log(e));
+      });
     }
 
-    Promise.all(promises)
-      .then(()=>{
-        console.log('all promises passed!!');
-        //最初に作った空白シートを削除する
+    //最初に作った空白シートを削除する
+    const deleteBlankSheet = () => {
+      return new Promise(resolve=>{
         const delete_request = {
           spreadsheetId: ssID,
           resource: {
@@ -568,10 +570,26 @@ const initialTreat = (auth,ssID,line_uid) => {
         sheets.spreadsheets.batchUpdate(delete_request)
           .then(res=>{
             console.log('不要シート削除成功');
-            resolve('initial treat successfully');
+            resolve();
           })
           .catch(e=>console.log(e));
       });
+    }
+
+    const promises = [];
+    for(let i=0;i<original_SID.length;i++){
+      promises.push(copySheet(i));
+      promises.push(changeTitle(i));
+    }
+
+    promises.push(deleteBlankSheet());
+
+    Promise.all(promises)
+      .then(()=>{
+        console.log('all promises passed!!');
+        resolve('initial treat success!!');
+      })
+      .catch(e=>console.log(e));
 
     //こっから先は不要
     // original_SID.forEach((id,index)=>{
