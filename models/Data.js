@@ -234,23 +234,38 @@ module.exports = {
 
           //科目ごとにセルの値を取得する
           const foundValues = [];
-          ACCOUNTS.forEach(async(account,index)=>{
+          ACCOUNTS.forEach((account,index)=>{
             const get_request = {
               spreadsheetId: ssId,
               range: `入力用シート!${column}${index+2}`
             }
-            const response = await sheets.spreadsheets.values.get(get_request);
-            if('values' in response.data){
-              foundValues.push({
-                account,
-                value:response.data.values[0][0]
-              });
-            }
-            console.log('foundValues in',foundValues);
-            if(index === ACCOUNTS.length-1){
-              console.log('foundvalues last',foundValues);
-              resolve(foundValues);
-            }
+            sheets.spreadsheets.values.get(get_request)
+              .then(response=>{
+                if('values' in response.data){
+                  foundValues.push({
+                    account,
+                    value:response.data.values[0][0]
+                  });
+                }
+                console.log('foundValues in',foundValues);
+                if(index === ACCOUNTS.length-1){
+                  console.log('foundvalues last',foundValues);
+                  resolve(foundValues);
+                }
+              })
+              .catch(e=>console.log(e));
+            // const response = await sheets.spreadsheets.values.get(get_request);
+            // if('values' in response.data){
+            //   foundValues.push({
+            //     account,
+            //     value:response.data.values[0][0]
+            //   });
+            // }
+            // console.log('foundValues in',foundValues);
+            // if(index === ACCOUNTS.length-1){
+            //   console.log('foundvalues last',foundValues);
+            //   resolve(foundValues);
+            // }
           });
         })
         .catch(e=>console.log(e));
