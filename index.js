@@ -9,6 +9,7 @@ const router = require('./routers/index');
 const apiRouter = require('./routers/api');
 const Data = require('./models/Data');
 const Flex = require('./models/Flex');
+const { copy } = require('./routers/index');
 const original_SSID = '13Y2AZYNHWnQNKdSzK5Vxna_YPdf4YnT61imptdiM_MU';
 const original_SID = [0,1786699057,251943700,1686142823,661995045,1312117404,550715539];
 const ACCOUNTS = ['売上','源泉所得税','交通費','会議費','接待交際費','通信費','衣装費','郵便代','保険料','年金','家賃','従業員報酬','その他'];
@@ -509,29 +510,29 @@ const initialTreat = (auth,ssID,line_uid) => {
     const title_SID = ['入力用シート','仕訳帳','月次集計','確定申告B 第一表','確定申告B 第一表（控）','確定申告B 第二表','確定申告B 第二表（控）'];
 
     //シートタイトル変更用メソッド
-    const changeTitle = (sheetId,index) => {
-      return new Promise(resolve=>{
-        const title_change_request = {
-          spreadsheetId: ssID,
-          resource: {
-            requests: [
-              {
-                'updateSheetProperties': {
-                  'properties': {
-                    'sheetId': sheetId,
-                    'title': title_SID[index]
-                  },
-                  'fields': 'title'
-                }
-              }
-            ]
-          }
-        };
-        sheets.spreadsheets.batchUpdate(title_change_request)
-          .then(res=>resolve())
-          .catch(e=>console.log(e));
-      });
-    }
+    // const changeTitle = (sheetId,index) => {
+    //   return new Promise(resolve=>{
+    //     const title_change_request = {
+    //       spreadsheetId: ssID,
+    //       resource: {
+    //         requests: [
+    //           {
+    //             'updateSheetProperties': {
+    //               'properties': {
+    //                 'sheetId': sheetId,
+    //                 'title': title_SID[index]
+    //               },
+    //               'fields': 'title'
+    //             }
+    //           }
+    //         ]
+    //       }
+    //     };
+    //     sheets.spreadsheets.batchUpdate(title_change_request)
+    //       .then(res=>resolve())
+    //       .catch(e=>console.log(e));
+    //   });
+    // }
 
     //シートコピー用メソッド
     const copySheet = (index) => {
@@ -554,6 +555,26 @@ const initialTreat = (auth,ssID,line_uid) => {
           .catch(e=>console.log(e));
       });
     }
+
+    const promises = [];
+    for(let i=0;i<original_SID.length;i++){
+      promises.push(copySheet(i));
+    }
+
+    const runPromiseInSequence = async (promises) => {
+      let res;
+      for(const currentPromise of promises){
+        res = await currentPromise(res);
+      }
+      return res;
+    }
+
+    runPromiseInSequence(promises)
+      .then(res=>{
+        console.log('promises finish!');
+        resolve();
+      })
+
 
     //最初に作った空白シートを削除する
     const deleteBlankSheet = () => {
@@ -579,22 +600,22 @@ const initialTreat = (auth,ssID,line_uid) => {
       });
     }
 
-    const promises = [];
-    for(let i=0;i<original_SID.length;i++){
-      promises.push(copySheet(i));
-    }
+    // const promises = [];
+    // for(let i=0;i<original_SID.length;i++){
+    //   promises.push(copySheet(i));
+    // }
 
-    Promise.all(promises)
-      .then(()=>{
-        console.log('all promises passed!!');
-        deleteBlankSheet()
-          .then(()=>{
-            console.log('シート削除成功!');
-            resolve('initial treat success!!');
-          })
-          .catch(e=>console.log(e));
-      })
-      .catch(e=>console.log(e));
+    // Promise.all(promises)
+    //   .then(()=>{
+    //     console.log('all promises passed!!');
+    //     deleteBlankSheet()
+    //       .then(()=>{
+    //         console.log('シート削除成功!');
+    //         resolve('initial treat success!!');
+    //       })
+    //       .catch(e=>console.log(e));
+    //   })
+    //   .catch(e=>console.log(e));
 
     //こっから先は不要
     // original_SID.forEach((id,index)=>{
