@@ -12,6 +12,22 @@ const connection = new Client({
 });
 connection.connect();
 
+//列用アルファベット配列の生成
+const createAlphabetsArray = () => {
+  const alphabets = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+  const array = [];
+  for(let i=0; i<15; i++){
+    for(let j=0; j<26; j++){
+      if(i===0){
+        array.push(alphabets[j]);
+      }else{
+        array.push(alphabets[i-1]+alphabets[j]);
+      }
+    }
+  }
+  return array;
+}
+
 const authorize = () => {
   //authの設定
   const jwtClient = new google.auth.JWT(
@@ -93,17 +109,7 @@ module.exports = {
           console.log('rowNum',rowNumber);
 
           //列用アルファベット配列の生成
-          const alphabets = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-          const columns = [];
-          for(let i=0; i<15; i++){
-            for(let j=0; j<26; j++){
-              if(i===0){
-                columns.push(alphabets[j]);
-              }else{
-                columns.push(alphabets[i-1]+alphabets[j]);
-              }
-            }
-          }
+          const columns = createAlphabetsArray();
           
           //列番号の計算
           //各月日数配列の生成
@@ -162,7 +168,7 @@ module.exports = {
             }
           }
           await sheets.spreadsheets.values.update(update_request);
-          // await updateJournal()
+          // await updateJournal(newValue)
           resolve(newValue);
         })
         .catch(e=>console.log(e));
@@ -203,17 +209,7 @@ module.exports = {
           const sheets = authorize();
 
           //列用アルファベット配列の生成
-          const alphabets = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-          const columns = [];
-          for(let i=0; i<15; i++){
-            for(let j=0; j<26; j++){
-              if(i===0){
-                columns.push(alphabets[j]);
-              }else{
-                columns.push(alphabets[i-1]+alphabets[j]);
-              }
-            }
-          }
+          const columns = createAlphabetsArray();
           
           //列番号の計算
           //各月日数配列の生成
