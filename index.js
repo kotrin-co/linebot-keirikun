@@ -315,12 +315,10 @@ const handlePostbackEvent = (ev) => {
         if(foundValues.length){
           foundValues.forEach((object,index)=>{
             if(index === 0){
-              message += `${selectedMonth}月${selectedDay}日のデータは\n`+object.account + ':' + object.value +'\n';
+              message += `${selectedMonth}月${selectedDay}日のデータは\n`+object.account + ':' + object.value;
             }
-            else if(index === foundValues.length-1){
-              message += object.account + ':' + object.value;
-            }else{
-              message += object.account + ':' + object.value +'\n';
+            else{
+              message += '\n'+object.account + ':' + object.value;
             }
           })
         }else{
