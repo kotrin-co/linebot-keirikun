@@ -547,7 +547,7 @@ const initialTreat = (auth,ssID,line_uid) => {
         sheets.spreadsheets.sheets.copyTo(copy_request)
           .then(response=>{
             console.log('index,sheetId',index,response.data.sheetId);
-            resolve();
+            resolve(`${i} ok`);
             // changeTitle(response.data.sheetId,index)
             //   .then(()=>resolve())
             //   .catch(e=>console.log(e));
@@ -556,23 +556,31 @@ const initialTreat = (auth,ssID,line_uid) => {
       });
     }
 
-    const promises = [];
-    for(let i=0;i<original_SID.length;i++){
-      promises.push(copySheet(i));
-    }
-
-    const runPromiseInSequence = async (promises) => {
-      let res;
-      for(const currentPromise of promises){
-        res = await currentPromise(res);
-      }
-      return res;
-    }
-
-    runPromiseInSequence(promises)
-      .then(res=>{
-        console.log('promises finish!');
-        resolve();
+    copySheet(0)
+      .then(m=>{
+        console.log(m);
+        copySheet(1)
+          .then(m=>{
+            console.log(m);
+            copySheet(2)
+              .then(m=>{
+                console.log(m);
+                copySheet(3)
+                  .then(m=>{
+                    console.log(m);
+                    copySheet(4)
+                      .then(m=>{
+                        console.log(m);
+                        opySheet(5)
+                          .then(m=>{
+                            console.log(m);
+                            copySheet(6)
+                              .then(m=>console.log(m));
+                          })
+                      })
+                  })
+              })
+          })
       })
 
 
