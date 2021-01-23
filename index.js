@@ -571,7 +571,7 @@ const initialTreat = (auth,ssID,line_uid) => {
                     copySheet(4)
                       .then(m=>{
                         console.log(m);
-                        opySheet(5)
+                        copySheet(5)
                           .then(m=>{
                             console.log(m);
                             copySheet(6)
