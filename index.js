@@ -556,6 +556,30 @@ const initialTreat = (auth,ssID,line_uid) => {
       });
     }
 
+    //最初に作った空白シートを削除する
+    const deleteBlankSheet = () => {
+      return new Promise(resolve=>{
+        const delete_request = {
+          spreadsheetId: ssID,
+          resource: {
+            requests: [
+              {
+                'deleteSheet': {
+                  'sheetId': 0
+                }
+              }
+            ]
+          }
+        };
+        sheets.spreadsheets.batchUpdate(delete_request)
+          .then(res=>{
+            console.log('不要シート削除成功');
+            resolve('不要シート削除');
+          })
+          .catch(e=>console.log(e));
+      });
+    }
+
     copySheet(0)
       .then(m=>{
         console.log(m);
@@ -575,7 +599,14 @@ const initialTreat = (auth,ssID,line_uid) => {
                           .then(m=>{
                             console.log(m);
                             copySheet(6)
-                              .then(m=>console.log(m));
+                              .then(m=>{
+                                console.log(m);
+                                deleteBlankSheet()
+                                  .then(m=>{
+                                    console.log(m);
+                                    resolve('initial treat success!');
+                                  })
+                              })
                           })
                       })
                   })
@@ -584,29 +615,7 @@ const initialTreat = (auth,ssID,line_uid) => {
       })
 
 
-    //最初に作った空白シートを削除する
-    const deleteBlankSheet = () => {
-      return new Promise(resolve=>{
-        const delete_request = {
-          spreadsheetId: ssID,
-          resource: {
-            requests: [
-              {
-                'deleteSheet': {
-                  'sheetId': 0
-                }
-              }
-            ]
-          }
-        };
-        sheets.spreadsheets.batchUpdate(delete_request)
-          .then(res=>{
-            console.log('不要シート削除成功');
-            resolve();
-          })
-          .catch(e=>console.log(e));
-      });
-    }
+
 
     // const promises = [];
     // for(let i=0;i<original_SID.length;i++){
