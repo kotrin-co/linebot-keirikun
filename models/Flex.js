@@ -268,7 +268,7 @@ module.exports = {
     return flexMessage;
   },
 
-  makeDateChoiceForConfirmation: () => {
+  makeDateChoiceForConfirmation: (mode) => {
     const flexMessage = {
       "type":"flex",
       "altText":"日付選択",
@@ -296,7 +296,7 @@ module.exports = {
               "action": {
                 "type": "datetimepicker",
                 "label": "日付を選択する",
-                "data": 'confirmation',
+                "data": mode,
                 "mode": "date"
               }
             }

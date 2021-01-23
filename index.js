@@ -249,7 +249,7 @@ const handleMessageEvent = async (ev) => {
 
               }
               else if(text === '確認'){
-                const flexMessage = Flex.makeDateChoiceForConfirmation();
+                const flexMessage = Flex.makeDateChoiceForConfirmation('confirmation');
                 return client.replyMessage(ev.replyToken,flexMessage);
               }
               else{
