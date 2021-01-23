@@ -137,15 +137,21 @@ module.exports = {
           }
           const response = await sheets.spreadsheets.values.get(get_request);
           let newValue;
-          console.log('response.data',response.data);
-          if('values' in response.data){
-            const oldValue = parseInt(response.data.values[0][0]);
-            newValue = oldValue+parseInt(amountInput);
-            console.log('newValue',newValue);
+          // console.log('response.data',response.data);
+          if(amountInput){
+            if('values' in response.data){
+              const oldValue = parseInt(response.data.values[0][0]);
+              newValue = oldValue+parseInt(amountInput);
+              console.log('newValue',newValue);
+            }else{
+              newValue = parseInt(amountInput);
+            }
           }else{
-            newValue = parseInt(amountInput);
+            if('values' in response.data){
+              newValue = ''
+              console.log('削除！');
+            }
           }
-
           //対象のセルの値を更新
           const update_request = {
             spreadsheetId: ssId,
