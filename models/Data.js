@@ -162,6 +162,7 @@ module.exports = {
             }
           }
           await sheets.spreadsheets.values.update(update_request);
+          // await updateJournal()
           resolve(newValue);
         })
         .catch(e=>console.log(e));
