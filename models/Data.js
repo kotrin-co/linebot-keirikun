@@ -234,7 +234,7 @@ module.exports = {
           for(let i=0;i<ACCOUNTS.length;i++){
             const get_request = {
               spreadsheetId: ssId,
-              range: `入力用シート!${column}${index+2}`
+              range: `入力用シート!${column}${i+2}`
             }
             sheets.spreadsheets.values.get(get_request)
               .then(response=>{
