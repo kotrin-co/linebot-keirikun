@@ -324,7 +324,7 @@ const handlePostbackEvent = (ev) => {
         if(foundValues.length){
           foundValues.forEach((object,index)=>{
             if(index === 0){
-              message += `${selectedMonth}月${selectedDay}日のデータは\n`+object.account + ':' + object.value;
+              message += `${selectedMonth}月${selectedDay}日のデータ\n■■■■■■■■■\n\n`+object.account + ':' + object.value;
             }
             else{
               message += '\n'+object.account + ':' + object.value;
@@ -350,7 +350,7 @@ const handlePostbackEvent = (ev) => {
         if(foundValues.length){
           foundValues.forEach((object,index)=>{
             if(index === 0){
-              message += `「${ACCOUNTS[parseInt(selectedAccount)]}」のデータは\n`+object.date + ':' + object.amount+'円';
+              message += `「${ACCOUNTS[parseInt(selectedAccount)]}」データ\n■■■■■■■■■\n\n`+object.date + ':' + object.amount+'円';
             }
             else{
               message += '\n'+object.date + ':' + object.amount+'円';
