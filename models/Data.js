@@ -57,7 +57,7 @@ const updateJournal = (ssID,selectedMonth,selectedDay,accountSelect,newValue) =>
 
     const update_request = {
       spreadsheetId: ssID,
-      range: 'A5',
+      range: '仕訳帳!A5',
       valueInputOption: 'USER_ENTERED',
       insertDataOption: 'INSERT_ROWS',
       resource: {
