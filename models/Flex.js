@@ -540,16 +540,16 @@ module.exports = {
     console.log('foundValues',foundValues);
     const accountsExist = [];
     foundValues.forEach((obj,index)=>{
-      accountsExist.push(ACCOUNTS.indexOf(obj.account))
+      accountsExist.push([ACCOUNTS.indexOf(obj.account),obj.value])
     })
     const messageContents = [];
-    accountsExist.forEach(value=>{
+    accountsExist.forEach(array=>{
       messageContents.push({
         type: 'button',
         action: {
           type: 'postback',
-          label: `${ACCOUNTS[value]}`,
-          data: `deleteAccount&${selectedDate}&${value}`
+          label: `${ACCOUNTS[array[0]]} ￥${array[1]}`,
+          data: `deleteAccount&${selectedDate}&${array[0]}`
         }
       });
     });
@@ -570,7 +570,7 @@ module.exports = {
               contents:[
                 {
                   type:'text',
-                  text:'科目を選んでください',
+                  text:'削除する項目を選んでください',
                   align:'center'
                 }
               ]
@@ -581,19 +581,19 @@ module.exports = {
               contents: messageContents
             }
           },
-          {
-            type:'bubble',
-            header:{
-              type:'box',
-              layout:'vertical',
-              contents:[
-                {
-                  type:'text',
-                  text:'科目を選んでください',
-                  align:'center'
-                }
-              ]
-            },
+          // {
+          //   type:'bubble',
+          //   header:{
+          //     type:'box',
+          //     layout:'vertical',
+          //     contents:[
+          //       {
+          //         type:'text',
+          //         text:'科目を選んでください',
+          //         align:'center'
+          //       }
+          //     ]
+          //   },
             // body:{
             //   type:'box',
             //   layout:'vertical',
@@ -601,7 +601,7 @@ module.exports = {
             //     messageContents[0]
             //   ]
             // }
-          }
+          // }
         ]
       }
     }
