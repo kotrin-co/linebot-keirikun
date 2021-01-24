@@ -250,7 +250,11 @@ const handleMessageEvent = async (ev) => {
 
               }
               else if(text === '日付からデータ確認！'){
-                const flexMessage = Flex.makeDateChoiceForConfirmation('confirmation');
+                const flexMessage = Flex.makeDateChoiceForConfirmation('confirmationByDate');
+                return client.replyMessage(ev.replyToken,flexMessage);
+              }
+              else if(text === '科目からデータ確認！'){
+                const flexMessage = Flex.makeAccountChoiceForConfirmation();
                 return client.replyMessage(ev.replyToken,flexMessage);
               }
               else if(text === 'データ削除'){
@@ -308,12 +312,12 @@ const handlePostbackEvent = (ev) => {
       .catch(e=>console.log(e));
   }
 
-  else if(postbackData[0] === 'confirmation'){
+  else if(postbackData[0] === 'confirmationByDate'){
     const selectedDate = ev.postback.params.date;
     const selectedMonth = parseInt(selectedDate.split('-')[1]);
     const selectedDay = parseInt(selectedDate.split('-')[2]);
     const line_uid = ev.source.userId;
-    Data.findValues({selectedMonth,selectedDay,line_uid})
+    Data.findValuesByDate({selectedMonth,selectedDay,line_uid})
       .then(foundValues=>{
         console.log('foundValues in index',foundValues);
         let message = ''
@@ -335,6 +339,12 @@ const handlePostbackEvent = (ev) => {
         });
       })
       .catch(e=>console.log(e));
+  }
+
+  else if(postbackData[0] === 'confirmationByAccount'){
+    const selectedAccount = postbackData[1];
+    const line_uid = ev.source.userId;
+    Data.findValuesByAccount({selectedAccount,line_uid})
   }
 
   else if(postbackData[0] === 'delete'){

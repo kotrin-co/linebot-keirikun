@@ -229,23 +229,6 @@ module.exports = {
           const inputSheetId = res.rows[0].sid1;
           console.log('ssid sid',ssId,inputSheetId);
 
-          //authの設定
-          // const jwtClient = new google.auth.JWT(
-          //   privatekey.client_email,
-          //   null,
-          //   privatekey.private_key,
-          //   ['https://www.googleapis.com/auth/spreadsheets']
-          //   );
-    
-          // //リクエストの承認をチェックする
-          // jwtClient.authorize(function (err, tokens) {
-          //   if (err) {
-          //       console.log(err);
-          //       return;
-          //   } else {
-          //       console.log('OK!!');
-          //   }
-          // });
           const sheets = authorize();
           // const sheets = google.sheets({version: 'v4', auth: jwtClient});
 
@@ -335,7 +318,7 @@ module.exports = {
     });
   },
 
-  findValues: ({selectedMonth,selectedDay,line_uid}) => {
+  findValuesByDate: ({selectedMonth,selectedDay,line_uid}) => {
     return new Promise(resolve => {
 
       const select_query = {
@@ -403,6 +386,44 @@ module.exports = {
         })
         .catch(e=>console.log(e));
     })
+  },
+
+  findValuesByAccount: ({selectedAccount,line_uid}) => {
+    return new Promise(resolve=>{
+      const select_query = {
+        text: `SELECT * FROM users WHERE line_uid='${line_uid}';`
+      }
+
+      connection.query(select_query)
+        .then(res=>{
+          //スプレッドシートidとシートidの抜き出し
+          const ssId = res.rows[0].ssid;
+
+          //auth
+          const sheets = authorize();
+
+          //行番号
+          const rowNumber = parseInt(selectedAccount)+2;
+
+          //batchGetにより列単位で値を取得する
+          const batchGet_request = {
+            spreadsheetId: ssId,
+            ranges: [
+              `入力用シート!B${rowNumber}:${rowNumber}`
+            ],
+            majorDimension: 'ROWS'
+          }
+          sheets.spreadsheets.values.batchGet(batchGet_request)
+            .then(res=>{
+              const foundValues = [];
+              console.log('res.data',res.data);
+              if('values' in res.data.valueRanges[0]){
+
+              }
+            })
+        })
+        .catch(e=>console.log(e));
+    });
   },
 
   cancellation: (lineId,subscription) => {
