@@ -238,7 +238,7 @@ const handleMessageEvent = async (ev) => {
                   .catch(e=>console.log(e));
               }
   
-              else if( text === 'けーり君と話して会計入力したい！'){
+              else if( text === 'けーり君サポートお願い！'){
                 return client.replyMessage(ev.replyToken,[
                   {
                     "type":"text",
@@ -266,22 +266,6 @@ const handleMessageEvent = async (ev) => {
               else if(text === 'データ削除'){
                 const flexMessage = Flex.makeDateChoiceForConfirmation('delete');
                 return client.replyMessage(ev.replyToken,flexMessage);
-              }
-              else if(text === 'テスト'){
-                const message = {
-                  "type":"text",
-                  "text":"JSONのテストだよん"
-                };
-                let messageObj = {
-                  type: 'text',
-                  text: 'オブジェクトメッセージだよん'
-                };
-                const json = JSON.stringify(messageObj);
-                console.log('original',message);
-                console.log('obj',messageObj);
-                console.log('json',json);
-
-                return client.replyMessage(ev.replyToken,json);
               }
               else{
                 return client.replyMessage(ev.replyToken,{
