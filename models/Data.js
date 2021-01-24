@@ -114,13 +114,16 @@ const updateJournal = (ssId,selectedMonth,selectedDay,accountSelect,newValue) =>
       spreadsheetId: ssId,
       ranges: [
         '入力用シート!B2:NB14'
-      ]
+      ],
+      majorDimension: 'COLUMNS'
     }
     sheets.spreadsheets.values.batchGet(batchGet_request)
       .then(res=>{
         const valuesArray = res.data.valueRanges[0].values;
         console.log('res',valuesArray);
+        const journalValues = [];
       })
+      .catch(e=>console.log(e));
   })
 }
 
