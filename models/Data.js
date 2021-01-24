@@ -50,61 +50,61 @@ const authorize = () => {
   return google.sheets({version: 'v4', auth: jwtClient});
 }
 
-const appendJournal = (ssID,selectedMonth,selectedDay,accountSelect,newValue) => {
-  return new Promise(resolve=>{
+// const appendJournal = (ssID,selectedMonth,selectedDay,accountSelect,newValue) => {
+//   return new Promise(resolve=>{
 
-    const sheets = authorize();
+//     const sheets = authorize();
 
-    //最終行に値を追加
-    const append_request = {
-      spreadsheetId: ssID,
-      range: '仕訳帳!A5',
-      valueInputOption: 'USER_ENTERED',
-      insertDataOption: 'OVERWRITE',
-      resource: {
-        values: [
-          [`${selectedMonth}/${selectedDay}`,null,newValue,null,newValue,accountSelect]
-        ]
-      }
-    }
+//     //最終行に値を追加
+//     const append_request = {
+//       spreadsheetId: ssID,
+//       range: '仕訳帳!A5',
+//       valueInputOption: 'USER_ENTERED',
+//       insertDataOption: 'OVERWRITE',
+//       resource: {
+//         values: [
+//           [`${selectedMonth}/${selectedDay}`,null,newValue,null,newValue,accountSelect]
+//         ]
+//       }
+//     }
 
-    sheets.spreadsheets.values.append(append_request)
-      .then(res=>{
-        console.log('追加！！');
-        //昇順ソート
-        const sort_request = {
-          spreadsheetId: ssID,
-          resource:{
-            requests:[
-              {
-                sortRange: {
-                  range: {
-                    sheetId: 976007655,
-                    startRowIndex: 4,
-                    endRowIndex: 10000,
-                    startColumnIndex: 0,
-                    endColumnIndex: 6
-                  },
-                  sortSpecs: [
-                    {
-                      dimensionIndex: 0,
-                      sortOrder: "ASCENDING"
-                    }
-                  ]
-                }
-              }
-            ]
-          }
-        }
-        sheets.spreadsheets.batchUpdate(sort_request)
-          .then(res=>{
-            console.log('sort res',res.data);
-            resolve();
-          })
-      })
-      .catch(e=>console.log(e));
-  })
-}
+//     sheets.spreadsheets.values.append(append_request)
+//       .then(res=>{
+//         console.log('追加！！');
+//         //昇順ソート
+//         const sort_request = {
+//           spreadsheetId: ssID,
+//           resource:{
+//             requests:[
+//               {
+//                 sortRange: {
+//                   range: {
+//                     sheetId: 976007655,
+//                     startRowIndex: 4,
+//                     endRowIndex: 10000,
+//                     startColumnIndex: 0,
+//                     endColumnIndex: 6
+//                   },
+//                   sortSpecs: [
+//                     {
+//                       dimensionIndex: 0,
+//                       sortOrder: "ASCENDING"
+//                     }
+//                   ]
+//                 }
+//               }
+//             ]
+//           }
+//         }
+//         sheets.spreadsheets.batchUpdate(sort_request)
+//           .then(res=>{
+//             console.log('sort res',res.data);
+//             resolve();
+//           })
+//       })
+//       .catch(e=>console.log(e));
+//   })
+// }
 
 const updateJournal = (ssId) => {
   return new Promise(resolve=>{
@@ -167,7 +167,7 @@ const updateJournal = (ssId) => {
         sheets.spreadsheets.values.batchClear(clear_request)
           .then(res=>{
             console.log('仕訳帳全クリ！');
-            
+
             //仕訳帳をアップデート
             const batchUpdate_request = {
               spreadsheetId: ssId,
@@ -230,24 +230,24 @@ module.exports = {
           console.log('ssid sid',ssId,inputSheetId);
 
           //authの設定
-          const jwtClient = new google.auth.JWT(
-            privatekey.client_email,
-            null,
-            privatekey.private_key,
-            ['https://www.googleapis.com/auth/spreadsheets']
-            );
+          // const jwtClient = new google.auth.JWT(
+          //   privatekey.client_email,
+          //   null,
+          //   privatekey.private_key,
+          //   ['https://www.googleapis.com/auth/spreadsheets']
+          //   );
     
-          //リクエストの承認をチェックする
-          jwtClient.authorize(function (err, tokens) {
-            if (err) {
-                console.log(err);
-                return;
-            } else {
-                console.log('OK!!');
-            }
-          });
-    
-          const sheets = google.sheets({version: 'v4', auth: jwtClient});
+          // //リクエストの承認をチェックする
+          // jwtClient.authorize(function (err, tokens) {
+          //   if (err) {
+          //       console.log(err);
+          //       return;
+          //   } else {
+          //       console.log('OK!!');
+          //   }
+          // });
+          const sheets = authorize();
+          // const sheets = google.sheets({version: 'v4', auth: jwtClient});
 
           //行番号の取得
           const rowNumber = ACCOUNTS.indexOf(accountSelect)+2;
@@ -296,7 +296,6 @@ module.exports = {
               console.log('newValue',newValue);
             }else{
               newValue = parseInt(amountInput);
-              // await appendJournal(ssId,selectedMonth,selectedDay,accountSelect,newValue);
             }
           }else{
             if('values' in response.data){
@@ -337,8 +336,7 @@ module.exports = {
   },
 
   findValues: ({selectedMonth,selectedDay,line_uid}) => {
-    return new Promise((resolve,reject) => {
-      // console.log('hikisuu',selectedMonth,selectedDay,line_uid);
+    return new Promise(resolve => {
 
       const select_query = {
         text: `SELECT * FROM users WHERE line_uid='${line_uid}';`
@@ -348,8 +346,6 @@ module.exports = {
         .then(async(res)=>{
           //スプレッドシートidとシートidの抜き出し
           const ssId = res.rows[0].ssid;
-          const inputSheetId = res.rows[0].sid1;
-          console.log('ssid sid',ssId,inputSheetId);
 
           //auth
           const sheets = authorize();
@@ -378,41 +374,68 @@ module.exports = {
             column = columns[counts];
           }
 
-          //科目ごとにセルの値を取得する
-          const foundValues = [];
-          const promises = [];
-
-          const getValue = (index) => {
-            return new Promise(async(resolve)=>{
-              console.log('index',index);
-              const get_request = {
-                spreadsheetId: ssId,
-                range: `入力用シート!${column}${index+2}`
-              }
-              sheets.spreadsheets.values.get(get_request)
-                .then(response=>{
-                  if('values' in response.data){
+          //batchGetにより列単位で値を取得する
+          const batchGet_request = {
+            spreadsheetId: ssId,
+            ranges: [
+              `入力用シート!${column}2:${column}`
+            ],
+            majorDimension: 'COLUMNS'
+          }
+          sheets.spreadsheets.values.batchGet(batchGet_request)
+            .then(res=>{
+              const foundValues = [];
+              if('values' in res.data.valueRanges[0]){
+                const valuesArray = res.data.valueRanges[0].values[0];
+                console.log('valuesArray',valuesArray);
+                valuesArray.forEach((value,index)=>{
+                  if(value){
                     foundValues.push({
-                      account:ACCOUNTS[index],
-                      value:response.data.values[0][0]
+                      account: ACCOUNTS[index],
+                      value
                     });
                   }
-                  resolve();
-                })
-                .catch(e=>console.log(e));
-            });
-          }
-
-          for(let i=0;i<ACCOUNTS.length;i++){
-            promises.push(getValue(i));
-          }
-
-          Promise.all(promises)
-            .then(()=>{
-              console.log('all promises passed')
+                });
+              }
               resolve(foundValues);
             })
             .catch(e=>console.log(e));
+
+          //科目ごとにセルの値を取得する
+          // const foundValues = [];
+          // const promises = [];
+
+          // const getValue = (index) => {
+          //   return new Promise(async(resolve)=>{
+          //     console.log('index',index);
+          //     const get_request = {
+          //       spreadsheetId: ssId,
+          //       range: `入力用シート!${column}${index+2}`
+          //     }
+          //     sheets.spreadsheets.values.get(get_request)
+          //       .then(response=>{
+          //         if('values' in response.data){
+          //           foundValues.push({
+          //             account:ACCOUNTS[index],
+          //             value:response.data.values[0][0]
+          //           });
+          //         }
+          //         resolve();
+          //       })
+          //       .catch(e=>console.log(e));
+          //   });
+          // }
+
+          // for(let i=0;i<ACCOUNTS.length;i++){
+          //   promises.push(getValue(i));
+          // }
+
+          // Promise.all(promises)
+          //   .then(()=>{
+          //     console.log('all promises passed')
+          //     resolve(foundValues);
+          //   })
+          //   .catch(e=>console.log(e));
         })
         .catch(e=>console.log(e));
     })
