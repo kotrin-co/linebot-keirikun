@@ -127,6 +127,34 @@ const updateJournal = (ssId) => {
     }
     sheets.spreadsheets.values.batchGet(batchGet_request)
       .then(res=>{
+        
+        //仕訳帳更新用配列の生成
+        const valuesArray = res.data.valueRanges[0].values;
+        const journalValues = [];
+        valuesArray.forEach((array,i)=>{
+          if(array.length){
+            array.forEach((value,j)=>{
+              if(value){
+                let days = i+1;
+                let month = 1;
+                while(days>daysEveryMonth[month-1]){
+                  days -= daysEveryMonth[month-1];
+                  month++;
+                }
+                journalValues.push([
+                  `${month}/${days}`,
+                  null,
+                  value,
+                  null,
+                  value,
+                  ACCOUNTS[j]
+                ]);
+              }
+            })
+          }
+        });
+        console.log('journalValues',journalValues);
+
         //仕訳帳を一旦全クリアする
         const clear_request = {
           spreadsheetId: ssId,
@@ -138,32 +166,8 @@ const updateJournal = (ssId) => {
         }
         sheets.spreadsheets.values.batchClear(clear_request)
           .then(res=>{
-            const valuesArray = res.data.valueRanges[0].values;
-            const journalValues = [];
-            valuesArray.forEach((array,i)=>{
-              if(array.length){
-                array.forEach((value,j)=>{
-                  if(value){
-                    let days = i+1;
-                    let month = 1;
-                    while(days>daysEveryMonth[month-1]){
-                      days -= daysEveryMonth[month-1];
-                      month++;
-                    }
-                    journalValues.push([
-                      `${month}/${days}`,
-                      null,
-                      value,
-                      null,
-                      value,
-                      ACCOUNTS[j]
-                    ]);
-                  }
-                })
-              }
-            });
-            console.log('journalValues',journalValues);
-
+            console.log('仕訳帳全クリ！');
+            
             //仕訳帳をアップデート
             const batchUpdate_request = {
               spreadsheetId: ssId,
