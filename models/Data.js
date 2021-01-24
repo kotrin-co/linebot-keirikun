@@ -71,19 +71,38 @@ const appendJournal = (ssID,selectedMonth,selectedDay,accountSelect,newValue) =>
     sheets.spreadsheets.values.append(append_request)
       .then(res=>{
         console.log('追加！！');
-        resolve();
+        //昇順ソート
+        const sort_request = {
+          spreadsheetId: ssID,
+          resource:{
+            requests:[
+              {
+                "sortRange": {
+                  "range": {
+                    "sheetId": 976007655,
+                    "startRowIndex": 4,
+                    "endRowIndex": 10000,
+                    "startColumnIndex": 0,
+                    "endColumnIndex": 5
+                  }
+                },
+                "sortSpec": [
+                  {
+                    "dimensionIndex": 0,
+                    "sortOrder": "ASCENDING"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+        sheets.spreadsheets.batchupdate(sort_request)
+          .then(res=>{
+            console.log('sort res',res.data);
+            resolve();
+          })
       })
       .catch(e=>console.log(e));
-
-    //昇順ソート
-    const sort_request = {
-      spreadsheetId: ssID,
-      resource:{
-        requests:[
-          
-        ]
-      }
-    }
 
   })
 }
