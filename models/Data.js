@@ -55,6 +55,7 @@ const updateJournal = (ssID,selectedMonth,selectedDay,accountSelect,newValue) =>
 
     const sheets = authorize();
 
+    //最終行に値を追加
     const update_request = {
       spreadsheetId: ssID,
       range: '仕訳帳!A5',
@@ -68,59 +69,22 @@ const updateJournal = (ssID,selectedMonth,selectedDay,accountSelect,newValue) =>
     }
 
     sheets.spreadsheets.values.append(update_request)
-      .then(()=>{
-        console.log('追加！！');
+      .then(res=>{
+        console.log('追加！！',res);
         resolve();
       })
       .catch(e=>console.log(e));
 
-    // const column = createAlphabetsArray();
-    // const year = new Date().getFullYear();
-    // let daysOfYear;
-    // if(year%4 === 0){
-    //   daysOfYear = 366;
-    // }else{
-    //   daysOfYear = 365;
-    // }
-    // const startRow = 5;
-    // const foundValues = [];
-    // const promises = [];
+    //昇順ソート
+    const sort_request = {
+      spreadsheetId: ssID,
+      resource:{
+        requests:[
+          
+        ]
+      }
+    }
 
-    // const getValue = (index) => {
-    //   return new Promise(resolve=>{
-    //     // console.log('cell',targetCell);
-    //     const get_request = {
-    //       spreadsheetId: ssID,
-    //       range: `仕訳帳!A${startRow+index}:F${startRow+index}`
-    //     }
-    //     sheets.spreadsheets.values.get(get_request)
-    //       .then(response=>{
-    //         if('values' in response.data){
-    //           foundValues.push({
-    //             date:response.data.values[0][0],
-    //             amount:response.data.values[0][2],
-    //             account:response.data.values[0][5]
-    //           });
-    //         }
-    //         resolve();
-    //       })
-    //       .catch(e=>console.log(e));
-    //   });
-    // }
-
-    // for(let i=0;i<daysOfYear;i++){
-    //   for(let j=0;j<ACCOUNTS.length;j++){
-    //     const targetCell = column[i+1]+j;
-    //     promises.push(getValue(targetCell,j));
-    //   }
-    // }
-
-    // Promise.all(promises)
-    //   .then(()=>{
-    //     console.log('all promises passed',foundValues);
-    //     resolve(foundValues);
-    //   })
-    //   .catch(e=>console.log(e));
   })
 }
 
