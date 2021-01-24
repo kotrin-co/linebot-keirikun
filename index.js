@@ -267,6 +267,21 @@ const handleMessageEvent = async (ev) => {
                 const flexMessage = Flex.makeDateChoiceForConfirmation('delete');
                 return client.replyMessage(ev.replyToken,flexMessage);
               }
+              else if(text === 'テスト'){
+                const message = {
+                  "type":"text",
+                  "text":"JSONのテストだよん"
+                };
+                let messageObj = {
+                  type: 'text',
+                  text: 'オブジェクトメッセージだよん'
+                };
+                const json = JSON.stringify(messageObj);
+                console.log('original',message);
+                console.log('json',json);
+                
+                return client.replyMessage(ev.replyToken,message);
+              }
               else{
                 return client.replyMessage(ev.replyToken,{
                   "type":"text",
