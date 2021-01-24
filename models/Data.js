@@ -114,21 +114,12 @@ const updateJournal = (ssId,selectedMonth,selectedDay,accountSelect,newValue) =>
       spreadsheetId: ssId,
       ranges: [
         '入力用シート!B2:NB14'
-        // {
-          //   range: '入力用シート!B2:NB14',
-          //   // majorDimension: 'COLUMNS'
-          // }
       ]
-      // valueRanges: [
-      //   {
-      //     range: '入力用シート!B2:NB14',
-      //     majorDimension: 'COLUMNS'
-      //   }
-      // ]
     }
     sheets.spreadsheets.values.batchGet(batchGet_request)
       .then(res=>{
-        console.log('res',res.data);
+        const valuesArray = res.data.values;
+        console.log('res',valuesArray);
       })
   })
 }
