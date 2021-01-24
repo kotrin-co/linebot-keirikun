@@ -537,6 +537,7 @@ module.exports = {
   },
 
   makeAccountChoiceForDelete2: (selectedDate,foundValues) => {
+    console.log('foundValues',foundValues);
     const accountsExist = [];
     foundValues.forEach((obj,index)=>{
       accountsExist.push(ACCOUNTS.indexOf(obj.account))
