@@ -77,19 +77,19 @@ const appendJournal = (ssID,selectedMonth,selectedDay,accountSelect,newValue) =>
           resource:{
             requests:[
               {
-                "sortRange": {
-                  "range": {
-                    "sheetId": 976007655,
-                    "startRowIndex": 4,
-                    "endRowIndex": 10000,
-                    "startColumnIndex": 0,
-                    "endColumnIndex": 5
+                sortRange: {
+                  range: {
+                    sheetId: 976007655,
+                    startRowIndex: 4,
+                    endRowIndex: 10000,
+                    startColumnIndex: 0,
+                    endColumnIndex: 5
                   }
                 },
-                "sortSpecs": [
+                sortSpecs: [
                   {
-                    "dimensionIndex": 0,
-                    "sortOrder": "ASCENDING"
+                    dimensionIndex: 0,
+                    sortOrder: "ASCENDING"
                   }
                 ]
               }
