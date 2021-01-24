@@ -118,7 +118,7 @@ const updateJournal = (ssId,selectedMonth,selectedDay,accountSelect,newValue) =>
     }
     sheets.spreadsheets.values.batchGet(batchGet_request)
       .then(res=>{
-        const valuesArray = res.data.values;
+        const valuesArray = res.data.valueRanges[0].values;
         console.log('res',valuesArray);
       })
   })
