@@ -400,42 +400,6 @@ module.exports = {
               resolve(foundValues);
             })
             .catch(e=>console.log(e));
-
-          //科目ごとにセルの値を取得する
-          // const foundValues = [];
-          // const promises = [];
-
-          // const getValue = (index) => {
-          //   return new Promise(async(resolve)=>{
-          //     console.log('index',index);
-          //     const get_request = {
-          //       spreadsheetId: ssId,
-          //       range: `入力用シート!${column}${index+2}`
-          //     }
-          //     sheets.spreadsheets.values.get(get_request)
-          //       .then(response=>{
-          //         if('values' in response.data){
-          //           foundValues.push({
-          //             account:ACCOUNTS[index],
-          //             value:response.data.values[0][0]
-          //           });
-          //         }
-          //         resolve();
-          //       })
-          //       .catch(e=>console.log(e));
-          //   });
-          // }
-
-          // for(let i=0;i<ACCOUNTS.length;i++){
-          //   promises.push(getValue(i));
-          // }
-
-          // Promise.all(promises)
-          //   .then(()=>{
-          //     console.log('all promises passed')
-          //     resolve(foundValues);
-          //   })
-          //   .catch(e=>console.log(e));
         })
         .catch(e=>console.log(e));
     })
