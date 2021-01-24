@@ -117,6 +117,7 @@ const updateJournal = (ssId,selectedMonth,selectedDay,accountSelect,newValue) =>
       daysEveryMonth.push(new Date(year,i+1,0).getDate());
     }
 
+    //入力用シートから全ての値を取得する
     const batchGet_request = {
       spreadsheetId: ssId,
       ranges: [
@@ -139,16 +140,39 @@ const updateJournal = (ssId,selectedMonth,selectedDay,accountSelect,newValue) =>
                   days -= daysEveryMonth[month-1];
                   month++;
                 }
-                journalValues.push({
-                  date: `${month}/${days}`,
-                  amount: value,
-                  account: ACCOUNTS[j]
-                });
+                journalValues.push([
+                  `${month}/${days}`,
+                  null,
+                  value,
+                  null,
+                  value,
+                  ACCOUNTS[j]
+                ]);
               }
             })
           }
         });
-        console.log('journalValues',journalValues)
+        console.log('journalValues',journalValues);
+
+        //仕訳帳をアップデート
+        const batchUpdate_request = {
+          spreadsheetId: ssId,
+          resource: {
+            valueInputOption: 'USER_ENTERED',
+            data:[
+              {
+                majorDimension: 'ROWS',
+                range: '仕訳帳!A5',
+                values: journalValues
+              }
+            ]
+          }
+        };
+        sheets.spreadsheets.values.batchUpdate(batchUpdate_request)
+          .then(res=>{
+            console.log('updated');
+          })
+          .catch(e=>console.log(e));
       })
       .catch(e=>console.log(e));
   })
