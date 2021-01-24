@@ -83,7 +83,7 @@ const appendJournal = (ssID,selectedMonth,selectedDay,accountSelect,newValue) =>
                     startRowIndex: 4,
                     endRowIndex: 10000,
                     startColumnIndex: 0,
-                    endColumnIndex: 5
+                    endColumnIndex: 6
                   },
                   sortSpecs: [
                     {
