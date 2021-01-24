@@ -115,7 +115,7 @@ const updateJournal = (ssId,selectedMonth,selectedDay,accountSelect,newValue) =>
       valueRanges: [
         {
           range: '入力用シート!B2:NB14',
-          majorDimension: 'COLUMNS'
+          majorDimension: COLUMNS
         }
       ]
     }
