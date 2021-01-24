@@ -405,6 +405,13 @@ module.exports = {
           //行番号
           const rowNumber = parseInt(selectedAccount)+2;
 
+          //各月日数配列の生成
+          const year = new Date().getFullYear();
+          const daysEveryMonth = [];
+          for(let i=0; i<12; i++){
+            daysEveryMonth.push(new Date(year,i+1,0).getDate());
+          }
+
           //batchGetにより列単位で値を取得する
           const batchGet_request = {
             spreadsheetId: ssId,
@@ -420,8 +427,24 @@ module.exports = {
               if('values' in res.data.valueRanges[0]){
                 const valuesArray = res.data.valueRanges[0].values[0];
                 console.log('valuesArray',valuesArray);
+                valuesArray.forEach((value,index)=>{
+                  if(value){
+                    let days = index+1;
+                    let month = 1;
+                    while(days>daysEveryMonth[month-1]){
+                      days -= daysEveryMonth[month-1];
+                      month++;
+                    }
+                    foundValues.push({
+                      date: `${month}月${days}日`,
+                      amount: value
+                    });
+                  }
+                });
               }
+              resolve(foundValues);
             })
+            .catch(e=>console.log(e));
         })
         .catch(e=>console.log(e));
     });

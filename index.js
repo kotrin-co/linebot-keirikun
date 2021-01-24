@@ -331,7 +331,7 @@ const handlePostbackEvent = (ev) => {
             }
           })
         }else{
-          message = '入力されたデータはありません'
+          message = 'その日時のデータはありません';
         }
         return client.replyMessage(ev.replyToken,{
           "type":"text",
@@ -345,6 +345,22 @@ const handlePostbackEvent = (ev) => {
     const selectedAccount = postbackData[1];
     const line_uid = ev.source.userId;
     Data.findValuesByAccount({selectedAccount,line_uid})
+      .then(foundValues=>{
+        let message = '';
+        if(foundValues.length){
+          foundValues.forEach((object,index)=>{
+            if(index === 0){
+              message += `${selectedMonth}月${selectedDay}日のデータは\n`+object.date + ':' + object.amount+'円';
+            }
+            else{
+              message += '\n'+object.date + ':' + object.amount+'円';
+            }
+          });
+        }else{
+          message = 'その科目のデータはありません';
+        }
+      })
+      .catch(e=>console.log(e));
   }
 
   else if(postbackData[0] === 'delete'){
