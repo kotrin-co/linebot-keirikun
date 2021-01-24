@@ -67,7 +67,7 @@ const updateJournal = (ssID,selectedMonth,selectedDay,accountSelect,newValue) =>
       }
     }
 
-    sheets.spreadsheets.value.append(update_request)
+    sheets.spreadsheets.values.append(update_request)
       .then(()=>{
         console.log('追加！！');
         resolve();
