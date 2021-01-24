@@ -416,9 +416,10 @@ module.exports = {
           sheets.spreadsheets.values.batchGet(batchGet_request)
             .then(res=>{
               const foundValues = [];
-              console.log('res.data',res.data);
+              // console.log('res.data',res.data);
               if('values' in res.data.valueRanges[0]){
-
+                const valuesArray = res.data.valueRanges[0].values[0];
+                console.log('valuesArray',valuesArray);
               }
             })
         })
