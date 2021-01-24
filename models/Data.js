@@ -111,7 +111,7 @@ const updateJournal = (ssId,selectedMonth,selectedDay,accountSelect,newValue) =>
     const sheets = authorize();
 
     const batchGet_request = {
-      spreadsheetId: ssID,
+      spreadsheetId: ssId,
       valueRanges: [
         {
           range: '入力用シート!B2:NB14',
