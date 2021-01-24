@@ -249,11 +249,11 @@ const handleMessageEvent = async (ev) => {
                 return client.replyMessage(ev.replyToken,flexMessage);
 
               }
-              else if(text === '確認'){
+              else if(text === '日付からデータ確認！'){
                 const flexMessage = Flex.makeDateChoiceForConfirmation('confirmation');
                 return client.replyMessage(ev.replyToken,flexMessage);
               }
-              else if(text === '削除'){
+              else if(text === 'データ削除'){
                 const flexMessage = Flex.makeDateChoiceForConfirmation('delete');
                 return client.replyMessage(ev.replyToken,flexMessage);
               }
