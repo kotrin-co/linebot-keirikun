@@ -50,13 +50,13 @@ const authorize = () => {
   return google.sheets({version: 'v4', auth: jwtClient});
 }
 
-const updateJournal = (ssID,selectedMonth,selectedDay,accountSelect,newValue) => {
+const appendJournal = (ssID,selectedMonth,selectedDay,accountSelect,newValue) => {
   return new Promise(resolve=>{
 
     const sheets = authorize();
 
     //最終行に値を追加
-    const update_request = {
+    const append_request = {
       spreadsheetId: ssID,
       range: '仕訳帳!A5',
       valueInputOption: 'USER_ENTERED',
@@ -68,9 +68,9 @@ const updateJournal = (ssID,selectedMonth,selectedDay,accountSelect,newValue) =>
       }
     }
 
-    sheets.spreadsheets.values.append(update_request)
+    sheets.spreadsheets.values.append(append_request)
       .then(res=>{
-        console.log('追加！！',res);
+        console.log('追加！！');
         resolve();
       })
       .catch(e=>console.log(e));
@@ -189,6 +189,7 @@ module.exports = {
               console.log('newValue',newValue);
             }else{
               newValue = parseInt(amountInput);
+              await appendJournal(ssId,selectedMonth,selectedDay,accountSelect,newValue)
             }
           }else{
             if('values' in response.data){
@@ -206,7 +207,6 @@ module.exports = {
             }
           }
           await sheets.spreadsheets.values.update(update_request);
-          await updateJournal(ssId,selectedMonth,selectedDay,accountSelect,newValue)
           resolve(newValue);
         })
         .catch(e=>console.log(e));
