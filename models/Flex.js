@@ -577,9 +577,7 @@ module.exports = {
             body:{
               type:'box',
               layout:'vertical',
-              contents:[
-                messageContents[0]
-              ]
+              contents: messageContents
             }
           },
           {
