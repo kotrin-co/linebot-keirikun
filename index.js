@@ -359,6 +359,10 @@ const handlePostbackEvent = (ev) => {
         }else{
           message = 'その科目のデータはありません';
         }
+        return client.replyMessage(ev.replyToken,{
+          "type":"text",
+          "text":message
+        });
       })
       .catch(e=>console.log(e));
   }
