@@ -106,7 +106,7 @@ const appendJournal = (ssID,selectedMonth,selectedDay,accountSelect,newValue) =>
   })
 }
 
-const updateJournal = (ssId,selectedMonth,selectedDay,accountSelect,newValue) => {
+const updateJournal = (ssId) => {
   return new Promise(resolve=>{
     const sheets = authorize();
 
@@ -171,6 +171,7 @@ const updateJournal = (ssId,selectedMonth,selectedDay,accountSelect,newValue) =>
         sheets.spreadsheets.values.batchUpdate(batchUpdate_request)
           .then(res=>{
             console.log('updated');
+            resolve();
           })
           .catch(e=>console.log(e));
       })
@@ -277,10 +278,9 @@ module.exports = {
               const oldValue = parseInt(response.data.values[0][0]);
               newValue = oldValue+parseInt(amountInput);
               console.log('newValue',newValue);
-              await updateJournal(ssId,selectedMonth,selectedDay,accountSelect,newValue);
             }else{
               newValue = parseInt(amountInput);
-              await appendJournal(ssId,selectedMonth,selectedDay,accountSelect,newValue);
+              // await appendJournal(ssId,selectedMonth,selectedDay,accountSelect,newValue);
             }
           }else{
             if('values' in response.data){
@@ -298,6 +298,7 @@ module.exports = {
             }
           }
           await sheets.spreadsheets.values.update(update_request);
+          await updateJournal(ssId);
           resolve(newValue);
         })
         .catch(e=>console.log(e));
