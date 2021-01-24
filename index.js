@@ -377,8 +377,18 @@ const handlePostbackEvent = (ev) => {
 
   else if(postbackData[0] === 'delete'){
     const selectedDate = ev.postback.params.date;
-    const flexMessage = Flex.makeAccountChoiceForDelete(selectedDate);
-    return client.replyMessage(ev.replyToken,flexMessage);
+
+    //ここから追加
+    const selectedMonth = parseInt(selectedDate.split('-')[1]);
+    const selectedDay = parseInt(selectedDate.split('-')[2]);
+    const line_uid = ev.source.userId;
+    Data.findValuesByDate({selectedMonth,selectedDay,line_uid})
+      .then(foundValues=>{
+        const flexMessage = Flex.makeAccountChoiceForDelete2(selectedDate,foundValues);
+        return client.replyMessage(ev.replyToken,flexMessage);
+      })
+    // const flexMessage = Flex.makeAccountChoiceForDelete(selectedDate);
+    // return client.replyMessage(ev.replyToken,flexMessage);
   }
 
   else if(postbackData[0] === 'deleteAccount'){

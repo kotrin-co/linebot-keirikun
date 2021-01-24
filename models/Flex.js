@@ -1,3 +1,4 @@
+const ACCOUNTS = ['売上','源泉所得税','交通費','会議費','接待交際費','通信費','衣装費','郵便代','保険料','年金','家賃','従業員報酬','その他'];
 
 module.exports = {
 
@@ -533,6 +534,25 @@ module.exports = {
       }
     }
     return flexMessage;
+  },
+
+  makeAccountChoiceForDelete2: (selectedDate,foundValues) => {
+    const accountsExist = [];
+    foundValues.forEach((obj,index)=>{
+      accountsExist.push(ACCOUNTS.indexOf(obj.account))
+    })
+    const messageContents = [];
+    accountsExist.forEach(value=>{
+      messageContents.push({
+        type: 'button',
+        action: {
+          type: 'postback',
+          label: '源泉所得税',
+          data: `deleteAccount&${selectedDate}&${value}`
+        }
+      });
+    });
+    console.log('messageContents',messageContents);
   },
 
   makeAccountChoiceForConfirmation: () => {
