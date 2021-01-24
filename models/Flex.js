@@ -548,7 +548,7 @@ module.exports = {
         type: 'button',
         action: {
           type: 'postback',
-          label: '源泉所得税',
+          label: `${ACCOUNTS[value]}`,
           data: `deleteAccount&${selectedDate}&${value}`
         }
       });
@@ -594,13 +594,13 @@ module.exports = {
                 }
               ]
             },
-            body:{
-              type:'box',
-              layout:'vertical',
-              contents:[
-                messageContents[0]
-              ]
-            }
+            // body:{
+            //   type:'box',
+            //   layout:'vertical',
+            //   contents:[
+            //     messageContents[0]
+            //   ]
+            // }
           }
         ]
       }
