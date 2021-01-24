@@ -278,9 +278,10 @@ const handleMessageEvent = async (ev) => {
                 };
                 const json = JSON.stringify(messageObj);
                 console.log('original',message);
+                console.log('obj',messageObj);
                 console.log('json',json);
-                
-                return client.replyMessage(ev.replyToken,message);
+
+                return client.replyMessage(ev.replyToken,messageObj);
               }
               else{
                 return client.replyMessage(ev.replyToken,{
