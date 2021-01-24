@@ -110,6 +110,13 @@ const updateJournal = (ssId,selectedMonth,selectedDay,accountSelect,newValue) =>
   return new Promise(resolve=>{
     const sheets = authorize();
 
+    //各月日数配列の生成
+    const year = new Date().getFullYear();
+    const daysEveryMonth = [];
+    for(let i=0; i<12; i++){
+      daysEveryMonth.push(new Date(year,i+1,0).getDate());
+    }
+
     const batchGet_request = {
       spreadsheetId: ssId,
       ranges: [
@@ -120,8 +127,28 @@ const updateJournal = (ssId,selectedMonth,selectedDay,accountSelect,newValue) =>
     sheets.spreadsheets.values.batchGet(batchGet_request)
       .then(res=>{
         const valuesArray = res.data.valueRanges[0].values;
-        console.log('res',valuesArray);
+        // console.log('res',valuesArray);
         const journalValues = [];
+        valuesArray.forEach((array,i)=>{
+          if(array.length){
+            array.forEach((value,j)=>{
+              if(value){
+                let days = i+1;
+                let month = 1;
+                while(days<daysEveryMonth[month-1]){
+                  days -= daysEveryMonth[month-1];
+                  month++;
+                }
+                journalValues.push({
+                  date: `${month}/${days}`,
+                  amount: value,
+                  account: ACCOUNTS[j]
+                });
+              }
+            })
+          }
+        });
+        console.log('journalValues',journalValues)
       })
       .catch(e=>console.log(e));
   })
