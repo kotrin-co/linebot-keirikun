@@ -112,12 +112,18 @@ const updateJournal = (ssId,selectedMonth,selectedDay,accountSelect,newValue) =>
 
     const batchGet_request = {
       spreadsheetId: ssId,
-      valueRanges: [
-        {
-          range: '入力用シート!B2:NB14',
-          majorDimension: 'COLUMNS'
-        }
+      ranges: [
+          {
+            range: '入力用シート!B2:NB14',
+            majorDimension: 'COLUMNS'
+          }
       ]
+      // valueRanges: [
+      //   {
+      //     range: '入力用シート!B2:NB14',
+      //     majorDimension: 'COLUMNS'
+      //   }
+      // ]
     }
     sheets.spreadsheets.values.batchGet(batchGet_request)
       .then(res=>{
