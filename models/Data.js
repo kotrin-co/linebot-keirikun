@@ -86,7 +86,7 @@ const appendJournal = (ssID,selectedMonth,selectedDay,accountSelect,newValue) =>
                     "endColumnIndex": 5
                   }
                 },
-                "sortSpec": [
+                "sortSpecs": [
                   {
                     "dimensionIndex": 0,
                     "sortOrder": "ASCENDING"
