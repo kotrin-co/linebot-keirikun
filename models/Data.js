@@ -103,7 +103,26 @@ const appendJournal = (ssID,selectedMonth,selectedDay,accountSelect,newValue) =>
           })
       })
       .catch(e=>console.log(e));
+  })
+}
 
+const updateJournal = (ssId,selectedMonth,selectedDay,accountSelect,newValue) => {
+  return new Promise(resolve=>{
+    const sheets = authorize();
+
+    const batchGet_request = {
+      spreadsheetId: ssID,
+      valueRanges: [
+        {
+          range: '入力用シート!B2:NB14',
+          majorDimension: 'COLUMNS'
+        }
+      ]
+    }
+    sheets.spreadsheets.values.batchGet(batchGet_request)
+      .then(res=>{
+        console.log('res',res.data);
+      })
   })
 }
 
@@ -206,9 +225,10 @@ module.exports = {
               const oldValue = parseInt(response.data.values[0][0]);
               newValue = oldValue+parseInt(amountInput);
               console.log('newValue',newValue);
+              await updateJournal(ssId,selectedMonth,selectedDay,accountSelect,newValue);
             }else{
               newValue = parseInt(amountInput);
-              await appendJournal(ssId,selectedMonth,selectedDay,accountSelect,newValue)
+              await appendJournal(ssId,selectedMonth,selectedDay,accountSelect,newValue);
             }
           }else{
             if('values' in response.data){
