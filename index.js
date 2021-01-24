@@ -239,10 +239,16 @@ const handleMessageEvent = async (ev) => {
               }
   
               else if( text === 'けーり君と話して会計入力したい！'){
-                return client.replyMessage(ev.replyToken,{
-                  "type":"text",
-                  "text":"金額を半角数値で入力してください！/nマイナスの数値を入力すると減算されます。"
-                });
+                return client.replyMessage(ev.replyToken,[
+                  {
+                    "type":"text",
+                    "text":"金額を半角数値で入力してください！"
+                  },
+                  {
+                    "type":"text",
+                    "text":"マイナスの数値を入力すると元の数値から減算されるよ!"
+                  }
+                ]);
               }
               else if(text.match(/^[+\-]?([1-9]\d*|0)$/)){
                 const flexMessage = Flex.makeAccountChoice(text);
