@@ -135,7 +135,7 @@ const updateJournal = (ssId,selectedMonth,selectedDay,accountSelect,newValue) =>
               if(value){
                 let days = i+1;
                 let month = 1;
-                while(days<daysEveryMonth[month-1]){
+                while(days>daysEveryMonth[month-1]){
                   days -= daysEveryMonth[month-1];
                   month++;
                 }
