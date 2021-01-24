@@ -96,7 +96,7 @@ const appendJournal = (ssID,selectedMonth,selectedDay,accountSelect,newValue) =>
             ]
           }
         }
-        sheets.spreadsheets.batchupdate(sort_request)
+        sheets.spreadsheets.batchUpdate(sort_request)
           .then(res=>{
             console.log('sort res',res.data);
             resolve();
