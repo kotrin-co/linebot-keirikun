@@ -127,51 +127,63 @@ const updateJournal = (ssId) => {
     }
     sheets.spreadsheets.values.batchGet(batchGet_request)
       .then(res=>{
-        const valuesArray = res.data.valueRanges[0].values;
-        // console.log('res',valuesArray);
-        const journalValues = [];
-        valuesArray.forEach((array,i)=>{
-          if(array.length){
-            array.forEach((value,j)=>{
-              if(value){
-                let days = i+1;
-                let month = 1;
-                while(days>daysEveryMonth[month-1]){
-                  days -= daysEveryMonth[month-1];
-                  month++;
-                }
-                journalValues.push([
-                  `${month}/${days}`,
-                  null,
-                  value,
-                  null,
-                  value,
-                  ACCOUNTS[j]
-                ]);
-              }
-            })
-          }
-        });
-        console.log('journalValues',journalValues);
-
-        //仕訳帳をアップデート
-        const batchUpdate_request = {
+        //仕訳帳を一旦全クリアする
+        const clear_request = {
           spreadsheetId: ssId,
           resource: {
-            valueInputOption: 'USER_ENTERED',
-            data:[
-              {
-                majorDimension: 'ROWS',
-                range: '仕訳帳!A5',
-                values: journalValues
-              }
+            ranges:[
+              '仕訳帳!A5:F'
             ]
           }
-        };
-        sheets.spreadsheets.values.batchUpdate(batchUpdate_request)
+        }
+        sheets.spreadsheets.values.batchClear(clear_request)
           .then(res=>{
-            console.log('updated');
-            resolve();
+            const valuesArray = res.data.valueRanges[0].values;
+            const journalValues = [];
+            valuesArray.forEach((array,i)=>{
+              if(array.length){
+                array.forEach((value,j)=>{
+                  if(value){
+                    let days = i+1;
+                    let month = 1;
+                    while(days>daysEveryMonth[month-1]){
+                      days -= daysEveryMonth[month-1];
+                      month++;
+                    }
+                    journalValues.push([
+                      `${month}/${days}`,
+                      null,
+                      value,
+                      null,
+                      value,
+                      ACCOUNTS[j]
+                    ]);
+                  }
+                })
+              }
+            });
+            console.log('journalValues',journalValues);
+
+            //仕訳帳をアップデート
+            const batchUpdate_request = {
+              spreadsheetId: ssId,
+              resource: {
+                valueInputOption: 'USER_ENTERED',
+                data:[
+                  {
+                    majorDimension: 'ROWS',
+                    range: '仕訳帳!A5',
+                    values: journalValues
+                  }
+                ]
+              }
+            };
+            sheets.spreadsheets.values.batchUpdate(batchUpdate_request)
+              .then(res=>{
+                console.log('updated');
+                resolve();
+              })
+              .catch(e=>console.log(e));
           })
           .catch(e=>console.log(e));
       })
