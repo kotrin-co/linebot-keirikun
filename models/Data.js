@@ -59,10 +59,10 @@ const updateJournal = (ssID,selectedMonth,selectedDay,accountSelect,newValue) =>
       spreadsheetId: ssID,
       range: '仕訳帳!A5',
       valueInputOption: 'USER_ENTERED',
-      insertDataOption: 'INSERT_ROWS',
+      insertDataOption: 'OVERWRITE',
       resource: {
         values: [
-          [`${selectedMonth}/${selectedDay}`,'',newValue,'',newValue,accountSelect]
+          [`${selectedMonth}/${selectedDay}`,null,newValue,null,newValue,accountSelect]
         ]
       }
     }
