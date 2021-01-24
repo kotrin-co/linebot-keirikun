@@ -553,6 +553,60 @@ module.exports = {
       });
     });
     console.log('messageContents',messageContents);
+
+    const flexMessage = {
+      type:'flex',
+      altText:'勘定科目選択',
+      contents:
+      {
+        type:'carousel',
+        contents:[
+          {
+            type:'bubble',
+            header:{
+              type:'box',
+              layout:'vertical',
+              contents:[
+                {
+                  type:'text',
+                  text:'科目を選んでください',
+                  align:'center'
+                }
+              ]
+            },
+            body:{
+              type:'box',
+              layout:'vertical',
+              contents:[
+                messageContents[0]
+              ]
+            }
+          },
+          {
+            type:'bubble',
+            header:{
+              type:'box',
+              layout:'vertical',
+              contents:[
+                {
+                  type:'text',
+                  text:'科目を選んでください',
+                  align:'center'
+                }
+              ]
+            },
+            body:{
+              type:'box',
+              layout:'vertical',
+              contents:[
+                messageContents[0]
+              ]
+            }
+          }
+        ]
+      }
+    }
+    return flexMessage;
   },
 
   makeAccountChoiceForConfirmation: () => {
