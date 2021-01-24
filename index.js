@@ -324,12 +324,13 @@ const handlePostbackEvent = (ev) => {
         if(foundValues.length){
           foundValues.forEach((object,index)=>{
             if(index === 0){
-              message += `${selectedMonth}月${selectedDay}日のデータ\n■■■■■■■■■\n\n`+object.account + ':' + object.value;
+              message += `「${selectedMonth}月${selectedDay}日」データ\n■■■■■■■■■\n\n`+object.account + ':' + object.value;
             }
             else{
               message += '\n'+object.account + ':' + object.value;
             }
-          })
+          });
+          message += '\n\n■■■■■■■■■';
         }else{
           message = 'その日時のデータはありません';
         }
@@ -356,6 +357,7 @@ const handlePostbackEvent = (ev) => {
               message += '\n'+object.date + ':' + object.amount+'円';
             }
           });
+          message += '\n\n■■■■■■■■■';
         }else{
           message = 'その科目のデータはありません';
         }
