@@ -384,11 +384,9 @@ const handlePostbackEvent = (ev) => {
     const line_uid = ev.source.userId;
     Data.findValuesByDate({selectedMonth,selectedDay,line_uid})
       .then(foundValues=>{
-        const flexMessage = Flex.makeAccountChoiceForDelete2(selectedDate,foundValues);
+        const flexMessage = Flex.makeAccountChoiceForDelete(selectedDate,foundValues);
         return client.replyMessage(ev.replyToken,flexMessage);
       })
-    // const flexMessage = Flex.makeAccountChoiceForDelete(selectedDate);
-    // return client.replyMessage(ev.replyToken,flexMessage);
   }
 
   else if(postbackData[0] === 'deleteAccount'){
