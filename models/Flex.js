@@ -595,7 +595,8 @@ module.exports = {
     }
 
     mainMessage.contents.contents = bubbleContents;
-    console.log('bubble',bubbleContents);
+    console.log('main',mainMessage);
+    console.log('bubble',bubbleContents[0].body.contents);
     // accountsExist.forEach(array=>{
     //   messageContents.push({
     //     type: 'button',
