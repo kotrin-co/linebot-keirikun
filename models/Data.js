@@ -53,7 +53,7 @@ const authorize = () => {
   return google.sheets({version: 'v4', auth: jwtClient});
 }
 
-
+//仕訳帳の更新処理
 const updateJournal = (ssId) => {
   return new Promise(resolve=>{
     const sheets = authorize();
@@ -145,6 +145,7 @@ const updateJournal = (ssId) => {
 
 module.exports = {
 
+  //ユーザーデータの取得
   getUserData: (line_uid) => {
     return new Promise((resolve,reject) => {
       const pickup_query = {
@@ -162,6 +163,7 @@ module.exports = {
     })
   },
 
+  //入力用シートへの入力
   inputSS: ({amountInput,accountSelect,selectedMonth,selectedDay,line_uid}) => {
     return new Promise((resolve,reject)=>{
 
@@ -178,7 +180,6 @@ module.exports = {
           console.log('ssid sid',ssId,inputSheetId);
 
           const sheets = authorize();
-          // const sheets = google.sheets({version: 'v4', auth: jwtClient});
 
           //行番号の取得
           const rowNumber = ACCOUNTS.indexOf(accountSelect)+2;
@@ -251,6 +252,7 @@ module.exports = {
     });
   },
 
+  //ユーザー情報更新（サブスク課金したらsubscription id をデータベースへ格納）
   updateUser: ({subscription,lineId}) => {
     return new Promise((resolve,reject) => {
       console.log('subscription',subscription);
@@ -266,6 +268,7 @@ module.exports = {
     });
   },
 
+  //日付によるデータ抽出
   findValuesByDate: ({selectedMonth,selectedDay,line_uid}) => {
     return new Promise(resolve => {
 
@@ -336,6 +339,7 @@ module.exports = {
     })
   },
 
+  //科目によるデータ抽出
   findValuesByAccount: ({selectedAccount,line_uid}) => {
     return new Promise(resolve=>{
       const select_query = {
@@ -398,6 +402,7 @@ module.exports = {
     });
   },
 
+  //サブスクの解約
   cancellation: (lineId,subscription) => {
     return new Promise((resolve,reject)=> {
       const update_query = {

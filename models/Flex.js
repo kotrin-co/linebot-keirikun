@@ -309,6 +309,7 @@ module.exports = {
     return flexMessage;
   },
 
+  //削除用の科目選択カルーセルを動的に生成
   makeAccountChoiceForDelete: (selectedDate,foundValues) => {
     console.log('foundValues',foundValues);
     const accountsExist = [];
