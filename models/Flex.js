@@ -582,7 +582,8 @@ module.exports = {
           type: 'button',
           action: {
             type: 'postback',
-            label: `${ACCOUNTS[accountsExist[NUMBER_OF_BUTTONS*i+j][0]]} ￥${accountsExist[NUMBER_OF_BUTTONS*i+j][1]}`
+            label: `${ACCOUNTS[accountsExist[NUMBER_OF_BUTTONS*i+j][0]]} ￥${accountsExist[NUMBER_OF_BUTTONS*i+j][1]}`,
+            data: `deleteAccount&${selectedDate}&${accountsExist[NUMBER_OF_BUTTONS*i+j][0]}`
           }
         });
       }
