@@ -304,7 +304,10 @@ const handlePostbackEvent = (ev) => {
   }
 
   else if(postbackData[0] === 'transaction'){
-    console.log('ここに処理書く');
+    return client.replyMessage(ev.replyToken,{
+      type:'text',
+      text:'次は日付選択のイベントへつなげます^^'
+    });
   }
 
   else if(postbackData[0] === 'date'){
