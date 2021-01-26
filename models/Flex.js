@@ -1,4 +1,5 @@
 const ACCOUNTS = ['売上','源泉所得税','交通費','会議費','接待交際費','通信費','衣装費','郵便代','保険料','年金','家賃','従業員報酬','その他'];
+const NUMBER_OF_BUTTONS =4; //カルーセルの中のボタン数
 
 module.exports = {
 
@@ -543,44 +544,96 @@ module.exports = {
       accountsExist.push([ACCOUNTS.indexOf(obj.account),obj.value])
     })
     const messageContents = [];
-    accountsExist.forEach(array=>{
-      messageContents.push({
-        type: 'button',
-        action: {
-          type: 'postback',
-          label: `${ACCOUNTS[array[0]]} ￥${array[1]}`,
-          data: `deleteAccount&${selectedDate}&${array[0]}`
-        }
-      });
-    });
-    console.log('messageContents',messageContents);
+    const numberOfSlides = Math.ceil(foundValues/NUMBER_OF_BUTTONS); //カルーセルの中のスライド枚数
 
-    const flexMessage = {
+    const mainMessage = {
       type:'flex',
       altText:'勘定科目選択',
       contents:
       {
         type:'carousel',
-        contents:[
-          {
-            type:'bubble',
-            header:{
-              type:'box',
-              layout:'vertical',
-              contents:[
-                {
-                  type:'text',
-                  text:'削除する項目を選んでください',
-                  align:'center'
-                }
-              ]
-            },
-            body:{
-              type:'box',
-              layout:'vertical',
-              contents: messageContents
+        contents: null
+      }
+    }
+
+    const bubbleContents = [];
+
+    for(let i=0;i<numberOfSlides;i++){
+
+      //カルーセルの中のコンテンツ生成
+      const contentsOfCarousel = {
+        type:'bubble',
+        header:{
+          type:'box',
+          layout:'vertical',
+          contents:[
+            {
+              type:'text',
+              text:'削除する項目を選んでください',
+              align:'center'
             }
-          },
+          ]
+        }
+      };
+
+      const bodyContents = [];
+      const l = i===numberOfSlides-1 ? foundValues.length-NUMBER_OF_BUTTONS*i : NUMBER_OF_BUTTONS;
+      for(let j=0;j<l;j++){
+        bodyContents.push({
+          type: 'button',
+          action: {
+            type: 'postback',
+            label: `${ACCOUNTS[accountsExist[NUMBER_OF_BUTTONS*i+j][0]]} ￥${accountsExist[NUMBER_OF_BUTTONS*i+j][1]}`
+          }
+        });
+      }
+      contentsOfCarousel.body = {
+        type:'box',
+        layout:'vertical',
+        contents:bodyContents
+      };
+      bubbleContents.push(contentsOfCarousel);
+    }
+
+    mainMessage.contents.contents = bubbleContents;
+    console.log('mainMessage',mainMessage);
+    // accountsExist.forEach(array=>{
+    //   messageContents.push({
+    //     type: 'button',
+    //     action: {
+    //       type: 'postback',
+    //       label: `${ACCOUNTS[array[0]]} ￥${array[1]}`,
+    //       data: `deleteAccount&${selectedDate}&${array[0]}`
+    //     }
+    //   });
+    // });
+
+    // const flexMessage = {
+    //   type:'flex',
+    //   altText:'勘定科目選択',
+    //   contents:
+    //   {
+    //     type:'carousel',
+    //     contents:[
+    //       {
+    //         type:'bubble',
+    //         header:{
+    //           type:'box',
+    //           layout:'vertical',
+    //           contents:[
+    //             {
+    //               type:'text',
+    //               text:'削除する項目を選んでください',
+    //               align:'center'
+    //             }
+    //           ]
+    //         },
+    //         body:{
+    //           type:'box',
+    //           layout:'vertical',
+    //           contents: messageContents
+    //         }
+    //       },
           // {
           //   type:'bubble',
           //   header:{
@@ -602,10 +655,10 @@ module.exports = {
             //   ]
             // }
           // }
-        ]
-      }
-    }
-    return flexMessage;
+    //     ]
+    //   }
+    // }
+    return mainMessage;
   },
 
   makeAccountChoiceForConfirmation: () => {

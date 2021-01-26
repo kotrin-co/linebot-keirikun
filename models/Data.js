@@ -53,61 +53,6 @@ const authorize = () => {
   return google.sheets({version: 'v4', auth: jwtClient});
 }
 
-// const appendJournal = (ssID,selectedMonth,selectedDay,accountSelect,newValue) => {
-//   return new Promise(resolve=>{
-
-//     const sheets = authorize();
-
-//     //最終行に値を追加
-//     const append_request = {
-//       spreadsheetId: ssID,
-//       range: '仕訳帳!A5',
-//       valueInputOption: 'USER_ENTERED',
-//       insertDataOption: 'OVERWRITE',
-//       resource: {
-//         values: [
-//           [`${selectedMonth}/${selectedDay}`,null,newValue,null,newValue,accountSelect]
-//         ]
-//       }
-//     }
-
-//     sheets.spreadsheets.values.append(append_request)
-//       .then(res=>{
-//         console.log('追加！！');
-//         //昇順ソート
-//         const sort_request = {
-//           spreadsheetId: ssID,
-//           resource:{
-//             requests:[
-//               {
-//                 sortRange: {
-//                   range: {
-//                     sheetId: 976007655,
-//                     startRowIndex: 4,
-//                     endRowIndex: 10000,
-//                     startColumnIndex: 0,
-//                     endColumnIndex: 6
-//                   },
-//                   sortSpecs: [
-//                     {
-//                       dimensionIndex: 0,
-//                       sortOrder: "ASCENDING"
-//                     }
-//                   ]
-//                 }
-//               }
-//             ]
-//           }
-//         }
-//         sheets.spreadsheets.batchUpdate(sort_request)
-//           .then(res=>{
-//             console.log('sort res',res.data);
-//             resolve();
-//           })
-//       })
-//       .catch(e=>console.log(e));
-//   })
-// }
 
 const updateJournal = (ssId) => {
   return new Promise(resolve=>{
