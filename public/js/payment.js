@@ -35,7 +35,7 @@ const createPaymentPage = () => {
   const divMenu1 = document.createElement('div');
   divMenu1.setAttribute('class','menu-contents');
   const pMenu1 = document.createElement('p');
-  pMenu1.innerHTML = '一括　¥50（テストだけどリアル払い）';
+  pMenu1.innerHTML = '日額 ¥50（テストだけどリアル払い）';
   pMenu1.setAttribute('class','p-menu');
   divMenu1.appendChild(pMenu1);
   const btnMenu1 = document.createElement('button');
@@ -69,7 +69,7 @@ const createPaymentPage = () => {
   const divMenu2 = document.createElement('div');
   divMenu2.setAttribute('class','menu-contents');
   const pMenu2 = document.createElement('p');
-  pMenu2.innerHTML = '一括 ¥29,950（リアル）';
+  pMenu2.innerHTML = '日額 ¥29,950（リアル）';
   pMenu2.setAttribute('class','p-menu');
   divMenu2.appendChild(pMenu2);
   const btnMenu2 = document.createElement('button');
