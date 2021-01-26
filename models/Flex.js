@@ -543,8 +543,7 @@ module.exports = {
     foundValues.forEach((obj,index)=>{
       accountsExist.push([ACCOUNTS.indexOf(obj.account),obj.value])
     })
-    const messageContents = [];
-    const numberOfSlides = Math.ceil(foundValues/NUMBER_OF_BUTTONS); //カルーセルの中のスライド枚数
+    const numberOfSlides = Math.ceil(foundValues.length/NUMBER_OF_BUTTONS); //カルーセルの中のスライド枚数
 
     const mainMessage = {
       type:'flex',
