@@ -294,11 +294,17 @@ const handleMessageEvent = async (ev) => {
 const handlePostbackEvent = (ev) => {
   const postbackData = ev.postback.data.split('&');
 
+  //ここから変更 deal-branch 1/26
   if(postbackData[0] === 'account'){
     const amount = parseInt(postbackData[1]);
     const selectedAccount = parseInt(postbackData[2]);
-    const flexMessage = Flex.makeDateChoice(amount,selectedAccount);
+    // const flexMessage = Flex.makeDateChoice(amount,selectedAccount);
+    const flexMessage = Flex.makeTransactionChoice(amount,selectedAccount);
     return client.replyMessage(ev.replyToken,flexMessage);
+  }
+
+  else if(postbackData[0] === 'transaction'){
+    console.log('ここに処理書く');
   }
 
   else if(postbackData[0] === 'date'){
