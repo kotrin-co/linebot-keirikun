@@ -57,11 +57,13 @@ module.exports = {
       for(let j=0; j<NUMBER_OF_ROWS; j++){
         const horizontalContents = [];
         for(let k=0; k<NUMBER_OF_COLUMNS; k++){
+          //ACCOUNTSに値があるかの判定
+          const buttonLabel = ((8*i+2*j+k)<=ACCOUNTS.length-1) ? ACCOUNTS[8*i+2*j+k] : 'none';
           horizontalContents.push({
             type:'button',
             action: {
               type:'postback',
-              'label':ACCOUNTS[8*i+2*j+k],
+              label:ACCOUNTS[8*i+2*j+k],
               data:`account&${number}&${8*i+2*j+k}`
             },
             color:BUTTON_COLOR,
