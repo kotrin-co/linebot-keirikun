@@ -251,7 +251,7 @@ const handleMessageEvent = async (ev) => {
                 ]);
               }
               else if(text.match(/^[+\-]?([1-9]\d*|0)$/)){
-                const flexMessage = Flex.makeAccountChoice(text);
+                const flexMessage = Flex.makeAccountSelector(text);
                 return client.replyMessage(ev.replyToken,flexMessage);
 
               }

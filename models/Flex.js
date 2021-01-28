@@ -1,7 +1,243 @@
-const ACCOUNTS = ['売上','源泉所得税','交通費','会議費','接待交際費','通信費','衣装費','郵便代','保険料','年金','家賃','従業員報酬','その他'];
-const NUMBER_OF_BUTTONS =4; //カルーセルの中のボタン数
+// const ACCOUNTS = ['売上','源泉所得税','交通費','会議費','接待交際費','通信費','衣装費','郵便代','保険料','年金','家賃','従業員報酬','その他'];
+const NUMBER_OF_BUTTONS =4; //カルーセルの中の段数
+
+const {
+  ACCOUNTS,
+  NUMBER_OF_ROWS,
+  NUMBER_OF_COLUMNS,
+  BUTTON_COLOR
+} = require('../params/params');
 
 module.exports = {
+
+  makeAccountSelector: (number) => {
+    
+    //カルーセルの枚数
+    const carousels = Math.ceil(ACCOUNTS.length/(NUMBER_OF_ROWS*NUMBER_OF_COLUMNS));
+
+    //フレックスメッセージの原型
+    const flexMessage = {
+      type:'flex',
+      altText:'勘定科目選択',
+      contents:
+      {
+        type:'carousel',
+        contents: null
+      }
+    }
+
+    //バブルコンテンツ
+    const bubbleContents = [];
+
+    for(let i=0; i<carousels; i++){
+
+      //バブル雛形
+      const bubble = {
+        type:'bubble',
+        header:{
+          type:'box',
+          layout:'vertical',
+          contents:[
+            {
+              type:'text',
+              text:'科目を選択してください',
+              align:'center'
+            }
+          ]
+        },
+        body:{
+          type:'box',
+          layout:'vertical',
+          contents:null
+        }
+      };
+      //bodyコンテンツ
+      const bodyContents = [];
+
+      for(let j=0; j<NUMBER_OF_ROWS; j++){
+        const horizontalContents = [];
+        for(let k=0; k<NUMBER_OF_COLUMNS; k++){
+          horizontalContents.push({
+            type:'button',
+            action: {
+              type:'postback',
+              'label':ACCOUNTS[8*i+2*j+k],
+              data:`account&${number}&${8*i+2*j+k}`
+            },
+            color:BUTTON_COLOR,
+            style:'primary',
+            adjustMode:'shrink-to-fit',
+            margin:'md'
+          });
+        }
+
+        bodyContents.push({
+          type:'box',
+          layout:'horizontal',
+          contents:horizontalContents
+        });
+      }
+
+      bubble.body.contents = bodyContents;
+      bubbleContents.push(bubble);
+    }
+
+    flexMessage.contents.contents = bubbleContents;
+
+    return flexMessage;
+  },
+  // {
+  //   "type": "carousel",
+  //   "contents": [
+  //     {
+  //       "type": "bubble",
+  //       "header": {
+  //         "type": "box",
+  //         "layout": "vertical",
+  //         "contents": [
+  //           {
+  //             "type": "text",
+  //             "text": "科目を選択してください",
+  //             "align": "center"
+  //           }
+  //         ]
+  //       },
+  //       "body": {
+  //         "type": "box",
+  //         "layout": "vertical",
+  //         "contents": [
+  //           {
+  //             "type": "box",
+  //             "layout": "horizontal",
+  //             "contents": [
+  //               {
+  //                 "type": "button",
+  //                 "action": {
+  //                   "type": "postback",
+  //                   "label": "売上",
+  //                   "data": "account"
+  //                 },
+  //                 "color": "#434DFF",
+  //                 "style": "primary",
+  //                 "adjustMode": "shrink-to-fit"
+  //               },
+  //               {
+  //                 "type": "button",
+  //                 "action": {
+  //                   "type": "postback",
+  //                   "label": "仕入れ",
+  //                   "data": "account"
+  //                 },
+  //                 "style": "primary",
+  //                 "color": "#434DFF",
+  //                 "margin": "md",
+  //                 "adjustMode": "shrink-to-fit"
+  //               }
+  //             ]
+  //           },
+  //           {
+  //             "type": "box",
+  //             "layout": "horizontal",
+  //             "contents": [
+  //               {
+  //                 "type": "button",
+  //                 "action": {
+  //                   "type": "postback",
+  //                   "label": "交通費",
+  //                   "data": "account"
+  //                 },
+  //                 "color": "#434DFF",
+  //                 "style": "primary",
+  //                 "adjustMode": "shrink-to-fit"
+  //               },
+  //               {
+  //                 "type": "button",
+  //                 "action": {
+  //                   "type": "postback",
+  //                   "label": "会議費",
+  //                   "data": "account"
+  //                 },
+  //                 "style": "primary",
+  //                 "color": "#434DFF",
+  //                 "margin": "md",
+  //                 "adjustMode": "shrink-to-fit"
+  //               }
+  //             ],
+  //             "margin": "md"
+  //           },
+  //           {
+  //             "type": "box",
+  //             "layout": "horizontal",
+  //             "contents": [
+  //               {
+  //                 "type": "button",
+  //                 "action": {
+  //                   "type": "postback",
+  //                   "label": "接待交際費",
+  //                   "data": "account"
+  //                 },
+  //                 "color": "#434DFF",
+  //                 "style": "primary",
+  //                 "adjustMode": "shrink-to-fit"
+  //               },
+  //               {
+  //                 "type": "button",
+  //                 "action": {
+  //                   "type": "postback",
+  //                   "label": "通信費",
+  //                   "data": "account"
+  //                 },
+  //                 "style": "primary",
+  //                 "color": "#434DFF",
+  //                 "margin": "md",
+  //                 "adjustMode": "shrink-to-fit"
+  //               }
+  //             ],
+  //             "margin": "md"
+  //           },
+  //           {
+  //             "type": "box",
+  //             "layout": "horizontal",
+  //             "contents": [
+  //               {
+  //                 "type": "button",
+  //                 "action": {
+  //                   "type": "postback",
+  //                   "label": "衣装費",
+  //                   "data": "account"
+  //                 },
+  //                 "color": "#434DFF",
+  //                 "style": "primary",
+  //                 "adjustMode": "shrink-to-fit"
+  //               },
+  //               {
+  //                 "type": "button",
+  //                 "action": {
+  //                   "type": "postback",
+  //                   "data": "account",
+  //                   "label": "消耗品費"
+  //                 },
+  //                 "style": "primary",
+  //                 "color": "#434DFF",
+  //                 "margin": "md",
+  //                 "adjustMode": "shrink-to-fit"
+  //               }
+  //             ],
+  //             "margin": "md"
+  //           }
+  //         ]
+  //       }
+  //     },
+  //     {
+  //       "type": "bubble",
+  //       "body": {
+  //         "type": "box",
+  //         "layout": "vertical",
+  //         "contents": []
+  //       }
+  //     }
+  //   ]
+  // }
 
   makeAccountChoice: (text) => {
     const flexMessage = {
