@@ -5,8 +5,7 @@ const {
   ACCOUNTS,
   NUMBER_OF_ROWS,
   NUMBER_OF_COLUMNS,
-  BUTTON_COLOR_ACTIVE,
-  BUTTON_COLOR_INACTIVE
+  BUTTON_COLOR
 } = require('../params/params');
 
 module.exports = {
@@ -66,7 +65,7 @@ module.exports = {
               type:'button',
               action: {
                 type:'postback',
-                label:buttonLabel,
+                label:ACCOUNTS[8*i+2*j+k],
                 data:`account&${number}&${8*i+2*j+k}`
               },
               color:BUTTON_COLOR,
