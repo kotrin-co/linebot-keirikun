@@ -58,7 +58,7 @@ module.exports = {
         const horizontalContents = [];
         for(let k=0; k<NUMBER_OF_COLUMNS; k++){
           //ACCOUNTSに値があるかの判定
-          const buttonLabel = ((8*i+2*j+k)<=ACCOUNTS.length-1) ? ACCOUNTS[8*i+2*j+k] : '';
+          const buttonLabel = ((8*i+2*j+k)<=ACCOUNTS.length-1) ? ACCOUNTS[8*i+2*j+k] : '1';
           horizontalContents.push({
             type:'button',
             action: {
