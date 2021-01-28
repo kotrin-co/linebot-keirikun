@@ -58,7 +58,7 @@ module.exports = {
         const horizontalContents = [];
         for(let k=0; k<NUMBER_OF_COLUMNS; k++){
           //ACCOUNTSに値があるかの判定
-          const buttonLabel = ((8*i+2*j+k)<=ACCOUNTS.length-1) ? ACCOUNTS[8*i+2*j+k] : 'none';
+          const buttonLabel = ((8*i+2*j+k)<=ACCOUNTS.length-1) ? ACCOUNTS[8*i+2*j+k] : '';
           horizontalContents.push({
             type:'button',
             action: {
@@ -76,7 +76,8 @@ module.exports = {
         bodyContents.push({
           type:'box',
           layout:'horizontal',
-          contents:horizontalContents
+          contents:horizontalContents,
+          margin:'md'
         });
       }
 
