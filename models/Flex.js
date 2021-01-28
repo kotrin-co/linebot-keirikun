@@ -63,7 +63,7 @@ module.exports = {
             type:'button',
             action: {
               type:'postback',
-              label:ACCOUNTS[8*i+2*j+k],
+              label:buttonLabel,
               data:`account&${number}&${8*i+2*j+k}`
             },
             color:BUTTON_COLOR,
