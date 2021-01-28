@@ -59,20 +59,28 @@ module.exports = {
         const horizontalContents = [];
         for(let k=0; k<NUMBER_OF_COLUMNS; k++){
           //ACCOUNTSに値があるかの判定
-          const buttonLabel = ((8*i+2*j+k)<=ACCOUNTS.length-1) ? ACCOUNTS[8*i+2*j+k] : '　';
-          const buttonColor = ((8*i+2*j+k)<=ACCOUNTS.length-1) ? BUTTON_COLOR_ACTIVE : BUTTON_COLOR_INACTIVE;
-          horizontalContents.push({
-            type:'button',
-            action: {
-              type:'postback',
-              label:buttonLabel,
-              data:`account&${number}&${8*i+2*j+k}`
-            },
-            color:BUTTON_COLOR,
-            style:'primary',
-            adjustMode:'shrink-to-fit',
-            margin:'md'
-          });
+          // const buttonLabel = ((8*i+2*j+k)<=ACCOUNTS.length-1) ? ACCOUNTS[8*i+2*j+k] : '　';
+          // const buttonColor = ((8*i+2*j+k)<=ACCOUNTS.length-1) ? BUTTON_COLOR_ACTIVE : BUTTON_COLOR_INACTIVE;
+          if((8*i+2*j+k)<=ACCOUNTS.length-1){
+            horizontalContents.push({
+              type:'button',
+              action: {
+                type:'postback',
+                label:buttonLabel,
+                data:`account&${number}&${8*i+2*j+k}`
+              },
+              color:BUTTON_COLOR,
+              style:'primary',
+              adjustMode:'shrink-to-fit',
+              margin:'md'
+            });
+          }else{
+            horizontalContents.push({
+              type:'text',
+              text:'　',
+              margin:'md'
+            });
+          }
         }
 
         bodyContents.push({
