@@ -5,7 +5,8 @@ const {
   ACCOUNTS,
   NUMBER_OF_ROWS,
   NUMBER_OF_COLUMNS,
-  BUTTON_COLOR
+  BUTTON_COLOR_ACTIVE,
+  BUTTON_COLOR_INACTIVE
 } = require('../params/params');
 
 module.exports = {
@@ -59,6 +60,7 @@ module.exports = {
         for(let k=0; k<NUMBER_OF_COLUMNS; k++){
           //ACCOUNTSに値があるかの判定
           const buttonLabel = ((8*i+2*j+k)<=ACCOUNTS.length-1) ? ACCOUNTS[8*i+2*j+k] : '　';
+          const buttonColor = ((8*i+2*j+k)<=ACCOUNTS.length-1) ? BUTTON_COLOR_ACTIVE : BUTTON_COLOR_INACTIVE;
           horizontalContents.push({
             type:'button',
             action: {
