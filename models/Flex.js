@@ -299,7 +299,7 @@ module.exports = {
           action: {
             type: 'postback',
             label: `${foundValues[NUMBER_OF_BUTTONS*i+j].account}(${foundValues[NUMBER_OF_BUTTONS*i+j].transaction}) ￥${foundValues[NUMBER_OF_BUTTONS*i+j].value}`,
-            data: `deleteAccount&${selectedDate}&${foundValues[NUMBER_OF_BUTTONS*i+j].account}&${foundValues[NUMBER_OF_BUTTONS*i+j].transaction}`
+            data: `deleteAccount&${selectedDate}&${ACCOUNTS.indexOf(foundValues[NUMBER_OF_BUTTONS*i+j].account)}&${TRANSACTIONS.indexOf(foundValues[NUMBER_OF_BUTTONS*i+j].transaction)}`
           },
           color:BUTTON_COLOR,
           style:'primary',
