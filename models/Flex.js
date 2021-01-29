@@ -1,5 +1,4 @@
 // const ACCOUNTS = ['売上','源泉所得税','交通費','会議費','接待交際費','通信費','衣装費','郵便代','保険料','年金','家賃','従業員報酬','その他'];
-const NUMBER_OF_BUTTONS =4; //カルーセルの中の段数
 
 const {
   ACCOUNTS,
@@ -170,7 +169,10 @@ module.exports = {
       postbackData = `date&${amount}&${selectedAccount}&${selectedTransaction}`;
     }else if(mode === 'confirmation'){
       postbackData = 'confirmationByDate';
+    }else if(mode === 'delete'){
+      postbackData = 'delete';
     }
+
     const flexMessage = {
       "type":"flex",
       "altText":"日付選択",
@@ -209,52 +211,54 @@ module.exports = {
     return flexMessage;
   },
 
-  makeDateChoiceForConfirmation: (mode) => {
-    const flexMessage = {
-      "type":"flex",
-      "altText":"日付選択",
-      "contents":
-      {
-        "type": "bubble",
-        "body": {
-          "type": "box",
-          "layout": "vertical",
-          "contents": [
-            {
-              "type": "text",
-              "text": "対象日を選んでください",
-              "size": "md",
-              "align": "center"
-            }
-          ]
-        },
-        "footer": {
-          "type": "box",
-          "layout": "vertical",
-          "contents": [
-            {
-              "type": "button",
-              "action": {
-                "type": "datetimepicker",
-                "label": "日付を選択する",
-                "data": mode,
-                "mode": "date"
-              }
-            }
-          ]
-        }
-      }
-    };
-    return flexMessage;
-  },
+  // makeDateChoiceForConfirmation: (mode) => {
+  //   const flexMessage = {
+  //     "type":"flex",
+  //     "altText":"日付選択",
+  //     "contents":
+  //     {
+  //       "type": "bubble",
+  //       "body": {
+  //         "type": "box",
+  //         "layout": "vertical",
+  //         "contents": [
+  //           {
+  //             "type": "text",
+  //             "text": "対象日を選んでください",
+  //             "size": "md",
+  //             "align": "center"
+  //           }
+  //         ]
+  //       },
+  //       "footer": {
+  //         "type": "box",
+  //         "layout": "vertical",
+  //         "contents": [
+  //           {
+  //             "type": "button",
+  //             "action": {
+  //               "type": "datetimepicker",
+  //               "label": "日付を選択する",
+  //               "data": mode,
+  //               "mode": "date"
+  //             }
+  //           }
+  //         ]
+  //       }
+  //     }
+  //   };
+  //   return flexMessage;
+  // },
 
   //削除用の科目選択カルーセルを動的に生成
   makeAccountChoiceForDelete: (selectedDate,foundValues) => {
     console.log('foundValues',foundValues);
-    const accountsExist = [];
-    foundValues.forEach((obj,index)=>{
-      accountsExist.push([ACCOUNTS.indexOf(obj.account),obj.value])
-    })
+    const NUMBER_OF_BUTTONS =5; //カルーセルの中の段数
+
+    // const accountsExist = [];
+    // foundValues.forEach((obj,index)=>{
+    //   accountsExist.push([ACCOUNTS.indexOf(obj.account),obj.value])
+    // })
     const numberOfSlides = Math.ceil(foundValues.length/NUMBER_OF_BUTTONS); //カルーセルの中のスライド枚数
 
     const mainMessage = {
@@ -294,9 +298,13 @@ module.exports = {
           type: 'button',
           action: {
             type: 'postback',
-            label: `${ACCOUNTS[accountsExist[NUMBER_OF_BUTTONS*i+j][0]]} ￥${accountsExist[NUMBER_OF_BUTTONS*i+j][1]}`,
-            data: `deleteAccount&${selectedDate}&${accountsExist[NUMBER_OF_BUTTONS*i+j][0]}`
-          }
+            label: `${foundValues[NUMBER_OF_BUTTONS*i+j].account}(${foundValues[NUMBER_OF_BUTTONS*i+j].transaction}) ￥${foundValues[NUMBER_OF_BUTTONS*i+j].value}`,
+            data: `deleteAccount&${selectedDate}&${foundValues[NUMBER_OF_BUTTONS*i+j].account}&${foundValues[NUMBER_OF_BUTTONS*i+j].transaction}`
+          },
+          color:BUTTON_COLOR,
+          style:'primary',
+          adjustMode:'shrink-to-fit',
+          margin:'md'
         });
       }
       contentsOfCarousel.body = {

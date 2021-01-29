@@ -263,17 +263,15 @@ const handleMessageEvent = async (ev) => {
 
               }
               else if(text === '日付からデータ確認！'){
-                // Flex.makeDateSelector(amount,selectedAccount,selectedTransaction);
                 const flexMessage = Flex.makeDateSelector('confirmation','','','');
                 return client.replyMessage(ev.replyToken,flexMessage);
               }
               else if(text === '科目からデータ確認！'){
-                // const flexMessage = Flex.makeAccountChoiceForConfirmation();
                 const flexMessage = Flex.makeAccountSelector('');
                 return client.replyMessage(ev.replyToken,flexMessage);
               }
               else if(text === 'データ削除'){
-                const flexMessage = Flex.makeDateChoiceForConfirmation('delete');
+                const flexMessage = Flex.makeDateSelector('delete','','','');
                 return client.replyMessage(ev.replyToken,flexMessage);
               }
               else{
@@ -418,11 +416,13 @@ const handlePostbackEvent = (ev) => {
   else if(postbackData[0] === 'deleteAccount'){
     const amountInput = null;
     const selectedDate = postbackData[1];
-    const accountSelect = ACCOUNTS[parseInt(postbackData[2])];
+    const selectedAccount = parseInt(postbackData[2]);
+    const selectedTransaction = parseInt(postbackData[3]);
+    // const accountSelect = ACCOUNTS[parseInt(postbackData[2])];
     const selectedMonth = parseInt(selectedDate.split('-')[1]);
     const selectedDay = parseInt(selectedDate.split('-')[2]);
     const line_uid = ev.source.userId;
-    Data.inputSS({amountInput,accountSelect,selectedMonth,selectedDay,line_uid})
+    Data.inputSS({amountInput,selectedAccount,selectedTransaction,selectedMonth,selectedDay,line_uid})
       .then(newValue=>{
         return client.replyMessage(ev.replyToken,{
           "type":"text",
