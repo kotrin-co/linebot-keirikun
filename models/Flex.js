@@ -147,6 +147,7 @@ module.exports = {
           label:buttonLabels[i],
           data:`transaction${amount}&${selectedAccount}&${i}`
         },
+        color:BUTTON_COLOR,
         style:'primary',
         margin:'md',
         adjustMode:'shrink-to-fit'
