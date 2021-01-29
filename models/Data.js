@@ -93,6 +93,7 @@ const updateJournal = (ssId) => {
               if(value){
                 let days = i+1;
                 let month = 1;
+                const accountNumber = j<=82 ? Math.floor(j/3) : Math.round(j/3);
                 while(days>daysEveryMonth[month-1]){
                   days -= daysEveryMonth[month-1];
                   month++;
@@ -103,7 +104,7 @@ const updateJournal = (ssId) => {
                   value,
                   CREDITS[j],
                   value,
-                  ACCOUNTS[j]
+                  ACCOUNTS[accountNumber]
                 ]);
               }
             })
