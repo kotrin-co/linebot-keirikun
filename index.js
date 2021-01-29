@@ -17,7 +17,8 @@ const { copy } = require('./routers/index');
 const {
   ACCOUNTS,
   original_SSID,
-  original_SID
+  original_SID,
+  TRANSACTIONS
 } = require('./params/params');
 
 //stripeの設定
@@ -267,7 +268,8 @@ const handleMessageEvent = async (ev) => {
                 return client.replyMessage(ev.replyToken,flexMessage);
               }
               else if(text === '科目からデータ確認！'){
-                const flexMessage = Flex.makeAccountChoiceForConfirmation();
+                // const flexMessage = Flex.makeAccountChoiceForConfirmation();
+                const flexMessage = Flex.makeAccountSelector('');
                 return client.replyMessage(ev.replyToken,flexMessage);
               }
               else if(text === 'データ削除'){
@@ -365,15 +367,23 @@ const handlePostbackEvent = (ev) => {
   }
 
   else if(postbackData[0] === 'confirmationByAccount'){
-    const selectedAccount = postbackData[1];
+    const selectedAccount = parseInt(postbackData[1]);
+    const flexMessage = Flex.makeTransactionSelector('',selectedAccount);
+    return client.replyMessage(ev.replyToken,flexMessage);
+  }
+
+  else if(postbackData[0] === 'confirmationByTransaction'){
+    const selectedAccount = parseInt(postbackData[1]);
+    const selectedTransaction = parseInt(postbackData[2]);
     const line_uid = ev.source.userId;
-    Data.findValuesByAccount({selectedAccount,line_uid})
+    Data.findValuesByAccount({selectedAccount,selectedTransaction,line_uid})
       .then(foundValues=>{
         let message = '';
         if(foundValues.length){
           foundValues.forEach((object,index)=>{
+            const title = (selectedAccount === 0 && selectedTransaction === 2) ? '源泉所得税' : `${ACCOUNTS[selectedAccount]}(${TRANSACTIONS[selectedTransaction]})`;
             if(index === 0){
-              message += `「${ACCOUNTS[parseInt(selectedAccount)]}」データ\n■■■■■■■■■\n\n`+object.date + ':' + object.amount+'円';
+              message += `${title}\n■■■■■■■■■\n\n`+object.date + ':' + object.amount+'円';
             }
             else{
               message += '\n'+object.date + ':' + object.amount+'円';
@@ -381,7 +391,7 @@ const handlePostbackEvent = (ev) => {
           });
           message += '\n\n■■■■■■■■■';
         }else{
-          message = 'その科目のデータはありません';
+          message = 'その科目・取引のデータはありません';
         }
         return client.replyMessage(ev.replyToken,{
           "type":"text",

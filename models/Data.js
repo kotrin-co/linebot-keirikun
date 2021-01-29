@@ -358,7 +358,7 @@ module.exports = {
   },
 
   //科目によるデータ抽出
-  findValuesByAccount: ({selectedAccount,line_uid}) => {
+  findValuesByAccount: ({selectedAccount,selectedTransaction,line_uid}) => {
     return new Promise(resolve=>{
       const select_query = {
         text: `SELECT * FROM users WHERE line_uid='${line_uid}';`
@@ -373,7 +373,7 @@ module.exports = {
           const sheets = authorize();
 
           //行番号
-          const rowNumber = parseInt(selectedAccount)+2;
+          const rowNumber = 3*selectedAccount+selectedTransaction+2;
 
           //各月日数配列の生成
           const year = new Date().getFullYear();

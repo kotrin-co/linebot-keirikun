@@ -12,7 +12,7 @@ const {
 module.exports = {
 
   makeAccountSelector: (number) => {
-    
+
     //カルーセルの枚数
     const carousels = Math.ceil(ACCOUNTS.length/(NUMBER_OF_ROWS*NUMBER_OF_COLUMNS));
 
@@ -61,12 +61,16 @@ module.exports = {
 
           //ACCOUNTSに値があるかの判定
           if((8*i+2*j+k)<=ACCOUNTS.length-1){
+
+            //ポストバックデータの生成
+            const postbackData = number ? `account&${number}&${8*i+2*j+k}` : `confirmationByAccount&${8*i+2*j+k}`;
+            
             horizontalContents.push({
               type:'button',
               action: {
                 type:'postback',
                 label:ACCOUNTS[8*i+2*j+k],
-                data:`account&${number}&${8*i+2*j+k}`
+                data:postbackData
               },
               color:BUTTON_COLOR,
               style:'primary',
@@ -140,12 +144,13 @@ module.exports = {
     const bodyContents = [];
 
     for(let i=0; i<numberOfButtons; i++){
+      const postbackData = amount ? `transaction&${amount}&${selectedAccount}&${i}` : `confirmationByTransaction&${selectedAccount}&${i}`;
       bodyContents.push({
         type:'button',
         action:{
           type:'postback',
           label:buttonLabels[i],
-          data:`transaction&${amount}&${selectedAccount}&${i}`
+          data:postbackData
         },
         color:BUTTON_COLOR,
         style:'primary',
