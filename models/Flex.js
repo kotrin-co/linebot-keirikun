@@ -145,7 +145,7 @@ module.exports = {
         action:{
           type:'postback',
           label:buttonLabels[i],
-          data:`transaction${amount}&${selectedAccount}&${i}`
+          data:`transaction&${amount}&${selectedAccount}&${i}`
         },
         color:BUTTON_COLOR,
         style:'primary',
@@ -156,71 +156,6 @@ module.exports = {
 
     flexMessage.contents.body.contents = bodyContents;
 
-    return flexMessage;
-  },
-
-  makeTransactionChoice: (amount,selectedAccount) => {
-    console.log('selectedAccount in flex',selectedAccount);
-    const flexMessage = {
-      "type":"flex",
-      "altText":"取引方法選択",
-      "contents":
-      {
-        "type": "bubble",
-        "header": {
-          "type": "box",
-          "layout": "vertical",
-          "contents": [
-            {
-              "type": "text",
-              "text": "取引方法を選択してください",
-              "size": "lg",
-              "margin": "md",
-              "align": "center"
-            },
-          ]
-        },
-        "body": {
-          "type": "box",
-          "layout": "vertical",
-          "contents": [
-            {
-              "type": "button",
-              "action": {
-                "type": "postback",
-                "label": `${ACCOUNTS[parseInt(selectedAccount)]}`,
-                "data": `transaction&${amount}&${selectedAccount}&0`
-              },
-              "style": "primary",
-              "margin": "md",
-              "adjustMode": "shrink-to-fit"
-            },
-            {
-              "type": "button",
-              "action": {
-                "type": "postback",
-                "label": `${ACCOUNTS[parseInt(selectedAccount)]}(振込・振替)`,
-                "data": `transaction&${amount}&${selectedAccount}&1`
-              },
-              "style": "primary",
-              "margin": "md",
-              "adjustMode": "shrink-to-fit"
-            },
-            {
-              "type": "button",
-              "action": {
-                "type": "postback",
-                "label": `${ACCOUNTS[parseInt(selectedAccount)]}（クレカ）`,
-                "data": `transaction&${amount}&${selectedAccount}&2`
-              },
-              "margin": "md",
-              "style": "primary",
-              "adjustMode": "shrink-to-fit"
-            }
-          ]
-        }
-      }
-    }
     return flexMessage;
   },
 
