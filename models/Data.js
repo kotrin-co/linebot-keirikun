@@ -373,12 +373,11 @@ module.exports = {
           const sheets = authorize();
 
           //行番号
-          const rowNumber = 3*selectedAccount+selectedTransaction+2;
-          console.log('rowNumber=',rowNumber);
+          let rowNumber = 3*selectedAccount+selectedTransaction+2;
 
           //行番号が備品の場合、rowNumberを１減算する（雑収入が２行しかないため）
           if(selectedAccount === 28) rowNumber--;
-          
+
           //各月日数配列の生成
           const year = new Date().getFullYear();
           const daysEveryMonth = [];
