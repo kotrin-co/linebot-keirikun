@@ -427,7 +427,7 @@ module.exports = {
   cancellation: (lineId,subscription) => {
     return new Promise((resolve,reject)=> {
       const update_query = {
-        text: `UPDATE users SET subscription=null WHERE line_uid='${lineId}';`
+        text: `UPDATE users SET subscription='' WHERE line_uid='${lineId}';`
       }
       connection.query(update_query)
         .then(async ()=>{
