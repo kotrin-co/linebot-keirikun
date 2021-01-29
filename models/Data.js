@@ -2,10 +2,15 @@ const { Client } = require('pg');
 const { google } = require('googleapis');
 const privatekey = require('../client_secret.json');
 
-const ACCOUNTS = ['売上','源泉所得税','交通費','会議費','接待交際費','通信費','衣装費','郵便代','保険料','年金','家賃','従業員報酬','その他'];
-const DEBIT = ['現金','事業主貸','旅費交通費','会議費','接待交際費','通信費','消耗品費','通信費','事業主貸','事業主貸','地代家賃','給料','その他'];
-const CREDIT = ['売上高','売上高','現金','現金','現金','現金','現金','現金','現金','現金','現金','現金','その他'];
+// const ACCOUNTS = ['売上','源泉所得税','交通費','会議費','接待交際費','通信費','衣装費','郵便代','保険料','年金','家賃','従業員報酬','その他'];
+// const DEBIT = ['現金','事業主貸','旅費交通費','会議費','接待交際費','通信費','消耗品費','通信費','事業主貸','事業主貸','地代家賃','給料','その他'];
+// const CREDIT = ['売上高','売上高','現金','現金','現金','現金','現金','現金','現金','現金','現金','現金','その他'];
 
+const {
+  ACCOUNTS,
+  DEBITS,
+  CREDITS
+} = require('../params/params');
 
 const connection = new Client({
   connectionString: process.env.DATABASE_URL,
@@ -65,11 +70,14 @@ const updateJournal = (ssId) => {
       daysEveryMonth.push(new Date(year,i+1,0).getDate());
     }
 
+    //行の数を計算
+    const rows = ACCOUNTS.length*3;
+
     //入力用シートから全ての値を取得する
     const batchGet_request = {
       spreadsheetId: ssId,
       ranges: [
-        '入力用シート!B2:NB14'
+        `入力用シート!B2:NB${rows}`
       ],
       majorDimension: 'COLUMNS'
     }
@@ -91,9 +99,9 @@ const updateJournal = (ssId) => {
                 }
                 journalValues.push([
                   `${month}/${days}`,
-                  DEBIT[j],
+                  DEBITS[j],
                   value,
-                  CREDIT[j],
+                  CREDITS[j],
                   value,
                   ACCOUNTS[j]
                 ]);
