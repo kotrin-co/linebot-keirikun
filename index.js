@@ -185,25 +185,41 @@ const lineBot = (req,res) => {
 const greeting_follow = async (ev) => {
     const profile = await client.getProfile(ev.source.userId);
 
-    const table_insert = {
-        text:'INSERT INTO users (line_uid,display_name,timestamp) VALUES($1,$2,$3);',
-        values:[ev.source.userId,profile.displayName,ev.timestamp]
-      };
+    const select_query = {
+      text:`SELECT * FROM users WHERE line_uid='${ev.source.userId}';`
+    };
 
-    connection.query(table_insert)
-    .then(()=>{
-        console.log('insert successfully!!')
-        return client.replyMessage(ev.replyToken,[{
+    connection.query(select_query)
+      .then(res=>{
+        if(res.rows.length){
+          console.log('過去に登録されたユーザーです');
+          return client.replyMessage(ev.replyToken,{
             "type":"text",
-            "text":`${profile.displayName}さん、フォローありがとうございます\uDBC0\uDC04`
-        },
-        {
-            "type":"text",
-            "text":'Gmailアドレスを教えてください！（半角英数字、メールアドレス以外の文字は返信しないでください）'
+            "text":`${profile.displayName}さん、おかえりなさい\uDBC0\uDC04`
+          });
+        }else{
+          const table_insert = {
+            text:'INSERT INTO users (line_uid,display_name,timestamp) VALUES($1,$2,$3);',
+            values:[ev.source.userId,profile.displayName,ev.timestamp]
+          };
+          connection.query(table_insert)
+            .then(()=>{
+                console.log('insert successfully!!')
+                return client.replyMessage(ev.replyToken,[{
+                    "type":"text",
+                    "text":`${profile.displayName}さん、フォローありがとうございます\uDBC0\uDC04`
+                },
+                {
+                    "type":"text",
+                    "text":'Gmailアドレスを教えてください！（半角英数字、メールアドレス以外の文字は返信しないでください）'
+                }
+                ]);
+            })
+            .catch(e=>console.log(e));
         }
-        ]);
-    })
-    .catch(e=>console.log(e));
+      })
+
+    
 }
 
 const delete_user = (ev) => {
