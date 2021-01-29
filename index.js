@@ -262,7 +262,8 @@ const handleMessageEvent = async (ev) => {
 
               }
               else if(text === '日付からデータ確認！'){
-                const flexMessage = Flex.makeDateChoiceForConfirmation('confirmationByDate');
+                // Flex.makeDateSelector(amount,selectedAccount,selectedTransaction);
+                const flexMessage = Flex.makeDateSelector('confirmation','','','');
                 return client.replyMessage(ev.replyToken,flexMessage);
               }
               else if(text === '科目からデータ確認！'){
@@ -300,7 +301,6 @@ const handleMessageEvent = async (ev) => {
 const handlePostbackEvent = (ev) => {
   const postbackData = ev.postback.data.split('&');
 
-  //ここから変更 deal-branch 1/26
   if(postbackData[0] === 'account'){
     const amount = parseInt(postbackData[1]);
     const selectedAccount = parseInt(postbackData[2]);
@@ -312,7 +312,7 @@ const handlePostbackEvent = (ev) => {
     const amount = parseInt(postbackData[1]);
     const selectedAccount = parseInt(postbackData[2]);
     const selectedTransaction = parseInt(postbackData[3]);
-    const flexMessage = Flex.makeDateSelector(amount,selectedAccount,selectedTransaction);
+    const flexMessage = Flex.makeDateSelector('input',amount,selectedAccount,selectedTransaction);
     return client.replyMessage(ev.replyToken,flexMessage);
   }
 

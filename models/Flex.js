@@ -159,7 +159,13 @@ module.exports = {
     return flexMessage;
   },
 
-  makeDateSelector: (amount,selectedAccount,selectedTransaction) => {
+  makeDateSelector: (mode,amount,selectedAccount,selectedTransaction) => {
+    let postbackData;
+    if(mode === 'input'){
+      postbackData = `date&${amount}&${selectedAccount}&${selectedTransaction}`;
+    }else if(mode === 'confirmation'){
+      postbackData = 'confirmationByDate';
+    }
     const flexMessage = {
       "type":"flex",
       "altText":"日付選択",
@@ -187,7 +193,7 @@ module.exports = {
               "action": {
                 "type": "datetimepicker",
                 "label": "日付を選択する",
-                "data": `date&${amount}&${selectedAccount}&${selectedTransaction}`,
+                "data": postbackData,
                 "mode": "date"
               }
             }
