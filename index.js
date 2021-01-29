@@ -10,9 +10,15 @@ const apiRouter = require('./routers/api');
 const Data = require('./models/Data');
 const Flex = require('./models/Flex');
 const { copy } = require('./routers/index');
-const original_SSID = '13Y2AZYNHWnQNKdSzK5Vxna_YPdf4YnT61imptdiM_MU';
-const original_SID = [0,1786699057,251943700,1686142823,661995045,1312117404,550715539];
-const ACCOUNTS = ['売上','源泉所得税','交通費','会議費','接待交際費','通信費','衣装費','郵便代','保険料','年金','家賃','従業員報酬','その他'];
+// const original_SSID = '13Y2AZYNHWnQNKdSzK5Vxna_YPdf4YnT61imptdiM_MU';
+// const original_SID = [0,1786699057,251943700,1686142823,661995045,1312117404,550715539];
+// const ACCOUNTS = ['売上','源泉所得税','交通費','会議費','接待交際費','通信費','衣装費','郵便代','保険料','年金','家賃','従業員報酬','その他'];
+
+const {
+  ACCOUNTS,
+  original_SSID,
+  original_SID
+} = require('./params/params');
 
 //stripeの設定
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
@@ -322,7 +328,7 @@ const handlePostbackEvent = (ev) => {
       .then(newValue=>{
         return client.replyMessage(ev.replyToken,{
           "type":"text",
-          "text":`${selectedMonth}月${selectedDay}日の「${accountSelect}」を"${newValue}"へ更新しました！`
+          "text":`${selectedMonth}月${selectedDay}日の「${ACCOUNTS[selectedAccount]}」を"${newValue}"へ更新しました！`
         });
       })
       .catch(e=>console.log(e));
