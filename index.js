@@ -298,26 +298,27 @@ const handlePostbackEvent = (ev) => {
   if(postbackData[0] === 'account'){
     const amount = parseInt(postbackData[1]);
     const selectedAccount = parseInt(postbackData[2]);
-    // const flexMessage = Flex.makeDateChoice(amount,selectedAccount);
     const flexMessage = Flex.makeTransactionSelector(amount,selectedAccount);
     return client.replyMessage(ev.replyToken,flexMessage);
   }
 
   else if(postbackData[0] === 'transaction'){
-    return client.replyMessage(ev.replyToken,{
-      type:'text',
-      text:'次は日付選択のイベントへつなげます^^'
-    });
+    const amount = parseInt(postbackData[1]);
+    const selectedAccount = parseInt(postbackData[2]);
+    const selectedTransaction = parseInt(postbackData[3]);
+    const flexMessage = Flex.makeDateSelector(amount,selectedAccount,selectedTransaction);
+    return client.replyMessage(ev.replyToken,flexMessage);
   }
 
   else if(postbackData[0] === 'date'){
     const amountInput = postbackData[1]
-    const accountSelect = ACCOUNTS[parseInt(postbackData[2])];
+    const selectedAccount = parseInt(postbackData[2]);
+    const selectedTransaction = parseInt(postbackData[3]);
     const selectedDate = ev.postback.params.date;
     const selectedMonth = parseInt(selectedDate.split('-')[1]);
     const selectedDay = parseInt(selectedDate.split('-')[2]);
     const line_uid = ev.source.userId;
-    Data.inputSS({amountInput,accountSelect,selectedMonth,selectedDay,line_uid})
+    Data.inputSS({amountInput,selectedAccount,selectedTransaction,selectedMonth,selectedDay,line_uid})
       .then(newValue=>{
         return client.replyMessage(ev.replyToken,{
           "type":"text",

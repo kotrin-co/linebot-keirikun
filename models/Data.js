@@ -164,10 +164,10 @@ module.exports = {
   },
 
   //入力用シートへの入力
-  inputSS: ({amountInput,accountSelect,selectedMonth,selectedDay,line_uid}) => {
+  inputSS: ({amountInput,selectedAccount,selectedTransaction,selectedMonth,selectedDay,line_uid}) => {
     return new Promise((resolve,reject)=>{
 
-      console.log('各種値',amountInput,accountSelect,selectedMonth,selectedDay,line_uid);
+      console.log('各種値',amountInput,selectedAccount,selectedTransaction,selectedMonth,selectedDay,line_uid);
       //ユーザーデータの抜き出し
       const select_query = {
         text: `SELECT * FROM users WHERE line_uid='${line_uid}';`
@@ -182,7 +182,7 @@ module.exports = {
           const sheets = authorize();
 
           //行番号の取得
-          const rowNumber = ACCOUNTS.indexOf(accountSelect)+2;
+          const rowNumber = 3*selectedAccount+selectedTransaction+2;
           console.log('rowNum',rowNumber);
 
           //列用アルファベット配列の生成
