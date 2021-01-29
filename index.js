@@ -426,7 +426,7 @@ const handlePostbackEvent = (ev) => {
       .then(newValue=>{
         return client.replyMessage(ev.replyToken,{
           "type":"text",
-          "text":`${selectedMonth}月${selectedDay}日の「${accountSelect}」を削除しました！`
+          "text":`${selectedMonth}月${selectedDay}日の「${ACCOUNTS[selectedAccount]}(${TRANSACTIONS[selectedTransaction]})」を削除しました！`
         });
       })
       .catch(e=>console.log(e));
