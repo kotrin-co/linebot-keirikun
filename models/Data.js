@@ -182,8 +182,11 @@ module.exports = {
           const sheets = authorize();
 
           //行番号の取得
-          const rowNumber = 3*selectedAccount+selectedTransaction+2;
+          let rowNumber = 3*selectedAccount+selectedTransaction+2;
           console.log('rowNum',rowNumber);
+
+          //行番号が備品の場合、rowNumberを１減算する（雑収入が２行しかないため）
+          if(selectedAccount === 28) rowNumber--;
 
           //列用アルファベット配列の生成
           const columns = createAlphabetsArray();
