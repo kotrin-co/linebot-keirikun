@@ -430,7 +430,11 @@ module.exports = {
         text: `UPDATE users SET subscription=null WHERE line_uid='${lineId}';`
       }
       connection.query(update_query)
-        .then(()=>{
+        .then(async ()=>{
+          if(subscription && (subscription !== 'trial') && (subscription !=='guest')){
+            const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+            await stripe.subscriptions.update(subscription,{cancel_at_period_end: true});
+          }
           console.log('subscription削除');
           resolve();
         })

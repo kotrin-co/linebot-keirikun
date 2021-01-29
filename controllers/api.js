@@ -39,12 +39,12 @@ module.exports = {
   cancelSubscription: (req,res) => {
     const lineId = req.params.lineId;
     const subscription = req.query.sub;
-    const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+    // const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
     console.log('line sub',lineId,subscription);
     try{
       Data.cancellation(lineId,subscription)
         .then(()=>{
-          stripe.subscriptions.update(subscription,{cancel_at_period_end: true});
+          // stripe.subscriptions.update(subscription,{cancel_at_period_end: true});
           res.status(200).send('解約しました');
         })
         .catch(e=>console.log(e));

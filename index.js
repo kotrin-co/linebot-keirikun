@@ -224,13 +224,16 @@ const greeting_follow = async (ev) => {
 }
 
 const delete_user = (ev) => {
-  const update_query = {
-    text:`UPDATE users SET (gmail,subscription) = ('','') WHERE line_uid='${ev.source.userId}';`
+  const select_query = {
+    text:`SELECT * FROM users WHERE line_uid='${ev.source.userId}';`
   }
-
-  connection.query(update_query)
-    .then(()=>{
-        console.log('ユーザーデータのGmailと課金情報を削除！');
+  connection.query(select_query)
+    .then(res=>{
+      Data.cancellation(ev.source.userId,res.rows[0].subscription)
+        .then(()=>{
+          console.log('サブスクを解除しました');
+        })
+        .catch(e=>console.log(e));
     })
     .catch(e=>console.log(e));
 }
