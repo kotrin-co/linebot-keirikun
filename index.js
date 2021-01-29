@@ -10,9 +10,6 @@ const apiRouter = require('./routers/api');
 const Data = require('./models/Data');
 const Flex = require('./models/Flex');
 const { copy } = require('./routers/index');
-// const original_SSID = '13Y2AZYNHWnQNKdSzK5Vxna_YPdf4YnT61imptdiM_MU';
-// const original_SID = [0,1786699057,251943700,1686142823,661995045,1312117404,550715539];
-// const ACCOUNTS = ['売上','源泉所得税','交通費','会議費','接待交際費','通信費','衣装費','郵便代','保険料','年金','家賃','従業員報酬','その他'];
 
 const {
   ACCOUNTS,
@@ -210,14 +207,13 @@ const greeting_follow = async (ev) => {
 }
 
 const delete_user = (ev) => {
-    const delete_query = {
-        text:'DELETE FROM users WHERE line_uid=$1;',
-        values: [`${ev.source.userId}`]
-    };
+    const update_query = {
+      text:`UPDATE users SET (gmail,subscription) = ('','') WHERE line_uid='${ev.source.userId}';`
+    }
 
-    connection.query(delete_query)
+    connection.query(update_query)
         .then(()=>{
-            console.log('ユーザーデータをテーブルから削除');
+            console.log('ユーザーデータのGmailと課金情報を削除！');
         })
         .catch(e=>console.log(e));
 }
