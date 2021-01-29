@@ -15,7 +15,8 @@ const {
   ACCOUNTS,
   original_SSID,
   original_SID,
-  TRANSACTIONS
+  TRANSACTIONS,
+  FREE_TRIAL_PERIOD
 } = require('./params/params');
 
 //stripeの設定
@@ -199,8 +200,8 @@ const greeting_follow = async (ev) => {
           });
         }else{
           const table_insert = {
-            text:'INSERT INTO users (line_uid,display_name,timestamp) VALUES($1,$2,$3);',
-            values:[ev.source.userId,profile.displayName,ev.timestamp]
+            text:'INSERT INTO users (line_uid,display_name,timestamp,subscription) VALUES($1,$2,$3);',
+            values:[ev.source.userId,profile.displayName,ev.timestamp,'trial']
           };
           connection.query(table_insert)
             .then(()=>{
@@ -223,19 +224,22 @@ const greeting_follow = async (ev) => {
 }
 
 const delete_user = (ev) => {
-    const update_query = {
-      text:`UPDATE users SET (gmail,subscription) = ('','') WHERE line_uid='${ev.source.userId}';`
-    }
+  const update_query = {
+    text:`UPDATE users SET (gmail,subscription) = ('','') WHERE line_uid='${ev.source.userId}';`
+  }
 
-    connection.query(update_query)
-        .then(()=>{
-            console.log('ユーザーデータのGmailと課金情報を削除！');
-        })
-        .catch(e=>console.log(e));
+  connection.query(update_query)
+    .then(()=>{
+        console.log('ユーザーデータのGmailと課金情報を削除！');
+    })
+    .catch(e=>console.log(e));
 }
 
 const handleMessageEvent = async (ev) => {
 
+  const available = await availableCheck(ev);
+
+  if(available){
     const text = (ev.message.type === 'text') ? ev.message.text : '';
     const profile = await client.getProfile(ev.source.userId);
 
@@ -245,204 +249,274 @@ const handleMessageEvent = async (ev) => {
     };
 
     connection.query(select_query)
-        .then(res=>{
-            console.log('res.rows[0]:',res.rows[0]);
-            if(res.rows[0].gmail){
-              if( text === '消す'){
-                const update_query = {
-                  text:`UPDATE users SET (gmail,ssid) = ('','') WHERE line_uid='${ev.source.userId}';`
-                };
-                connection.query(update_query)
-                  .then(()=>console.log('消した！！'))
-                  .catch(e=>console.log(e));
-              }
-  
-              else if( text === 'けーり君サポートお願い！'){
-                return client.replyMessage(ev.replyToken,[
-                  {
-                    "type":"text",
-                    "text":"金額を半角数値で入力してください！"
-                  },
-                  {
-                    "type":"text",
-                    "text":"マイナスの数値を入力すると元の数値から減算されるよ!"
-                  }
-                ]);
-              }
-              else if(text.match(/^[+\-]?([1-9]\d*|0)$/)){
-                const flexMessage = Flex.makeAccountSelector(text);
-                return client.replyMessage(ev.replyToken,flexMessage);
+      .then(res=>{
+        console.log('res.rows[0]:',res.rows[0]);
+        if(res.rows[0].gmail){
+          if( text === '消す'){
+            const update_query = {
+              text:`UPDATE users SET (gmail,ssid) = ('','') WHERE line_uid='${ev.source.userId}';`
+            };
+            connection.query(update_query)
+              .then(()=>console.log('消した！！'))
+              .catch(e=>console.log(e));
+          }
 
+          else if( text === 'けーり君サポートお願い！'){
+            return client.replyMessage(ev.replyToken,[
+              {
+                "type":"text",
+                "text":"金額を半角数値で入力してください！"
+              },
+              {
+                "type":"text",
+                "text":"マイナスの数値を入力すると元の数値から減算されるよ!"
               }
-              else if(text === '日付からデータ確認！'){
-                const flexMessage = Flex.makeDateSelector('confirmation','','','');
-                return client.replyMessage(ev.replyToken,flexMessage);
-              }
-              else if(text === '科目からデータ確認！'){
-                const flexMessage = Flex.makeAccountSelector('');
-                return client.replyMessage(ev.replyToken,flexMessage);
-              }
-              else if(text === 'データ削除'){
-                const flexMessage = Flex.makeDateSelector('delete','','','');
-                return client.replyMessage(ev.replyToken,flexMessage);
-              }
-              else{
-                return client.replyMessage(ev.replyToken,{
-                  "type":"text",
-                  "text":"半角数字をメッセージで送ると、会計データを入力できますよ^^"
-                });
-              }
-            }else{
-              const reg = /^[A-Za-z0-9]{1}[A-Za-z0-9_.-]*@gmail.com/;
-              if(reg.test(text)){
-                  console.log('メアドOK');
-                  const userName = profile.displayName;
-                  createSheet(text,userName,ev);
-              }else{
-                  console.log('間違っている');
-                  return client.replyMessage(ev.replyToken,{
-                      "type":"text",
-                      "text":"まずはメールアドレスを登録しましょう。（Gmailアドレスのみを送ってください。）"
-                  });
-              }
-            }
-        })
-        .catch(e=>console.log(e));
+            ]);
+          }
+          else if(text.match(/^[+\-]?([1-9]\d*|0)$/)){
+            const flexMessage = Flex.makeAccountSelector(text);
+            return client.replyMessage(ev.replyToken,flexMessage);
+
+          }
+          else if(text === '日付からデータ確認！'){
+            const flexMessage = Flex.makeDateSelector('confirmation','','','');
+            return client.replyMessage(ev.replyToken,flexMessage);
+          }
+          else if(text === '科目からデータ確認！'){
+            const flexMessage = Flex.makeAccountSelector('');
+            return client.replyMessage(ev.replyToken,flexMessage);
+          }
+          else if(text === 'データ削除'){
+            const flexMessage = Flex.makeDateSelector('delete','','','');
+            return client.replyMessage(ev.replyToken,flexMessage);
+          }
+          else{
+            return client.replyMessage(ev.replyToken,{
+              "type":"text",
+              "text":"半角数字をメッセージで送ると、会計データを入力できますよ^^"
+            });
+          }
+        }else{
+          const reg = /^[A-Za-z0-9]{1}[A-Za-z0-9_.-]*@gmail.com/;
+          if(reg.test(text)){
+            console.log('メアドOK');
+            const userName = profile.displayName;
+            createSheet(text,userName,ev);
+          }else{
+            console.log('間違っている');
+            return client.replyMessage(ev.replyToken,{
+                "type":"text",
+                "text":"まずはメールアドレスを登録しましょう。（Gmailアドレスのみを送ってください。）"
+            });
+          }
+        }
+      })
+      .catch(e=>console.log(e));
+  }else{
+    return client.replyMessage(ev.replyToken,{
+      "type":"text",
+      "text":`けーり君の無料試用期間が切れてしました\uDBC0\uDC1C ぜひご購入をお願いします\uDBC0\uDC04`
+    });
+  }
+  
 }
 
-const handlePostbackEvent = (ev) => {
-  const postbackData = ev.postback.data.split('&');
+const handlePostbackEvent = async (ev) => {
 
-  if(postbackData[0] === 'account'){
-    const amount = parseInt(postbackData[1]);
-    const selectedAccount = parseInt(postbackData[2]);
-    const flexMessage = Flex.makeTransactionSelector(amount,selectedAccount);
-    return client.replyMessage(ev.replyToken,flexMessage);
-  }
+  const available = await availableCheck(ev);
 
-  else if(postbackData[0] === 'transaction'){
-    const amount = parseInt(postbackData[1]);
-    const selectedAccount = parseInt(postbackData[2]);
-    const selectedTransaction = parseInt(postbackData[3]);
-    const flexMessage = Flex.makeDateSelector('input',amount,selectedAccount,selectedTransaction);
-    return client.replyMessage(ev.replyToken,flexMessage);
-  }
+  if(available){
+    const postbackData = ev.postback.data.split('&');
 
-  else if(postbackData[0] === 'date'){
-    const amountInput = postbackData[1]
-    const selectedAccount = parseInt(postbackData[2]);
-    const selectedTransaction = parseInt(postbackData[3]);
-    const selectedDate = ev.postback.params.date;
-    const selectedMonth = parseInt(selectedDate.split('-')[1]);
-    const selectedDay = parseInt(selectedDate.split('-')[2]);
-    const line_uid = ev.source.userId;
-    Data.inputSS({amountInput,selectedAccount,selectedTransaction,selectedMonth,selectedDay,line_uid})
-      .then(newValue=>{
-        return client.replyMessage(ev.replyToken,{
-          "type":"text",
-          "text":`${selectedMonth}月${selectedDay}日の「${ACCOUNTS[selectedAccount]}」を"${newValue}"へ更新しました！`
-        });
-      })
-      .catch(e=>console.log(e));
-  }
+    if(postbackData[0] === 'account'){
+      const amount = parseInt(postbackData[1]);
+      const selectedAccount = parseInt(postbackData[2]);
+      const flexMessage = Flex.makeTransactionSelector(amount,selectedAccount);
+      return client.replyMessage(ev.replyToken,flexMessage);
+    }
 
-  else if(postbackData[0] === 'confirmationByDate'){
-    const selectedDate = ev.postback.params.date;
-    const selectedMonth = parseInt(selectedDate.split('-')[1]);
-    const selectedDay = parseInt(selectedDate.split('-')[2]);
-    const line_uid = ev.source.userId;
-    Data.findValuesByDate({selectedMonth,selectedDay,line_uid})
-      .then(foundValues=>{
-        console.log('foundValues in index',foundValues);
-        let message = ''
-        if(foundValues.length){
-          foundValues.forEach((object,index)=>{
-            if(index === 0){
-              message += `「${selectedMonth}月${selectedDay}日」データ\n■■■■■■■■■\n\n`+object.account + '('+object.transaction+'):' + object.value+'円';
-            }
-            else{
-              message += '\n'+object.account + '('+object.transaction+'):' + object.value+'円';
-            }
+    else if(postbackData[0] === 'transaction'){
+      const amount = parseInt(postbackData[1]);
+      const selectedAccount = parseInt(postbackData[2]);
+      const selectedTransaction = parseInt(postbackData[3]);
+      const flexMessage = Flex.makeDateSelector('input',amount,selectedAccount,selectedTransaction);
+      return client.replyMessage(ev.replyToken,flexMessage);
+    }
+
+    else if(postbackData[0] === 'date'){
+      const amountInput = postbackData[1]
+      const selectedAccount = parseInt(postbackData[2]);
+      const selectedTransaction = parseInt(postbackData[3]);
+      const selectedDate = ev.postback.params.date;
+      const selectedMonth = parseInt(selectedDate.split('-')[1]);
+      const selectedDay = parseInt(selectedDate.split('-')[2]);
+      const line_uid = ev.source.userId;
+      Data.inputSS({amountInput,selectedAccount,selectedTransaction,selectedMonth,selectedDay,line_uid})
+        .then(newValue=>{
+          return client.replyMessage(ev.replyToken,{
+            "type":"text",
+            "text":`${selectedMonth}月${selectedDay}日の「${ACCOUNTS[selectedAccount]}」を"${newValue}"へ更新しました！`
           });
-          message += '\n\n■■■■■■■■■';
-        }else{
-          message = 'その日時のデータはありません';
-        }
-        return client.replyMessage(ev.replyToken,{
-          "type":"text",
-          "text":message
-        });
-      })
-      .catch(e=>console.log(e));
-  }
+        })
+        .catch(e=>console.log(e));
+    }
 
-  else if(postbackData[0] === 'confirmationByAccount'){
-    const selectedAccount = parseInt(postbackData[1]);
-    const flexMessage = Flex.makeTransactionSelector('',selectedAccount);
-    return client.replyMessage(ev.replyToken,flexMessage);
-  }
-
-  else if(postbackData[0] === 'confirmationByTransaction'){
-    const selectedAccount = parseInt(postbackData[1]);
-    const selectedTransaction = parseInt(postbackData[2]);
-    const line_uid = ev.source.userId;
-    Data.findValuesByAccount({selectedAccount,selectedTransaction,line_uid})
-      .then(foundValues=>{
-        let message = '';
-        if(foundValues.length){
-          foundValues.forEach((object,index)=>{
-            const title = (selectedAccount === 0 && selectedTransaction === 2) ? '源泉所得税' : `${ACCOUNTS[selectedAccount]}(${TRANSACTIONS[selectedTransaction]})`;
-            if(index === 0){
-              message += `${title}\n■■■■■■■■■\n\n`+object.date + ':' + object.amount+'円';
-            }
-            else{
-              message += '\n'+object.date + ':' + object.amount+'円';
-            }
+    else if(postbackData[0] === 'confirmationByDate'){
+      const selectedDate = ev.postback.params.date;
+      const selectedMonth = parseInt(selectedDate.split('-')[1]);
+      const selectedDay = parseInt(selectedDate.split('-')[2]);
+      const line_uid = ev.source.userId;
+      Data.findValuesByDate({selectedMonth,selectedDay,line_uid})
+        .then(foundValues=>{
+          console.log('foundValues in index',foundValues);
+          let message = ''
+          if(foundValues.length){
+            foundValues.forEach((object,index)=>{
+              if(index === 0){
+                message += `「${selectedMonth}月${selectedDay}日」データ\n■■■■■■■■■\n\n`+object.account + '('+object.transaction+'):' + object.value+'円';
+              }
+              else{
+                message += '\n'+object.account + '('+object.transaction+'):' + object.value+'円';
+              }
+            });
+            message += '\n\n■■■■■■■■■';
+          }else{
+            message = 'その日時のデータはありません';
+          }
+          return client.replyMessage(ev.replyToken,{
+            "type":"text",
+            "text":message
           });
-          message += '\n\n■■■■■■■■■';
+        })
+        .catch(e=>console.log(e));
+    }
+
+    else if(postbackData[0] === 'confirmationByAccount'){
+      const selectedAccount = parseInt(postbackData[1]);
+      const flexMessage = Flex.makeTransactionSelector('',selectedAccount);
+      return client.replyMessage(ev.replyToken,flexMessage);
+    }
+
+    else if(postbackData[0] === 'confirmationByTransaction'){
+      const selectedAccount = parseInt(postbackData[1]);
+      const selectedTransaction = parseInt(postbackData[2]);
+      const line_uid = ev.source.userId;
+      Data.findValuesByAccount({selectedAccount,selectedTransaction,line_uid})
+        .then(foundValues=>{
+          let message = '';
+          if(foundValues.length){
+            foundValues.forEach((object,index)=>{
+              const title = (selectedAccount === 0 && selectedTransaction === 2) ? '源泉所得税' : `${ACCOUNTS[selectedAccount]}(${TRANSACTIONS[selectedTransaction]})`;
+              if(index === 0){
+                message += `${title}\n■■■■■■■■■\n\n`+object.date + ':' + object.amount+'円';
+              }
+              else{
+                message += '\n'+object.date + ':' + object.amount+'円';
+              }
+            });
+            message += '\n\n■■■■■■■■■';
+          }else{
+            message = 'その科目・取引のデータはありません';
+          }
+          return client.replyMessage(ev.replyToken,{
+            "type":"text",
+            "text":message
+          });
+        })
+        .catch(e=>console.log(e));
+    }
+
+    else if(postbackData[0] === 'delete'){
+      const selectedDate = ev.postback.params.date;
+
+      //ここから追加
+      const selectedMonth = parseInt(selectedDate.split('-')[1]);
+      const selectedDay = parseInt(selectedDate.split('-')[2]);
+      const line_uid = ev.source.userId;
+      Data.findValuesByDate({selectedMonth,selectedDay,line_uid})
+        .then(foundValues=>{
+          const flexMessage = Flex.makeAccountChoiceForDelete(selectedDate,foundValues);
+          return client.replyMessage(ev.replyToken,flexMessage);
+        })
+    }
+
+    else if(postbackData[0] === 'deleteAccount'){
+      const amountInput = null;
+      const selectedDate = postbackData[1];
+      const selectedAccount = parseInt(postbackData[2]);
+      const selectedTransaction = parseInt(postbackData[3]);
+      // const accountSelect = ACCOUNTS[parseInt(postbackData[2])];
+      const selectedMonth = parseInt(selectedDate.split('-')[1]);
+      const selectedDay = parseInt(selectedDate.split('-')[2]);
+      const line_uid = ev.source.userId;
+      Data.inputSS({amountInput,selectedAccount,selectedTransaction,selectedMonth,selectedDay,line_uid})
+        .then(newValue=>{
+          return client.replyMessage(ev.replyToken,{
+            "type":"text",
+            "text":`${selectedMonth}月${selectedDay}日の「${ACCOUNTS[selectedAccount]}(${TRANSACTIONS[selectedTransaction]})」を削除しました！`
+          });
+        })
+        .catch(e=>console.log(e));
+    }
+  }else{
+    return client.replyMessage(ev.replyToken,{
+      "type":"text",
+      "text":`けーり君の無料試用期間が切れてしました\uDBC0\uDC1C ぜひご購入をお願いします\uDBC0\uDC04`
+    });
+  }
+}
+
+//課金状態をチェックし、利用可能か判断するメソッド
+const availableCheck = (ev) => {
+  return new Promise(resolve=>{
+    const select_query = {
+      text:`SELECT * FROM users WHERE line_uid='${ev.source.userId}';`
+    }
+    connection.query(select_query)
+      .then(res=>{
+        if(res.rows.length){
+          const userInfo = res.rows[0];
+          
+          switch(userInfo.subscription){
+            case '':
+              resolve(false);
+              break;
+            
+            case 'trial':
+              const today = new Date().getTime();
+              const registeredDate = userInfo.timestamp;
+              console.log('today registered',today,registeredDate);
+              if((today-registeredDate)<FREE_TRIAL_PERIOD*24*60*60*1000){
+                console.log('無料試用期間中');
+                resolve(true);
+              }else{
+                console.log('無料試用期間終了');
+                const update_query = {
+                  text: `UPDATE users SET subscription='' WHERE line_uid='${ev.source.userId}';`
+                }
+                connection.query(update_query)
+                  .then(()=>{
+                    console.log('usersテーブルからtrial削除');
+                    resolve(false);
+                  })
+                  .catch(e=>console.log(e));
+              }
+              break;
+
+            case 'guest':
+              resolve(true);
+              break;
+            
+            default:
+              resolve(true);
+              break;
+          }
         }else{
-          message = 'その科目・取引のデータはありません';
+          console.log('そのLINE IDのユーザーは登録されていません');
         }
-        return client.replyMessage(ev.replyToken,{
-          "type":"text",
-          "text":message
-        });
       })
       .catch(e=>console.log(e));
-  }
-
-  else if(postbackData[0] === 'delete'){
-    const selectedDate = ev.postback.params.date;
-
-    //ここから追加
-    const selectedMonth = parseInt(selectedDate.split('-')[1]);
-    const selectedDay = parseInt(selectedDate.split('-')[2]);
-    const line_uid = ev.source.userId;
-    Data.findValuesByDate({selectedMonth,selectedDay,line_uid})
-      .then(foundValues=>{
-        const flexMessage = Flex.makeAccountChoiceForDelete(selectedDate,foundValues);
-        return client.replyMessage(ev.replyToken,flexMessage);
-      })
-  }
-
-  else if(postbackData[0] === 'deleteAccount'){
-    const amountInput = null;
-    const selectedDate = postbackData[1];
-    const selectedAccount = parseInt(postbackData[2]);
-    const selectedTransaction = parseInt(postbackData[3]);
-    // const accountSelect = ACCOUNTS[parseInt(postbackData[2])];
-    const selectedMonth = parseInt(selectedDate.split('-')[1]);
-    const selectedDay = parseInt(selectedDate.split('-')[2]);
-    const line_uid = ev.source.userId;
-    Data.inputSS({amountInput,selectedAccount,selectedTransaction,selectedMonth,selectedDay,line_uid})
-      .then(newValue=>{
-        return client.replyMessage(ev.replyToken,{
-          "type":"text",
-          "text":`${selectedMonth}月${selectedDay}日の「${ACCOUNTS[selectedAccount]}(${TRANSACTIONS[selectedTransaction]})」を削除しました！`
-        });
-      })
-      .catch(e=>console.log(e));
-  }
+  });
 }
 
 const createSheet = async (address,userName,ev) => {
