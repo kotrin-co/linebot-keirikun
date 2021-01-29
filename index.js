@@ -346,10 +346,10 @@ const handlePostbackEvent = (ev) => {
         if(foundValues.length){
           foundValues.forEach((object,index)=>{
             if(index === 0){
-              message += `「${selectedMonth}月${selectedDay}日」データ\n■■■■■■■■■\n\n`+object.account + ':' + object.value;
+              message += `「${selectedMonth}月${selectedDay}日」データ\n■■■■■■■■■\n\n`+object.account + '('+object.transaction+'):' + object.value+'円';
             }
             else{
-              message += '\n'+object.account + ':' + object.value;
+              message += '\n'+object.account + '('+object.transaction+'):' + object.value+'円';
             }
           });
           message += '\n\n■■■■■■■■■';

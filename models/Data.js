@@ -9,7 +9,8 @@ const privatekey = require('../client_secret.json');
 const {
   ACCOUNTS,
   DEBITS,
-  CREDITS
+  CREDITS,
+  TRANSACTIONS
 } = require('../params/params');
 
 const connection = new Client({
@@ -337,8 +338,12 @@ module.exports = {
                 console.log('valuesArray',valuesArray);
                 valuesArray.forEach((value,index)=>{
                   if(value){
+                    const accountNumber = index<=82 ? Math.floor(index/3) : Math.round(index/3);
+                    const transactionNumber = index<=82 ? index%3 : (index+1)%3;
+                    const transaction = index === 2 ? '源泉所得税' : TRANSACTIONS[transactionNumber];
                     foundValues.push({
-                      account: ACCOUNTS[index],
+                      account: ACCOUNTS[accountNumber],
+                      transaction,
                       value
                     });
                   }
