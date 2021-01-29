@@ -374,7 +374,8 @@ module.exports = {
 
           //行番号
           const rowNumber = 3*selectedAccount+selectedTransaction+2;
-
+          console.log('rowNumber=',rowNumber);
+          
           //各月日数配列の生成
           const year = new Date().getFullYear();
           const daysEveryMonth = [];
