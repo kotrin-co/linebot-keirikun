@@ -356,9 +356,10 @@ const handlePostbackEvent = async (ev) => {
       const line_uid = ev.source.userId;
       Data.inputSS({amountInput,selectedAccount,selectedTransaction,selectedMonth,selectedDay,line_uid})
         .then(newValue=>{
+          const account = (selectedAccount===0 && selectedTransaction===2) ? '源泉所得税' : `${ACCOUNTS[selectedAccount]}(${TRANSACTIONS[selectedTransaction]})`;
           return client.replyMessage(ev.replyToken,{
             "type":"text",
-            "text":`${selectedMonth}月${selectedDay}日の「${ACCOUNTS[selectedAccount]}」を"${newValue}"へ更新しました！`
+            "text":`${selectedMonth}月${selectedDay}日の「${account}」を"${newValue}"へ更新しました！`
           });
         })
         .catch(e=>console.log(e));
