@@ -5,7 +5,8 @@ const {
   ACCOUNTS,
   NUMBER_OF_ROWS,
   NUMBER_OF_COLUMNS,
-  BUTTON_COLOR
+  BUTTON_COLOR,
+  TRANSACTIONS
 } = require('../params/params');
 
 module.exports = {
@@ -57,9 +58,8 @@ module.exports = {
       for(let j=0; j<NUMBER_OF_ROWS; j++){
         const horizontalContents = [];
         for(let k=0; k<NUMBER_OF_COLUMNS; k++){
+
           //ACCOUNTSに値があるかの判定
-          // const buttonLabel = ((8*i+2*j+k)<=ACCOUNTS.length-1) ? ACCOUNTS[8*i+2*j+k] : '　';
-          // const buttonColor = ((8*i+2*j+k)<=ACCOUNTS.length-1) ? BUTTON_COLOR_ACTIVE : BUTTON_COLOR_INACTIVE;
           if((8*i+2*j+k)<=ACCOUNTS.length-1){
             horizontalContents.push({
               type:'button',
@@ -98,158 +98,130 @@ module.exports = {
 
     return flexMessage;
   },
-  // {
-  //   "type": "carousel",
-  //   "contents": [
-  //     {
-  //       "type": "bubble",
-  //       "header": {
-  //         "type": "box",
-  //         "layout": "vertical",
-  //         "contents": [
-  //           {
-  //             "type": "text",
-  //             "text": "科目を選択してください",
-  //             "align": "center"
-  //           }
-  //         ]
-  //       },
-  //       "body": {
-  //         "type": "box",
-  //         "layout": "vertical",
-  //         "contents": [
-  //           {
-  //             "type": "box",
-  //             "layout": "horizontal",
-  //             "contents": [
-  //               {
-  //                 "type": "button",
-  //                 "action": {
-  //                   "type": "postback",
-  //                   "label": "売上",
-  //                   "data": "account"
-  //                 },
-  //                 "color": "#434DFF",
-  //                 "style": "primary",
-  //                 "adjustMode": "shrink-to-fit"
-  //               },
-  //               {
-  //                 "type": "button",
-  //                 "action": {
-  //                   "type": "postback",
-  //                   "label": "仕入れ",
-  //                   "data": "account"
-  //                 },
-  //                 "style": "primary",
-  //                 "color": "#434DFF",
-  //                 "margin": "md",
-  //                 "adjustMode": "shrink-to-fit"
-  //               }
-  //             ]
-  //           },
-  //           {
-  //             "type": "box",
-  //             "layout": "horizontal",
-  //             "contents": [
-  //               {
-  //                 "type": "button",
-  //                 "action": {
-  //                   "type": "postback",
-  //                   "label": "交通費",
-  //                   "data": "account"
-  //                 },
-  //                 "color": "#434DFF",
-  //                 "style": "primary",
-  //                 "adjustMode": "shrink-to-fit"
-  //               },
-  //               {
-  //                 "type": "button",
-  //                 "action": {
-  //                   "type": "postback",
-  //                   "label": "会議費",
-  //                   "data": "account"
-  //                 },
-  //                 "style": "primary",
-  //                 "color": "#434DFF",
-  //                 "margin": "md",
-  //                 "adjustMode": "shrink-to-fit"
-  //               }
-  //             ],
-  //             "margin": "md"
-  //           },
-  //           {
-  //             "type": "box",
-  //             "layout": "horizontal",
-  //             "contents": [
-  //               {
-  //                 "type": "button",
-  //                 "action": {
-  //                   "type": "postback",
-  //                   "label": "接待交際費",
-  //                   "data": "account"
-  //                 },
-  //                 "color": "#434DFF",
-  //                 "style": "primary",
-  //                 "adjustMode": "shrink-to-fit"
-  //               },
-  //               {
-  //                 "type": "button",
-  //                 "action": {
-  //                   "type": "postback",
-  //                   "label": "通信費",
-  //                   "data": "account"
-  //                 },
-  //                 "style": "primary",
-  //                 "color": "#434DFF",
-  //                 "margin": "md",
-  //                 "adjustMode": "shrink-to-fit"
-  //               }
-  //             ],
-  //             "margin": "md"
-  //           },
-  //           {
-  //             "type": "box",
-  //             "layout": "horizontal",
-  //             "contents": [
-  //               {
-  //                 "type": "button",
-  //                 "action": {
-  //                   "type": "postback",
-  //                   "label": "衣装費",
-  //                   "data": "account"
-  //                 },
-  //                 "color": "#434DFF",
-  //                 "style": "primary",
-  //                 "adjustMode": "shrink-to-fit"
-  //               },
-  //               {
-  //                 "type": "button",
-  //                 "action": {
-  //                   "type": "postback",
-  //                   "data": "account",
-  //                   "label": "消耗品費"
-  //                 },
-  //                 "style": "primary",
-  //                 "color": "#434DFF",
-  //                 "margin": "md",
-  //                 "adjustMode": "shrink-to-fit"
-  //               }
-  //             ],
-  //             "margin": "md"
-  //           }
-  //         ]
-  //       }
-  //     },
-  //     {
-  //       "type": "bubble",
-  //       "body": {
-  //         "type": "box",
-  //         "layout": "vertical",
-  //         "contents": []
-  //       }
-  //     }
-  //   ]
-  // }
+
+  makeTransactionSelector: (amount,selectedAccount) => {
+
+    //ボタン数を取得(雑収入の場合だけ２個のため)
+    const numberOfButtons = ACCOUNTS[selectedAccount]==='雑収入' ? 2:3;
+    
+    //ボタンの表示ラベル生成
+    const buttonLabels = [];
+    for(let i=0;i<numberOfButtons;i++){
+      buttonLabels.push(`${ACCOUNTS[selectedAccount]}（${TRANSACTIONS[i]}）`);
+    }
+    //売上の場合だけ３つ目のボタンを源泉所得税に変える
+    if(ACCOUNTS[selectedAccount]==='売上') buttonLabels[2] = '源泉所得税';
+
+    const flexMessage = {
+      type:'flex',
+      altText:'取引方法選択',
+      contents:{
+        type:'bubble',
+        header:{
+          type:'box',
+          layout:'vertical',
+          contents:[
+            {
+              type:'text',
+              text:'取引方法を選択してください',
+              size:'lg',
+              align:'center'
+            }
+          ]
+        },
+        body:{
+          type:'box',
+          layout:'vertical',
+          contents:null
+        }
+      }
+    };
+
+    const bodyContents = [];
+
+    for(let i=0; i<numberOfButtons; i++){
+      bodyContents.push({
+        type:'button',
+        action:{
+          type:'postback',
+          label:buttonLabels[i],
+          data:`transaction${amount}&${selectedAccount}&${i}`
+        },
+        style:'primary',
+        margin:'md',
+        adjustMode:'shrink-to-fit'
+      })
+    }
+
+    flexMessage.contents.body.contents = bodyContents;
+
+    return flexMessage;
+  },
+
+  makeTransactionChoice: (amount,selectedAccount) => {
+    console.log('selectedAccount in flex',selectedAccount);
+    const flexMessage = {
+      "type":"flex",
+      "altText":"取引方法選択",
+      "contents":
+      {
+        "type": "bubble",
+        "header": {
+          "type": "box",
+          "layout": "vertical",
+          "contents": [
+            {
+              "type": "text",
+              "text": "取引方法を選択してください",
+              "size": "lg",
+              "margin": "md",
+              "align": "center"
+            },
+          ]
+        },
+        "body": {
+          "type": "box",
+          "layout": "vertical",
+          "contents": [
+            {
+              "type": "button",
+              "action": {
+                "type": "postback",
+                "label": `${ACCOUNTS[parseInt(selectedAccount)]}`,
+                "data": `transaction&${amount}&${selectedAccount}&0`
+              },
+              "style": "primary",
+              "margin": "md",
+              "adjustMode": "shrink-to-fit"
+            },
+            {
+              "type": "button",
+              "action": {
+                "type": "postback",
+                "label": `${ACCOUNTS[parseInt(selectedAccount)]}(振込・振替)`,
+                "data": `transaction&${amount}&${selectedAccount}&1`
+              },
+              "style": "primary",
+              "margin": "md",
+              "adjustMode": "shrink-to-fit"
+            },
+            {
+              "type": "button",
+              "action": {
+                "type": "postback",
+                "label": `${ACCOUNTS[parseInt(selectedAccount)]}（クレカ）`,
+                "data": `transaction&${amount}&${selectedAccount}&2`
+              },
+              "margin": "md",
+              "style": "primary",
+              "adjustMode": "shrink-to-fit"
+            }
+          ]
+        }
+      }
+    }
+    return flexMessage;
+  },
 
   makeAccountChoice: (text) => {
     const flexMessage = {
@@ -851,85 +823,4 @@ module.exports = {
     return flexMessage;
   },
 
-  // 1/26これを追加
-  makeTransactionChoice: (amount,selectedAccount) => {
-    console.log('selectedAccount in flex',selectedAccount);
-    const flexMessage = {
-      "type":"flex",
-      "altText":"取引方法選択",
-      "contents":
-      {
-        "type": "bubble",
-        "header": {
-          "type": "box",
-          "layout": "vertical",
-          "contents": [
-            {
-              "type": "text",
-              "text": "取引方法を選択してください",
-              "size": "lg",
-              "margin": "md",
-              "align": "center"
-            },
-          ]
-        },
-        "hero": {
-          "type": "box",
-          "layout": "vertical",
-          "contents": [
-            {
-              "type": "text",
-              "text": "（1つのみ選択可能です）",
-              "size": "md",
-              "align": "center"
-            },
-            {
-              "type": "separator",
-              "margin": "md"
-            }
-          ]
-        },
-        "body": {
-          "type": "box",
-          "layout": "vertical",
-          "contents": [
-            {
-              "type": "button",
-              "action": {
-                "type": "postback",
-                "label": `${ACCOUNTS[parseInt(selectedAccount)]}`,
-                "data": `transaction&${amount}&${selectedAccount}&0`
-              },
-              "style": "primary",
-              "margin": "md",
-              "adjustMode": "shrink-to-fit"
-            },
-            {
-              "type": "button",
-              "action": {
-                "type": "postback",
-                "label": `${ACCOUNTS[parseInt(selectedAccount)]}(振込・振替)`,
-                "data": `transaction&${amount}&${selectedAccount}&1`
-              },
-              "style": "primary",
-              "margin": "md",
-              "adjustMode": "shrink-to-fit"
-            },
-            {
-              "type": "button",
-              "action": {
-                "type": "postback",
-                "label": `${ACCOUNTS[parseInt(selectedAccount)]}（クレカ）`,
-                "data": `transaction&${amount}&${selectedAccount}&2`
-              },
-              "margin": "md",
-              "style": "primary",
-              "adjustMode": "shrink-to-fit"
-            }
-          ]
-        }
-      }
-    }
-    return flexMessage;
-  }
 }

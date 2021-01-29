@@ -299,7 +299,7 @@ const handlePostbackEvent = (ev) => {
     const amount = parseInt(postbackData[1]);
     const selectedAccount = parseInt(postbackData[2]);
     // const flexMessage = Flex.makeDateChoice(amount,selectedAccount);
-    const flexMessage = Flex.makeTransactionChoice(amount,selectedAccount);
+    const flexMessage = Flex.makeTransactionSelector(amount,selectedAccount);
     return client.replyMessage(ev.replyToken,flexMessage);
   }
 
