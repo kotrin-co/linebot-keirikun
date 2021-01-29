@@ -454,12 +454,13 @@ const createSheet = async (address,userName,ev) => {
     const sheets = await google.sheets({version: 'v4', auth: jwtClient});
 
     const name = userName;
+    const year = new Date().getFullYear();
 
     const request = {
         resource : {
           //spreadsheetId: '',
           properties: {
-            title: `${name}さんの会計シート`,
+            title: `${name}さんの会計シート(${year})`,
             locale: 'ja_JP',
             timeZone:'Asia/Tokyo'
           },
