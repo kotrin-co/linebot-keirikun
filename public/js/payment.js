@@ -320,12 +320,15 @@ const showErrorMessage = (message) => {
 
 //ローディング中スピナー生成
 const displaySpinner = () => {
+  const divCenter = document.createElement('div');
+  divCenter.setAttribute('class','text-center');
   const divSpinner = document.createElement('div');
-  divSpinner.setAttribute('class','spinner-border text-primary spinner');
+  divSpinner.setAttribute('class','spinner-border text-primary');
   divSpinner.setAttribute('role','status');
   const spanText = document.createElement('span');
-  spanText.setAttribute('class','sr-only spinner');
+  spanText.setAttribute('class','sr-only');
   spanText.innerHTML = 'Now Loading...';
   divSpinner.appendChild(spanText);
-  divPage.appendChild(divSpinner);
+  divCenter.appendChild(divSpinner);
+  divPage.appendChild(divCenter);
 }

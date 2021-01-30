@@ -76,9 +76,9 @@
   font-size: 0.7rem;
 }
 
-.spinner{
+.text-center{
   text-align: center;
-  top: 40vh;
+  margin-top:30%;
 }
 
 /* 支払成功ページ */
