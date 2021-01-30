@@ -324,8 +324,8 @@ const displaySpinner = () => {
   divSpinner.setAttribute('class','spinner-border text-primary spinner');
   divSpinner.setAttribute('role','status');
   const spanText = document.createElement('span');
-  spanText.setAttribute('class','sr-only');
+  spanText.setAttribute('class','sr-only spinner');
   spanText.innerHTML = 'Now Loading...';
-  divPage.appendChild(spanText);
+  divSpinner.appendChild(spanText);
   divPage.appendChild(divSpinner);
 }
