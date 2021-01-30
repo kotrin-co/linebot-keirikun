@@ -128,6 +128,20 @@ window.onload = () => {
             div_form_transaction.appendChild(select_transaction);
             formElement.appendChild(div_form_transaction);
 
+            //勘定科目を入力したら取引方法をリセットする
+            const accountChange = () => {
+              select_transaction.innerHTML = '';
+              const l = select_account === 27 ? 2:3;
+              for(let i=0;i<l;i++){
+                const option = document.createElement('option');
+                option.innerHTML = (select_account.selectedIndex === 0 && i === l-1) ? '源泉所得税' : TRANSACTIONS[i];
+                option.value = i;
+                select_transaction.appendChild(option);
+              }
+              select_transaction.selectedIndex = -1;
+            }
+            select_account.onchange = accountChange();
+
             //日時の選択
             const div_form_date = document.createElement('div');
             div_form_date.setAttribute('class','form-group form-inline');
@@ -162,8 +176,8 @@ window.onload = () => {
             select_day.setAttribute('class','form-control date-selector');
             select_day.setAttribute('name','selectedDay');
             //その月の最終日を求める
-            // const lastDay = new Date(new Date().getFullYear(),new Date().getMonth()+1,0).getDate();
-            for(let i=0; i<31; i++){
+            const lastDay = new Date(new Date().getFullYear(),new Date().getMonth()+1,0).getDate();
+            for(let i=0; i<lastDay; i++){
               const option = document.createElement('option');
               option.innerHTML = i+1;
               option.value = i+1;
@@ -226,7 +240,7 @@ window.onload = () => {
 
             divPage.appendChild(formElement);
           }else{
-            document.getElementById('top-font').innerHTML=`${data.display_name}さん、無料トライアルが終わってしまいました><<br>設定画面からご購入をお願いいたします！`;
+            document.getElementById('top-font').innerHTML=`${data.display_name}さん、<br>無料トライアルが終わってしまいました><<br>設定画面からご購入をお願いいたします！`;
           }
         })
         .catch(err=>console.log(err));
