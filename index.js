@@ -123,7 +123,7 @@ const greeting_follow = async (ev) => {
           });
         }else{
           const table_insert = {
-            text:'INSERT INTO users (line_uid,display_name,timestamp,subscription) VALUES($1,$2,$3);',
+            text:'INSERT INTO users (line_uid,display_name,timestamp,subscription) VALUES($1,$2,$3,$4);',
             values:[ev.source.userId,profile.displayName,ev.timestamp,'trial']
           };
           connection.query(table_insert)

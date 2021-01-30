@@ -5,6 +5,7 @@ window.onload = () => {
   const myLiffId = '1655219547-2QEXPwR1';
   const divPage = document.getElementById('input-page');
 
+  //備忘　課金してないとページを表示させない処理を入れること！！
   liff
     .init({
       liffId: myLiffId
