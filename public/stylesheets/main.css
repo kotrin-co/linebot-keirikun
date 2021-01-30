@@ -42,6 +42,10 @@
 /* お支払いページ */
 
 #payment-page{
+  margin: 0 0.5rem;
+}
+
+.div-center{
   text-align: center;
 }
 

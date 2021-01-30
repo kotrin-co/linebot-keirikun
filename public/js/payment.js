@@ -16,9 +16,12 @@ window.onload = () => {
           const data = await response.json();
 
           //タイトル生成
+          const divTitle = document.createElement('div');
+          divTitle.setAttribute('class','div-center');
           const title = document.createElement('p');
-          title.innerHTML = `ようこそ${data.display_name}さん!<br>「けーりくん」お支払いページ`;
-          divPage.appendChild(title);
+          title.innerHTML = `ようこそ${data.display_name}さん!<br>「けーりくん」各種情報ページ`;
+          divTitle.appendChild(title);
+          divPage.appendChild(divTitle);
 
           //課金しているかどうかで表示コンテンツを変える
           if(!data.subscription){
@@ -107,18 +110,18 @@ const createMemberPage = (userInfo,lineId) => {
   let contractInfo;
   switch(userInfo.subscription){
     case 'guest':
-      contractInfo = 'ご契約情報：ゲストユーザーです'
+      contractInfo = '■ご契約情報：ゲストユーザーです'
       break;
 
     case 'trial':
       const registeredDate = userInfo.timestamp;
       const today = new Date().getTime();
       const left = FREE_TRIAL_PERIOD - ((today-registeredDate)/(24*60*60*1000));
-      contractInfo = `ご契約情報：試用期間中です(残り${left}日)`;
+      contractInfo = `■ご契約情報：試用期間中です(残り${left}日)`;
       break;
     
     default:
-      contractInfo = `ご契約情報：ご契約中です`;
+      contractInfo = `■ご契約情報：ご契約中です`;
       break;
   }
   p.innerHTML = contractInfo;
@@ -131,7 +134,7 @@ const createMemberPage = (userInfo,lineId) => {
 
   const label_gmail = document.createElement('label');
   label_gmail.setAttribute('class','label-gmail');
-  label_gmail.innerHTML = 'スプレッドシートに紐づくGmailアドレス';
+  label_gmail.innerHTML = '■スプレッドシートに紐づくGmailアドレス';
   divPage.appendChild(label_gmail);
 
   const div_form_gmail = document.createElement('div');
@@ -158,6 +161,14 @@ const createMemberPage = (userInfo,lineId) => {
     test_p.innerHTML = gmail;
     divPage.appendChild(test_p);
   })
+
+  if(userInfo.gmail){
+    input_gmail.value = userInfo.gmail;
+    input_gmail.readOnly = true;
+    postButton.value = '登録済'
+    postButton.disabled = true;
+  }
+
   div_form_gmail.appendChild(input_gmail);
   div_form_gmail.appendChild(span_gmail);
   div_form_gmail.appendChild(postButton);
