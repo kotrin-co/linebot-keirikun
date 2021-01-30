@@ -173,9 +173,7 @@ const createMemberPage = (userInfo,lineId) => {
   postButton.addEventListener('click',(e)=>{
     const formData = new FormData(formElement);
     const gmail = formData.get('gmail');
-    const test_p =document.createElement('p');
-    test_p.innerHTML = gmail;
-    divPage.appendChild(test_p);
+
   })
 
   if(userInfo.gmail){
@@ -206,7 +204,7 @@ const createMemberPage = (userInfo,lineId) => {
   btnCancel.setAttribute('class','btn-outline-secondary');
   btnCancel.innerHTML ='解約する';
   btnCancel.addEventListener('click',()=>{
-    fetch(`/api/cancel/${lineId}?sub=${subscription}`)
+    fetch(`/api/cancel/${lineId}?sub=${userInfo.subscription}`)
       .then(response=>{
         if(response.ok){
           response.text()
