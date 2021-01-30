@@ -7,6 +7,7 @@ const multipart = require('connect-multiparty');
 const privatekey = require('./client_secret.json');
 const router = require('./routers/index');
 const apiRouter = require('./routers/api');
+const settingsRouter = require('./routers/settings');
 const Data = require('./models/Data');
 const Flex = require('./models/Flex');
 const { copy } = require('./routers/index');
@@ -68,6 +69,7 @@ express()
       }
     })
   )
+  .use('/settings',settingsRouter)
   .get('/checkout-session',async (req,res)=>{
     const { sessionId } = req.query;
     const session = await stripe.checkout.sessions.retrieve(sessionId);
@@ -104,13 +106,13 @@ express()
       });
     }
   })
-  .get('/setup',(req,res)=>{
-    res.send({
-      publishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
-      monthlyPrice: process.env.MONTHLY_PRICE_ID,
-      yearlyPrice: process.env.YEARLY_PRICE_ID
-    });
-  })
+  // .get('/setup',(req,res)=>{
+  //   res.send({
+  //     publishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
+  //     monthlyPrice: process.env.MONTHLY_PRICE_ID,
+  //     yearlyPrice: process.env.YEARLY_PRICE_ID
+  //   });
+  // })
   .post('/customer-portal',async(req,res)=>{
     const { sessionId } = req.body;
     const checkoutsession = await stripe.checkout.sessions.retrieve(sessionId);

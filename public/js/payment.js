@@ -47,7 +47,7 @@ const createPaymentPage = () => {
   //クリック時の動作
   btnMenu1.addEventListener('click',(e)=>{
     e.preventDefault();
-    fetch('/setup')
+    fetch('/settings/setup')
       .then(handleFetchResult)
       .then(json=>{
         const publishableKey = json.publishableKey;
@@ -80,7 +80,7 @@ const createPaymentPage = () => {
 
   btnMenu2.addEventListener('click',(e)=>{
     e.preventDefault();
-    fetch('/setup')
+    fetch('/settings/setup')
       .then(handleFetchResult)
       .then(json=>{
         const publishableKey = json.publishableKey;
