@@ -139,8 +139,18 @@ const createMemberPage = (userInfo,lineId) => {
     case 'trial':
       const registeredDate = userInfo.timestamp;
       const today = new Date().getTime();
-      const left = FREE_TRIAL_PERIOD - ((today-registeredDate)/(24*60*60*1000));
-      contractInfo = `■ご契約情報<br>　試用期間中です(残り${left}日)`;
+      let left = FREE_TRIAL_PERIOD - ((today-registeredDate)/(24*60*60*1000));
+      if(left>=1){
+        left = Math.round(left);
+        left += '日';
+      }else if(left<1 && left >= (1/24)){
+        left = Math.round(left*24);
+        left += '時間';
+      }else{
+        left = Math.floor(left*24*60);
+        left += '分';
+      }
+      contractInfo = `■ご契約情報<br>　試用期間中です(残り${left})`;
       break;
     
     default:
