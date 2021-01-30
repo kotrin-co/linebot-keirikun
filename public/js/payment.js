@@ -130,9 +130,13 @@ const createMemberPage = (userInfo,lineId) => {
   divPage.appendChild(label_contract);
 
   //スプレッドシート情報
-  const p_ss = document.createElement('label');
-  p_ss.innerHTML = `■スプレッドシート<br>　作成済(ID:${userInfo.ssid})`;
-  divPage.appendChild(p_ss);
+  const label_ss = document.createElement('label');
+  if(userInfo.ssid){
+    label_ss.innerHTML = `■スプレッドシート：作成済<br>　ID:${userInfo.ssid}`;
+  }else{
+    label_ss.innerHTML = '■スプレッドシート：未作成'
+  }
+  divPage.appendChild(label_ss);
 
   //Gmail
   //form要素の生成
@@ -141,7 +145,12 @@ const createMemberPage = (userInfo,lineId) => {
 
   const label_gmail = document.createElement('label');
   label_gmail.setAttribute('class','label-gmail');
-  label_gmail.innerHTML = '■スプレッドシートに紐づくGmailアドレス';
+  if(userInfo.gmail){
+    label_gmail.innerHTML = '■スプレッドシートに紐づくGmailアドレス';
+  }else{
+    label_gmail.innerHTML = '■スプレッドシート作成のためのGmailアドレスを登録してください';
+  }
+  
   divPage.appendChild(label_gmail);
 
   const div_form_gmail = document.createElement('div');
@@ -170,10 +179,11 @@ const createMemberPage = (userInfo,lineId) => {
   })
 
   if(userInfo.gmail){
-    input_gmail.value = userInfo.gmail;
+    const gmail = userInfo.gmail.split('@');
+    input_gmail.value = gmail[0];
     input_gmail.readOnly = true;
     postButton.value = '登録済'
-    postButton.disabled = true;
+    // postButton.disabled = true;
   }
 
   div_form_gmail.appendChild(input_gmail);
