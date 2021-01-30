@@ -23,7 +23,7 @@ window.onload = () => {
 
           if(sessionId){
             let subscription;
-            fetch('/checkout-session?sessionId='+sessionId)
+            fetch('/settings/checkout-session?sessionId='+sessionId)
               .then((result)=>{
                 return result.json();
               })

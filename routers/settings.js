@@ -10,4 +10,16 @@ router
   .route('/create-checkout-session')
   .post(controller.createCheckoutSession);
 
+router
+  .route('/checkout-session')
+  .get(controller.checkoutSession);
+
+router
+  .route('/customer-portal')
+  .post(controller.customerPortal);
+
+router
+  .route('/webhook')
+  .post(controller.webhook);
+
 module.exports = router;
