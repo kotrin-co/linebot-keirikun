@@ -69,5 +69,6 @@ module.exports = {
   TRANSACTIONS: ['現金','振込・振替','クレカ'],
   original_SSID: '13Y2AZYNHWnQNKdSzK5Vxna_YPdf4YnT61imptdiM_MU',
   original_SID: [0,1786699057,251943700,1686142823,661995045,1312117404,550715539],
-  FREE_TRIAL_PERIOD: 3 //無料試用期間→日数単位で書く
+  FREE_TRIAL_PERIOD: 3, //無料試用期間→日数単位で書く
+  ADMIN: 'kentaro523@gmail.com'
 }
