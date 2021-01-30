@@ -11,7 +11,7 @@ module.exports = {
   createCheckoutSession: async (req,res) => {
     const domainURL = 'https://lienbot-keiri.herokuapp.com';
     const { priceId } = req.body;
-
+    console.log('priceid',priceId);
     try{
       const session = await stripe.checkout.sessions.create({
         mode: 'subscription',
