@@ -16,13 +16,11 @@ window.onload = () => {
           const response = await fetch(`api?line_uid=${lineId}`);
           const data = await response.json();
 
-          debug.innerHTML = data.subscription;
-
           //タイトル生成
           const divTitle = document.createElement('div');
           divTitle.setAttribute('class','div-center');
           const title = document.createElement('p');
-          const titleText = data.subscription ? `ようこそ${data.display_name}さん!<br>「けーり君」各種情報ページ``ようこそ${data.display_name}さん!<br>「けーりくん」各種情報ページ` : `ようこそ${data.display_name}さん!<br>「けーり君」ご購入ページ`;
+          const titleText = data.subscription ? `ようこそ${data.display_name}さん!<br>「けーり君」各種情報ページ` : `ようこそ${data.display_name}さん!<br>「けーり君」ご購入ページ`;
           title.innerHTML = titleText;
           divTitle.appendChild(title);
           divPage.appendChild(divTitle);
