@@ -18,4 +18,8 @@ router
   .route('/cancel/:lineId')
   .get(controller.cancelSubscription);
 
+router
+  .route('/mail')
+  .post(controller.createSheet);
+
 module.exports = router;

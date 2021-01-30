@@ -177,7 +177,7 @@ const handleMessageEvent = async (ev) => {
     connection.query(select_query)
       .then(res=>{
         console.log('res.rows[0]:',res.rows[0]);
-        if(res.rows[0].gmail){
+        if(res.rows[0].ssid){
           if( text === '消す'){
             const update_query = {
               text:`UPDATE users SET (gmail,ssid) = ('','') WHERE line_uid='${ev.source.userId}';`
@@ -232,7 +232,7 @@ const handleMessageEvent = async (ev) => {
             console.log('間違っている');
             return client.replyMessage(ev.replyToken,{
                 "type":"text",
-                "text":"まずはメールアドレスを登録しましょう。（Gmailアドレスのみを送ってください。）"
+                "text":"まずは設定画面でメールアドレスを登録してスプレッドシートを作りましょう！"
             });
           }
         }

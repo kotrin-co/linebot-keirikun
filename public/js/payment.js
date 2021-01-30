@@ -185,8 +185,23 @@ const createMemberPage = (userInfo,lineId) => {
   postButton.setAttribute('id','gmail-address');
   postButton.addEventListener('click',(e)=>{
     const formData = new FormData(formElement);
-    const gmail = formData.get('gmail');
-
+    let gmail = formData.get('gmail');
+    gmail += '@gmail.com';
+    const reg = /^[A-Za-z0-9]{1}[A-Za-z0-9_.-]*@gmail.com/;
+    if(reg.test(gmail)){
+      fetch('/api/mail',{
+        method:'POST',
+        body:formData,
+        credentials:'same-origin'
+      })
+      .then(res=>{
+        if(res.ok){
+          
+        }
+      })
+    }else{
+      alert('メールアドレスを正しく入力してください');
+    }
   })
 
   if(userInfo.gmail){

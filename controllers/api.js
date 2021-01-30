@@ -51,5 +51,11 @@ module.exports = {
     }catch(error){
       res.status(400).json({message:error.message});
     }
+  },
+
+  createSheet: (req,res) => {
+    let { gmail } = req.body;
+    gmail += '@gmail.com';
+    console.log('gmail',gmail);
   }
 }
