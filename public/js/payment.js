@@ -139,13 +139,21 @@ const createMemberPage = (userInfo,lineId) => {
 
   const input_gmail = document.createElement('input');
   input_gmail.setAttribute('class','form-control');
+  input_gmail.setAttribute('type','text');
+  input_gmail.setAttribute('name','gmail');
   input_gmail.setAttribute('aria-describedby','gmail-address');
   const span_gmail = document.createElement('span');
   span_gmail.setAttribute('class','input-group-text');
   span_gmail.setAttribute('id','gmail-address');
   span_gmail.innerHTML = '@gmail.com';
+  const postButton = document.createElement('input');
+  postButton.type = 'button';
+  postButton.value = '登録';
+  postButton.setAttribute('class','btn btn-primary');
+  postButton.setAttribute('id','gmail-address');
   div_form_gmail.appendChild(input_gmail);
   div_form_gmail.appendChild(span_gmail);
+  div_form_gmail.appendChild(postButton);
   formElement.appendChild(div_form_gmail);
   divPage.appendChild(formElement);
 
