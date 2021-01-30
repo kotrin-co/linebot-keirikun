@@ -19,7 +19,8 @@ window.onload = () => {
           const divTitle = document.createElement('div');
           divTitle.setAttribute('class','div-center');
           const title = document.createElement('p');
-          title.innerHTML = `ようこそ${data.display_name}さん!<br>「けーりくん」各種情報ページ`;
+          const titleText = data.subscription ? `ようこそ${data.display_name}さん!<br>「けーり君」各種情報ページ``ようこそ${data.display_name}さん!<br>「けーりくん」各種情報ページ` : `ようこそ${data.display_name}さん!<br>「けーり君」ご購入ページ`;
+          title.innerHTML = titleText;
           divTitle.appendChild(title);
           divPage.appendChild(divTitle);
 
@@ -42,8 +43,14 @@ const createPaymentPage = () => {
   pMenu1.innerHTML = '日額 ¥50（テスト）';
   pMenu1.setAttribute('class','p-menu');
   divMenu1.appendChild(pMenu1);
+
+  const imgMenu1 = document.createElement('img');
+  imgMenu1.src = '/starter.png';
+  imgMenu1.alt = '月額';
+  divMenu1.appendChild(imgMenu1);
+  
   const btnMenu1 = document.createElement('button');
-  btnMenu1.setAttribute('class','btn btn-secondary pay-button');
+  btnMenu1.setAttribute('class','btn btn-primary pay-button');
   btnMenu1.innerHTML = '購入する';
   divMenu1.appendChild(btnMenu1);
   divPage.appendChild(divMenu1);
@@ -77,7 +84,7 @@ const createPaymentPage = () => {
   pMenu2.setAttribute('class','p-menu');
   divMenu2.appendChild(pMenu2);
   const btnMenu2 = document.createElement('button');
-  btnMenu2.setAttribute('class','btn btn-secondary pay-button');
+  btnMenu2.setAttribute('class','btn btn-primary pay-button');
   btnMenu2.innerHTML = '購入する';
   divMenu2.appendChild(btnMenu2);
   divPage.appendChild(divMenu2);
