@@ -49,7 +49,7 @@ window.onload = () => {
                   if(response.ok){
                     response.text()
                       .then(text=>{
-                        alert(text);
+                        // alert(text);
                         const backButton = document.createElement('button');
                         backButton.setAttribute('class','btn btn-secondary');
                         backButton.innerHTML = '戻る';

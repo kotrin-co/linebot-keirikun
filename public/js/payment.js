@@ -1,4 +1,5 @@
 const divPage = document.getElementById('payment-page');
+const FREE_TRIAL_PERIOD = 3;
 
 window.onload = () => {
   const myLiffId = '1655219547-eobVGLdB';
@@ -23,7 +24,7 @@ window.onload = () => {
           if(!data.subscription){
             createPaymentPage(); //未課金
           }else{
-            createCancelPage(data.subscription,lineId); //すでに課金
+            createMemberPage(data,lineId); //すでに課金
           }
         })
         .catch(e=>console.log(e));
@@ -100,10 +101,53 @@ const createPaymentPage = () => {
   });
 }
 
-const createCancelPage = (subscription,lineId) => {
+const createMemberPage = (userInfo,lineId) => {
   const p = document.createElement('p');
-  p.innerHTML = 'すでにご契約いただいております';
+
+  let contractInfo;
+  switch(userInfo.subscription){
+    case 'guest':
+      contractInfo = 'ご契約情報：ゲストユーザーです'
+      break;
+
+    case 'trial':
+      const registeredDate = userInfo.timestamp;
+      const today = new Date().getTime();
+      const left = FREE_TRIAL_PERIOD - ((today-registeredDate)/(24*60*60*1000));
+      contractInfo = `ご契約情報：試用期間中です(残り${left}日)`;
+      break;
+    
+    default:
+      contractInfo = `ご契約情報：ご契約中です`;
+      break;
+  }
+  p.innerHTML = contractInfo;
   divPage.appendChild(p);
+
+  //Gmail
+  //form要素の生成
+  const formElement = document.createElement('form');
+  formElement.setAttribute('name','gmail-input');
+
+  const label_gmail = document.createElement('label');
+  label_gmail.setAttribute('class','label-gmail');
+  label_gmail.innerHTML = 'スプレッドシートに紐づくGmailアドレス';
+  divPage.appendChild(label_gmail);
+
+  const div_form_gmail = document.createElement('div');
+  div_form_gmail.setAttribute('class','input-group mb-3');
+
+  const input_gmail = document.createElement('input');
+  input_gmail.setAttribute('class','form-control');
+  input_gmail.setAttribute('aria-describedby','gmail-address');
+  const span_gmail = document.createElement('span');
+  span_gmail.setAttribute('class','input-group-text');
+  span_gmail.setAttribute('id','gmail-address');
+  span_gmail.innerHTML = '@gmail.com';
+  div_form_gmail.appendChild(input_gmail);
+  div_form_gmail.appendChild(span_gmail);
+  formElement.appendChild(div_form_gmail);
+  divPage.appendChild(formElement);
 
   const btnCancel = document.createElement('button');
   btnCancel.setAttribute('class','btn btn-danger pay-button');
