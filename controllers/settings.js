@@ -11,7 +11,7 @@ module.exports = {
   createCheckoutSession: async (req,res) => {
     const domainURL = 'https://lienbot-keiri.herokuapp.com';
     const { priceId } = req.body;
-    console.log('priceid',priceId);
+    
     try{
       const session = await stripe.checkout.sessions.create({
         mode: 'subscription',
@@ -26,6 +26,7 @@ module.exports = {
         success_url: 'https://liff.line.me/1655219547-2EG4LMYx?session_id={CHECKOUT_SESSION_ID}',
         cancel_url: `${domainURL}/canceled`
       });
+      console.log('session',session);
       res.send({
         sessionId: session.id
       });
