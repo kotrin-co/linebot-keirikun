@@ -1,6 +1,6 @@
 const divPage = document.getElementById('payment-page');
 const debug = document.getElementById('debug');
-const FREE_TRIAL_PERIOD = 0.003;
+const FREE_TRIAL_PERIOD = 0.007;
 
 window.onload = () => {
   const myLiffId = '1655219547-eobVGLdB';
