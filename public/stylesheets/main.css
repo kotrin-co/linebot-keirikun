@@ -61,6 +61,10 @@
   margin-bottom: 2rem;
 }
 
+.mail-post-button{
+  font-size: 0.7rem;
+}
+
 /* 支払成功ページ */
 
 #paid-success-page{

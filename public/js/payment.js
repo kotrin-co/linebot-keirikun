@@ -168,7 +168,7 @@ const createMemberPage = (userInfo,lineId) => {
   const postButton = document.createElement('input');
   postButton.type = 'button';
   postButton.value = '登録';
-  postButton.setAttribute('class','btn btn-primary');
+  postButton.setAttribute('class','btn btn-primary mail-post-button');
   postButton.setAttribute('id','gmail-address');
   postButton.addEventListener('click',(e)=>{
     const formData = new FormData(formElement);
@@ -191,6 +191,13 @@ const createMemberPage = (userInfo,lineId) => {
   div_form_gmail.appendChild(postButton);
   formElement.appendChild(div_form_gmail);
   divPage.appendChild(formElement);
+
+  //お問合せ先
+  const label_contact = document.createElement('label');
+  label_contact.innerHTML = '■お問合せ先<br>　電話：090-xxxx-xxxx<br>　メール：kentaro523@gmail.com';
+  divPage.appendChild(label_contact);
+
+  
 
   const btnCancel = document.createElement('button');
   btnCancel.setAttribute('class','btn btn-danger pay-button');
