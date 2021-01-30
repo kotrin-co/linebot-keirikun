@@ -54,12 +54,12 @@
 }
 
 .pay-button{
-  width: 40%;
+  width: 35%;
 }
 
 .pay-img{
-  width:50%;
-  height:50%;
+  width:45%;
+  height:45%;
 }
 
 .p-menu{
@@ -68,8 +68,8 @@
 
 .menu-contents{
   text-align: center;
-  margin-bottom: 2rem;
-  border: 0.2rem solid #666;
+  margin-bottom: 0.5rem;
+  border: 0.05rem solid #999;
 }
 
 .mail-post-button{

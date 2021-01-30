@@ -84,6 +84,13 @@ const createPaymentPage = () => {
   pMenu2.innerHTML = '月額 ¥500（テスト）';
   pMenu2.setAttribute('class','p-menu');
   divMenu2.appendChild(pMenu2);
+
+  const imgMenu2 = document.createElement('img');
+  imgMenu2.setAttribute('class','pay-img');
+  imgMenu2.src = '/professional.png';
+  imgMenu2.alt = '年額';
+  divMenu2.appendChild(imgMenu2);
+
   const btnMenu2 = document.createElement('button');
   btnMenu2.setAttribute('class','btn btn-primary pay-button');
   btnMenu2.innerHTML = '購入する';
