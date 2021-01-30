@@ -31,7 +31,7 @@ window.onload = () => {
           const left = FREE_TRIAL_PERIOD - ((today-registeredDate)/(24*60*60*1000));
 
           //課金しているかどうかで表示コンテンツを変える
-          if(!data.subscription && left<0){
+          if(!data.subscription || (data.subscription === 'trial' && left<0)){
             createPaymentPage(); //未課金
           }else{
             createMemberPage(data,lineId); //課金orゲストor無料トライアル

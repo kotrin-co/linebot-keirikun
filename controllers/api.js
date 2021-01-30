@@ -57,8 +57,8 @@ module.exports = {
     let { gmail,userName,line_uid } = req.body;
     gmail += '@gmail.com';
     Data.createSheet(gmail,userName,line_uid)
-      .then(()=>{
-
+      .then(text=>{
+        res.status(200).send(text);
       })
       .catch(e=>console.log(e));
   }
