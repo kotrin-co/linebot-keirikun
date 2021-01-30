@@ -199,7 +199,13 @@ const createMemberPage = (userInfo,lineId) => {
       })
       .then(res=>{
         if(res.ok){
-
+          res.text()
+            .then(text=>{
+              alert(text);
+            })
+            .catch(e=>console.log(e));
+        }else{
+          alert('HTTPレスポンスエラーです');
         }
       })
     }else{

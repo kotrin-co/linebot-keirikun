@@ -11,6 +11,7 @@ const {
   original_SSID,
   original_SID
 } = require('../params/params');
+const { resolve } = require('path');
 
 const connection = new Client({
   connectionString: process.env.DATABASE_URL,
@@ -320,7 +321,7 @@ const initialTreat = (ssID,line_uid) => {
                                 deleteBlankSheet()
                                   .then(m=>{
                                     console.log(m);
-                                    resolve('initial treat success!');
+                                    resolve('スプレッドシート作成成功！！');
                                   })
                               })
                           })
@@ -620,65 +621,67 @@ module.exports = {
     })
   },
 
-  createSheet: async (gmail,userName,line_uid) => {
+  createSheet: (gmail,userName,line_uid) => {
 
-    const sheets = authorize();
+    return new Promise(async(resolve)=>{
 
-    const name = userName;
-    const year = new Date().getFullYear();
+      const sheets = authorize();
 
-    const request = {
-      resource : {
-        //spreadsheetId: '',
-        properties: {
-          title: `${name}さんの会計シート(${year})`,
-          locale: 'ja_JP',
-          timeZone:'Asia/Tokyo'
-        },
-        'sheets': [
-          {
-            'properties': {
-              'sheetId': 0,
-              'title': 'デフォルト',
-              'index': 1,
-              'sheetType': 'GRID',
-              'gridProperties': {
-                'rowCount': 50,
-                'columnCount': 400
+      const name = userName;
+      const year = new Date().getFullYear();
+
+      const request = {
+        resource : {
+          //spreadsheetId: '',
+          properties: {
+            title: `${name}さんの会計シート(${year})`,
+            locale: 'ja_JP',
+            timeZone:'Asia/Tokyo'
+          },
+          'sheets': [
+            {
+              'properties': {
+                'sheetId': 0,
+                'title': 'デフォルト',
+                'index': 1,
+                'sheetType': 'GRID',
+                'gridProperties': {
+                  'rowCount': 50,
+                  'columnCount': 400
+                }
               }
             }
-          }
-        ],
-      }
-    };
-  
-    await sheets.spreadsheets.create(request, (err,response)=>{
+          ],
+        }
+      };
+    
+      await sheets.spreadsheets.create(request, (err,response)=>{
 
-      const spreadsheetId = response.data.spreadsheetId;
-      gmailAccountAdd(spreadsheetId,'owner',ADMIN)
-          .then((ssId)=>{
-              gmailAccountAdd(spreadsheetId,'writer',gmail)
-                  .then((ssID)=>{
-                      const update_query = {
-                          text:`UPDATE users SET (gmail,ssid) = ('${gmail}','${ssID}') WHERE line_uid='${line_uid}';`
-                      };
-          
-                      connection.query(update_query)
-                          .then(()=>{
-                              initialTreat(ssID,line_uid)
-                                .then(message=>{
-                                  console.log('message',message);
-                                  return client.replyMessage(ev.replyToken,{
-                                    "type":"text",
-                                    "text":`${userName}さん、会計シートが正しく作れました\uDBC0\uDC04`
-                                  });
-                                })
-                                .catch(e=>console.log(e));
-                          })
-                          .catch(e=>console.log(e.stack));
-                  })
-                  .catch(e=>console.log(e));
-          })
-    });
+        const spreadsheetId = response.data.spreadsheetId;
+        gmailAccountAdd(spreadsheetId,'owner',ADMIN)
+            .then((ssId)=>{
+                gmailAccountAdd(spreadsheetId,'writer',gmail)
+                    .then((ssID)=>{
+                        const update_query = {
+                            text:`UPDATE users SET (gmail,ssid) = ('${gmail}','${ssID}') WHERE line_uid='${line_uid}';`
+                        };
+            
+                        connection.query(update_query)
+                            .then(()=>{
+                                initialTreat(ssID,line_uid)
+                                  .then(message=>{
+                                    console.log('message',message);
+                                    resolve(message);
+                                  })
+                                  .catch(e=>console.log(e));
+                            })
+                            .catch(e=>console.log(e.stack));
+                    })
+                    .catch(e=>console.log(e));
+            })
+      });
+    })
+
+    
   }
 }
