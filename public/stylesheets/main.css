@@ -64,6 +64,7 @@
 .menu-contents{
   text-align: center;
   margin-bottom: 2rem;
+  border: 0.2rem solid #666;
 }
 
 .mail-post-button{
