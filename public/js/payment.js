@@ -192,6 +192,8 @@ const createMemberPage = (userInfo,lineId) => {
     formData.append('userName',userInfo.display_name);
     formData.append('line_uid',userInfo.line_uid);
     if(reg.test(gmail)){
+      divPage.innerHTML = '';
+      displaySpinner();
       fetch('/api/mail',{
         method:'POST',
         body:formData,
@@ -314,4 +316,16 @@ const showErrorMessage = (message) => {
   const errorEl = document.createElement('div');
   errorEl.textContent = message;
   errorEl.style.display = 'block';
+}
+
+//ローディング中スピナー生成
+const displaySpinner = () => {
+  const divSpinner = document.createElement('div');
+  divSpinner.setAttribute('class','spinner-border text-primary spinner');
+  divSpinner.setAttribute('role','status');
+  const spanText = document.createElement('span');
+  spanText.setAttribute('class','sr-only');
+  spanText.innerHTML = 'Now Loading...';
+  divPage.appendChild(spanText);
+  divPage.appendChild(divSpinner);
 }
