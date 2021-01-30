@@ -1,4 +1,5 @@
 const divPage = document.getElementById('payment-page');
+const debug = document.getElementById('debug');
 const FREE_TRIAL_PERIOD = 3;
 
 window.onload = () => {
@@ -14,6 +15,8 @@ window.onload = () => {
           const lineId = profile.userId;
           const response = await fetch(`api?line_uid=${lineId}`);
           const data = await response.json();
+
+          debug.innerHTML = data.subscription;
 
           //タイトル生成
           const divTitle = document.createElement('div');
