@@ -151,6 +151,13 @@ const createMemberPage = (userInfo,lineId) => {
   postButton.value = '登録';
   postButton.setAttribute('class','btn btn-primary');
   postButton.setAttribute('id','gmail-address');
+  postButton.addEventListener('click',(e)=>{
+    const formData = new FormData(formElement);
+    const gmail = formData.get('gmail');
+    const test_p =document.createElement('p');
+    test_p.innerHTML = gmail;
+    divPage.appendChild(test_p);
+  })
   div_form_gmail.appendChild(input_gmail);
   div_form_gmail.appendChild(span_gmail);
   div_form_gmail.appendChild(postButton);
