@@ -105,27 +105,34 @@ const createPaymentPage = () => {
 }
 
 const createMemberPage = (userInfo,lineId) => {
-  const p = document.createElement('p');
+
+  //契約情報
+  const p_contract = document.createElement('p');
 
   let contractInfo;
   switch(userInfo.subscription){
     case 'guest':
-      contractInfo = '■ご契約情報：ゲストユーザーです'
+      contractInfo = '■ご契約情報<br>　ゲストユーザーです'
       break;
 
     case 'trial':
       const registeredDate = userInfo.timestamp;
       const today = new Date().getTime();
       const left = FREE_TRIAL_PERIOD - ((today-registeredDate)/(24*60*60*1000));
-      contractInfo = `■ご契約情報：試用期間中です(残り${left}日)`;
+      contractInfo = `■ご契約情報<br>　試用期間中です(残り${left}日)`;
       break;
     
     default:
-      contractInfo = `■ご契約情報：ご契約中です`;
+      contractInfo = `■ご契約情報<br>　ご契約中です(${userInfo.subscription})`;
       break;
   }
-  p.innerHTML = contractInfo;
-  divPage.appendChild(p);
+  p_contract.innerHTML = contractInfo;
+  divPage.appendChild(p_contract);
+
+  //スプレッドシート情報
+  const p_ss = document.createElement('p');
+  p_ss.innerHTML = `■スプレッドシート<br>　作成済(ID:${userId.ssid})`;
+  divPage.appendChild(p_ss);
 
   //Gmail
   //form要素の生成
