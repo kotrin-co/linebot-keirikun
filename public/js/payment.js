@@ -212,33 +212,35 @@ const createMemberPage = (userInfo,lineId) => {
   divPage.appendChild(label_contact);
 
 
-  //解約ボタン
-  const divCancel = document.createElement('div');
-  divCancel.setAttribute('class','div-right');
+  //解約ボタン(課金している場合に出現)
+  if(userInfo.subscription !== 'trial' && userInfo.subscription !== 'guest'){
+    const divCancel = document.createElement('div');
+    divCancel.setAttribute('class','div-right');
 
-  const btnCancel = document.createElement('button');
-  btnCancel.setAttribute('class','btn-outline-secondary');
-  btnCancel.innerHTML ='解約する';
-  btnCancel.addEventListener('click',()=>{
-    fetch(`/api/cancel/${lineId}?sub=${userInfo.subscription}`)
-      .then(response=>{
-        if(response.ok){
-          response.text()
-            .then(text=>{
-              alert(text);
-              liff.openWindow({
-                url: 'https://liff.line.me/1655219547-eobVGLdB',
-                external: false
-              });
-            })
-            .catch(e=>console.log(e));
-        }else{
-          alert('HTTPレスポンスエラーです');
-        }
-      })
-  })
-  divCancel.appendChild(btnCancel);
-  divPage.appendChild(divCancel);
+    const btnCancel = document.createElement('button');
+    btnCancel.setAttribute('class','btn-outline-secondary');
+    btnCancel.innerHTML ='解約する';
+    btnCancel.addEventListener('click',()=>{
+      fetch(`/api/cancel/${lineId}?sub=${userInfo.subscription}`)
+        .then(response=>{
+          if(response.ok){
+            response.text()
+              .then(text=>{
+                alert(text);
+                liff.openWindow({
+                  url: 'https://liff.line.me/1655219547-eobVGLdB',
+                  external: false
+                });
+              })
+              .catch(e=>console.log(e));
+          }else{
+            alert('HTTPレスポンスエラーです');
+          }
+        })
+    })
+    divCancel.appendChild(btnCancel);
+    divPage.appendChild(divCancel);
+  }
 }
 
 const createCheckoutSession = (priceId) => {
