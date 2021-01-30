@@ -218,7 +218,7 @@ const createMemberPage = (userInfo,lineId) => {
     input_gmail.value = gmail[0];
     input_gmail.readOnly = true;
     postButton.value = '登録済'
-    // postButton.disabled = true;
+    postButton.disabled = true;
   }
 
   div_form_gmail.appendChild(input_gmail);

@@ -176,16 +176,16 @@ const handleMessageEvent = async (ev) => {
       .then(res=>{
         console.log('res.rows[0]:',res.rows[0]);
         if(res.rows[0].ssid){
-          if( text === '消す'){
-            const update_query = {
-              text:`UPDATE users SET (gmail,ssid) = ('','') WHERE line_uid='${ev.source.userId}';`
-            };
-            connection.query(update_query)
-              .then(()=>console.log('消した！！'))
-              .catch(e=>console.log(e));
-          }
+          // if( text === '消す'){
+          //   const update_query = {
+          //     text:`UPDATE users SET (gmail,ssid) = ('','') WHERE line_uid='${ev.source.userId}';`
+          //   };
+          //   connection.query(update_query)
+          //     .then(()=>console.log('消した！！'))
+          //     .catch(e=>console.log(e));
+          // }
 
-          else if( text === 'けーり君サポートお願い！'){
+          if( text === 'けーり君サポートお願い！'){
             return client.replyMessage(ev.replyToken,[
               {
                 "type":"text",
@@ -221,11 +221,20 @@ const handleMessageEvent = async (ev) => {
             });
           }
         }else{
-          const reg = /^[A-Za-z0-9]{1}[A-Za-z0-9_.-]*@gmail.com/;
-          if(reg.test(text)){
-            console.log('メアドOK');
-            const userName = profile.displayName;
-            createSheet(text,userName,ev);
+          if(text === '吾輩はゲストユーザーである'){
+            console.log('ゲストユーザー');
+            const update_query = {
+              text: `UPDATE users SET subscription='guest' WHERE line_uid='${ev.source.userId}';`
+            };
+            connection.query(update_query)
+              .then(()=>{
+                console.log('ゲストユーザー登録完了');
+                return client.replyMessage(ev.replyToken,{
+                  "type":"text",
+                  "text":"あなたをゲストユーザーとして登録しました^^"
+                });
+              })
+              .catch(e=>console.log(e));
           }else{
             console.log('間違っている');
             return client.replyMessage(ev.replyToken,{
