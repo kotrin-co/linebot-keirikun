@@ -47,7 +47,8 @@ window.onload = () => {
           const data = await response.json();
           
           //利用可能チェック
-          const available = checkAvailable(data);
+          // const available = checkAvailable(data);
+          const available = true;
           document.getElementById('user-name').innerHTML=`${data.display_name}さん、${available}`;
 
           //利用可能な場合に入力項目を表示する
