@@ -107,7 +107,7 @@ const createPaymentPage = () => {
 const createMemberPage = (userInfo,lineId) => {
 
   //契約情報
-  const p_contract = document.createElement('p');
+  const label_contract = document.createElement('label');
 
   let contractInfo;
   switch(userInfo.subscription){
@@ -126,11 +126,11 @@ const createMemberPage = (userInfo,lineId) => {
       contractInfo = `■ご契約情報<br>　ご契約中です(${userInfo.subscription})`;
       break;
   }
-  p_contract.innerHTML = contractInfo;
-  divPage.appendChild(p_contract);
+  label_contract.innerHTML = contractInfo;
+  divPage.appendChild(label_contract);
 
   //スプレッドシート情報
-  const p_ss = document.createElement('p');
+  const p_ss = document.createElement('label');
   p_ss.innerHTML = `■スプレッドシート<br>　作成済(ID:${userInfo.ssid})`;
   divPage.appendChild(p_ss);
 
