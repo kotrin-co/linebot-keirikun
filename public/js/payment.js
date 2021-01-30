@@ -129,14 +129,14 @@ const createCancelPage = (subscription,lineId) => {
   divPage.appendChild(btnCancel);
 }
 
-const createCheckoutSession = (yearlyPriceId) => {
-  return fetch('/create-checkout-session',{
+const createCheckoutSession = (priceId) => {
+  return fetch('/settings/create-checkout-session',{
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      priceId: yearlyPriceId
+      priceId: priceId
     })
   })
   .then(handleFetchResult);
