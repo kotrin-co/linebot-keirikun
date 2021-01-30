@@ -45,10 +45,9 @@ const createPaymentPage = () => {
   divMenu1.appendChild(pMenu1);
 
   const imgMenu1 = document.createElement('img');
+  imgMenu1.setAttribute('class','pay-img');
   imgMenu1.src = '/starter.png';
   imgMenu1.alt = '月額';
-  imgMenu1.width = '50%';
-  imgMenu1.height = '50%';
   divMenu1.appendChild(imgMenu1);
 
   const btnMenu1 = document.createElement('button');
