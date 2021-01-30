@@ -202,6 +202,10 @@ const createMemberPage = (userInfo,lineId) => {
           res.text()
             .then(text=>{
               alert(text);
+              liff.openWindow({
+                url:'https://liff.line.me/1655219547-eobVGLdB',
+                external: false
+              });
             })
             .catch(e=>console.log(e));
         }else{
