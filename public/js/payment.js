@@ -197,10 +197,13 @@ const createMemberPage = (userInfo,lineId) => {
   label_contact.innerHTML = '■お問合せ先<br>　電話：090-xxxx-xxxx<br>　メール：kentaro523@gmail.com';
   divPage.appendChild(label_contact);
 
-  
+
+  //解約ボタン
+  const divCancel = document.createElement('div');
+  divCancel.setAttribute('class','div-right');
 
   const btnCancel = document.createElement('button');
-  btnCancel.setAttribute('class','btn btn-danger pay-button');
+  btnCancel.setAttribute('class','btn-outline-secondary');
   btnCancel.innerHTML ='解約する';
   btnCancel.addEventListener('click',()=>{
     fetch(`/api/cancel/${lineId}?sub=${subscription}`)
@@ -220,7 +223,8 @@ const createMemberPage = (userInfo,lineId) => {
         }
       })
   })
-  divPage.appendChild(btnCancel);
+  divCancel.appendChild(btnCancel);
+  divPage.appendChild(divCancel);
 }
 
 const createCheckoutSession = (priceId) => {
