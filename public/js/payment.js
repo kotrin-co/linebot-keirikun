@@ -131,7 +131,7 @@ const createMemberPage = (userInfo,lineId) => {
 
   //スプレッドシート情報
   const p_ss = document.createElement('p');
-  p_ss.innerHTML = `■スプレッドシート<br>　作成済(ID:${userId.ssid})`;
+  p_ss.innerHTML = `■スプレッドシート<br>　作成済(ID:${userInfo.ssid})`;
   divPage.appendChild(p_ss);
 
   //Gmail
