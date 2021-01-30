@@ -86,5 +86,9 @@ module.exports = {
       console.log(`🔔  Payment received!`);
     }
     res.sendStatus(200);
+  },
+
+  successPage: (req,res) => {
+    res.render('pages/success');
   }
 }

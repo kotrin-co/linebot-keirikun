@@ -22,4 +22,8 @@ router
   .route('/webhook')
   .post(controller.webhook);
 
+router
+  .route('/success')
+  .get(controller.successPage);
+
 module.exports = router;
