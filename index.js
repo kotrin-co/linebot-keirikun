@@ -135,7 +135,7 @@ const greeting_follow = async (ev) => {
                 },
                 {
                     "type":"text",
-                    "text":'Gmailアドレスを教えてください！（半角英数字、メールアドレス以外の文字は返信しないでください）'
+                    "text":`無料トライアル期間は${FREE_TRIAL_PERIOD}日間です。まずは設定画面でGmailアドレスを登録して、会計スプレッドシートを作成しましょう！！`
                 }
                 ]);
             })
