@@ -142,8 +142,6 @@ const greeting_follow = async (ev) => {
             .catch(e=>console.log(e));
         }
       })
-
-    
 }
 
 const delete_user = (ev) => {
@@ -454,6 +452,7 @@ const createSheet = async (address,userName,ev) => {
         privatekey.private_key,
         ['https://www.googleapis.com/auth/spreadsheets']
      );
+
    //リクエストの承認をチェックする
    jwtClient.authorize(function (err, tokens) {
        if (err) {

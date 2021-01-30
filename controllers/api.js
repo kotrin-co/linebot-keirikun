@@ -54,8 +54,9 @@ module.exports = {
   },
 
   createSheet: (req,res) => {
-    let { gmail } = req.body;
+    let { gmail,userName,line_uid } = req.body;
     gmail += '@gmail.com';
-    console.log('gmail',gmail);
+    console.log('req.body',gmail,userName,line_uid);
+    
   }
 }

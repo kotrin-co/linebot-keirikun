@@ -188,6 +188,9 @@ const createMemberPage = (userInfo,lineId) => {
     let gmail = formData.get('gmail');
     gmail += '@gmail.com';
     const reg = /^[A-Za-z0-9]{1}[A-Za-z0-9_.-]*@gmail.com/;
+
+    formData.append('userName',userInfo.display_name);
+    formData.append('line_uid',userInfo.line_uid);
     if(reg.test(gmail)){
       fetch('/api/mail',{
         method:'POST',
@@ -196,7 +199,7 @@ const createMemberPage = (userInfo,lineId) => {
       })
       .then(res=>{
         if(res.ok){
-          
+
         }
       })
     }else{
