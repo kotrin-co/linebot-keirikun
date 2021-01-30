@@ -76,6 +76,11 @@
   font-size: 0.7rem;
 }
 
+.spinner{
+  text-align: center;
+  height: 40vh;
+}
+
 /* 支払成功ページ */
 
 #paid-success-page{
