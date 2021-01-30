@@ -620,7 +620,7 @@ module.exports = {
     })
   },
 
-  createSheet: (gmail,userName,line_uid) => {
+  createSheet: async (gmail,userName,line_uid) => {
 
     const sheets = authorize();
 
