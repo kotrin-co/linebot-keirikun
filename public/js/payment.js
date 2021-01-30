@@ -1,6 +1,6 @@
 const divPage = document.getElementById('payment-page');
 const debug = document.getElementById('debug');
-const FREE_TRIAL_PERIOD = 0.0033;
+const FREE_TRIAL_PERIOD = 0.003;
 
 window.onload = () => {
   const myLiffId = '1655219547-eobVGLdB';
@@ -25,11 +25,16 @@ window.onload = () => {
           divTitle.appendChild(title);
           divPage.appendChild(divTitle);
 
+          //無料トライアル残存時間の計算
+          const registeredDate = data.timestamp;
+          const today = new Date().getTime();
+          const left = FREE_TRIAL_PERIOD - ((today-registeredDate)/(24*60*60*1000));
+
           //課金しているかどうかで表示コンテンツを変える
-          if(!data.subscription){
+          if(!data.subscription || left<0){
             createPaymentPage(); //未課金
           }else{
-            createMemberPage(data,lineId); //すでに課金
+            createMemberPage(data,lineId); //課金orゲストor無料トライアル
           }
         })
         .catch(e=>console.log(e));
