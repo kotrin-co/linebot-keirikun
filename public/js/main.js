@@ -45,10 +45,10 @@ window.onload = () => {
           const lineId = profile.userId;
           const response = await fetch(`api?line_uid=${lineId}`);
           const data = await response.json();
-          // document.getElementById('user-name').innerHTML=`${data.display_name}さん、会計データを入力してください`;
           
           //利用可能チェック
           const available = checkAvailable(data);
+          document.getElementById('user-name').innerHTML=`${data.display_name}さん、${available}`;
 
           //利用可能な場合に入力項目を表示する
           if(available){
