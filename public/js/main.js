@@ -1,34 +1,6 @@
 const ACCOUNTS = ['売上','仕入','交通費','会議費','接待交際費','通信費','衣装費','消耗品費','荷造運賃','車両費','研修費','新聞図書費','外注工賃','広告宣伝費','諸会費','雑費','利子割引料','給料','雑給','従業員報酬','ｽﾀｯﾌ源泉所得税','家賃','水道光熱費','支払手数料','税理士・弁護士報酬','保険料','年金','雑収入','備品'];
 const TRANSACTIONS = ['現金','振込・振替','クレカ'];
 
-const availableCheck = (data) => {
-
-  switch(data.subscription){
-
-    case '':
-      return false;
-      break;
-
-    case 'trial':
-      const today = new Date().getTime();
-      const registeredDate = data.timestamp;
-      if((today-registeredDate)<FREE_TRIAL_PERIOD*24*60*60*1000){
-        return true;
-      }else{
-        return false;
-      }
-      break;
-    
-    case 'guest':
-      return true;
-      break;
-    
-    default:
-      return true;
-      break;
-  }
-}
-
 window.onload = () => {
   // import liff from '@line/liff';
   const myLiffId = '1655219547-2QEXPwR1';
@@ -47,9 +19,31 @@ window.onload = () => {
           const data = await response.json();
           
           //利用可能チェック
-          // const available = checkAvailable(data);
-          const available = true;
-          document.getElementById('user-name').innerHTML=`${data.display_name}さん、${available}`;
+          let available;
+          switch(data.subscription){
+
+            case '':
+              available = false;
+              break;
+        
+            case 'trial':
+              const today = new Date().getTime();
+              const registeredDate = data.timestamp;
+              if((today-registeredDate)<FREE_TRIAL_PERIOD*24*60*60*1000){
+                available = true;
+              }else{
+                available = false;
+              }
+              break;
+            
+            case 'guest':
+              available = true;
+              break;
+            
+            default:
+              available = true;
+              break;
+          }
 
           //利用可能な場合に入力項目を表示する
           if(available){
@@ -124,7 +118,7 @@ window.onload = () => {
             const select_transaction = document.createElement('select');
             select_transaction.setAttribute('class','form-control account-selector');
             select_transaction.setAttribute('name','selectedTransaction');
-            ACCOUNTS.forEach((transaction,index)=>{
+            TRANSACTIONS.forEach((transaction,index)=>{
               const option = document.createElement('option');
               option.innerHTML = transaction;
               option.value = index;
