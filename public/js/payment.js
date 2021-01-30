@@ -1,6 +1,6 @@
 const divPage = document.getElementById('payment-page');
 const debug = document.getElementById('debug');
-const FREE_TRIAL_PERIOD = 3;
+const FREE_TRIAL_PERIOD = 0.0033;
 
 window.onload = () => {
   const myLiffId = '1655219547-eobVGLdB';
@@ -145,14 +145,6 @@ const createMemberPage = (userInfo,lineId) => {
   label_contract.innerHTML = contractInfo;
   divPage.appendChild(label_contract);
 
-  //スプレッドシート情報
-  const label_ss = document.createElement('label');
-  if(userInfo.ssid){
-    label_ss.innerHTML = `■スプレッドシート：作成済<br>　ID:${userInfo.ssid}`;
-  }else{
-    label_ss.innerHTML = '■スプレッドシート：未作成'
-  }
-  divPage.appendChild(label_ss);
 
   //Gmail
   //form要素の生成
@@ -164,7 +156,7 @@ const createMemberPage = (userInfo,lineId) => {
   if(userInfo.gmail){
     label_gmail.innerHTML = '■スプレッドシートに紐づくGmailアドレス';
   }else{
-    label_gmail.innerHTML = '■スプレッドシート作成のためのGmailアドレスを登録してください';
+    label_gmail.innerHTML = 'まずはGmailを登録して、スプレッドシートを作成しましょう！';
   }
   
   divPage.appendChild(label_gmail);
@@ -205,6 +197,13 @@ const createMemberPage = (userInfo,lineId) => {
   div_form_gmail.appendChild(postButton);
   formElement.appendChild(div_form_gmail);
   divPage.appendChild(formElement);
+
+  //スプレッドシート情報
+  if(userInfo.ssid){
+    const label_ss = document.createElement('label');
+    label_ss.innerHTML = `■スプレッドシート：作成済<br>　ID:${userInfo.ssid}`;
+    divPage.appendChild(label_ss);
+  }
 
   //お問合せ先
   const label_contact = document.createElement('label');
