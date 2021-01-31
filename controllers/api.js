@@ -68,38 +68,38 @@ module.exports = {
 
   getProfile: (req,res) => {
     const data = req.body;
-    data.client_id = process.env.ACCESS_TOKEN;
+    // data.client_id = process.env.ACCESS_TOKEN;
     
     // const jsonData = JSON.stringify(data);
     // const formData = new FormData();
     // formData.append('id_token',data.id_token);
     // formData.append('client_id',data.client_id);
-    const bodyData = `id_token=${data.id_token}&client_id=${process.env.ACCESS_TOKEN}`;
+    const bodyData = `id_token=${data.id_token}&client_id=1655219547`;
     console.log('data in controller1',bodyData);
 
-    const options = {
-      url:'https://api.line.me/oauth2/v2.1/verify',
-      method:'POST',
-      json:{
-        id_token: data.id_token,
-        client_id: '1655564087'
-      }
-    }
-    request(options)
-      .then(res=>{
-        console.log(res);
-      })
-      .catch(e=>console.log(e));
-    // fetch('https://api.line.me/oauth2/v2.1/verify',{
-    //   method: 'POST',
-    //   // headers: {
-    //   //   'Content-Type':'application/x-www-form-urlencoded'
-    //   // },
-    //   body: bodyData
-    // })
-    // .then(res=>{
-    //   console.log('res in controller',res);
-    // })
-    // .catch(e=>console.log(e));
+    // const options = {
+    //   url:'https://api.line.me/oauth2/v2.1/verify',
+    //   method:'POST',
+    //   json:{
+    //     id_token: data.id_token,
+    //     client_id: '1655219547'
+    //   }
+    // }
+    // request(options)
+    //   .then(res=>{
+    //     console.log(res);
+    //   })
+    //   .catch(e=>console.log(e));
+    fetch('https://api.line.me/oauth2/v2.1/verify',{
+      method: 'POST',
+      headers: {
+        'Content-Type':'application/x-www-form-urlencoded'
+      },
+      body: bodyData
+    })
+    .then(res=>{
+      console.log('res in controller',res);
+    })
+    .catch(e=>console.log(e));
   }
 }
