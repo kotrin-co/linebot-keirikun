@@ -72,9 +72,9 @@ module.exports = {
     const bodyData = `id_token=${data.id_token}&client_id=${data.client_id}`;
     fetch('https://api.line.me/oauth2/v2.1/verify',{
       method: 'POST',
-      headers: {
-        'Content-Type':'application/x-www-form-urlencoded'
-      },
+      // headers: {
+      //   'Content-Type':'application/x-www-form-urlencoded'
+      // },
       body: bodyData
     })
     .then(res=>{
