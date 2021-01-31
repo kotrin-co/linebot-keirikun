@@ -77,7 +77,11 @@ module.exports = {
       body: bodyData
     })
     .then(res=>{
-      console.log('res in controller',res.body);
+      console.log('res in controller',res);
+      res.json()
+        .then(json=>{
+          console.log('json@@@',json);
+        })
     })
     .catch(e=>console.log(e));
   }
