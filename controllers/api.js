@@ -67,13 +67,14 @@ module.exports = {
   getProfile: (req,res) => {
     const data = req.body;
     data.client_id = process.env.ACCESS_TOKEN;
+    data.client_secret = process.env.CHANNEL_SECRET;
     console.log('data in controller1',data);
-    const jsonData = JSON.stringify(data);
+    // const jsonData = JSON.stringify(data);
     fetch('https://api.line.me/oauth2/v2.1/verify',{
       method: 'POST',
-      // headers: {
-      //   'Content-Type':'application/json'
-      // },
+      headers: {
+        'Content-Type':'application/x-www-form-urlencoded'
+      },
       body: data
     })
     .then(res=>{
