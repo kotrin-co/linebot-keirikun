@@ -200,6 +200,24 @@ window.onload = () => {
 
             formElement.appendChild(div_form_date);
 
+            //月選択を入力したら日選択をリセットする
+            select_month.addEventListener('change',()=>{
+              //子ノードの全削除
+              if(select_day.hasChildNodes()){
+                while(select_day.childNodes.length>0){
+                  select_day.removeChild(select_day.firstChild);
+                }
+              }
+              const l = new Date(new Date().getFullYear(),select_month.selectedIndex+1,0).getDate();
+              for(let i=0;i<l;i++){
+                const option = document.createElement('option');
+                option.innerHTML = i+1;
+                option.value = i+1;
+                select_day.appendChild(option);
+              }
+              select_day.selectedIndex = -1;
+            });
+
             //postボタン
             const postButton = document.createElement('input');
             postButton.type = 'button';
