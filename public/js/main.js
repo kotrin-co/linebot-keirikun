@@ -129,9 +129,9 @@ window.onload = () => {
             //勘定科目を入力したら取引方法をリセットする
             select_account.addEventListener('change',()=>{
               //子ノードの全削除
-              if(select_account.hasChildNodes()){
-                while(select_account.childNodes.length>0){
-                  select_account.removeChild(select_account.firstChild);
+              if(select_transaction.hasChildNodes()){
+                while(select_transaction.childNodes.length>0){
+                  select_transaction.removeChild(select_transaction.firstChild);
                 }
               }
               const l = select_account.selectedIndex === 27 ? 2:3;
