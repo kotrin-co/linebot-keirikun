@@ -1,7 +1,5 @@
 const Data = require('../models/Data');
 const fetch = require('node-fetch');
-const FormData = require('form-data');
-const request = require('request-promise-native');
 
 module.exports = {
 
@@ -68,28 +66,9 @@ module.exports = {
 
   getProfile: (req,res) => {
     const data = req.body;
-    // data.client_id = process.env.ACCESS_TOKEN;
-    
-    // const jsonData = JSON.stringify(data);
-    // const formData = new FormData();
-    // formData.append('id_token',data.id_token);
-    // formData.append('client_id',data.client_id);
-    const bodyData = `id_token=${data.id_token}&client_id=1655219547`;
+    const bodyData = `id_token=${data.id_token}&client_id=${process.env.LOGIN_CHANNEL_ID}`;
     console.log('data in controller1',bodyData);
 
-    // const options = {
-    //   url:'https://api.line.me/oauth2/v2.1/verify',
-    //   method:'POST',
-    //   json:{
-    //     id_token: data.id_token,
-    //     client_id: '1655219547'
-    //   }
-    // }
-    // request(options)
-    //   .then(res=>{
-    //     console.log(res);
-    //   })
-    //   .catch(e=>console.log(e));
     fetch('https://api.line.me/oauth2/v2.1/verify',{
       method: 'POST',
       headers: {
@@ -98,7 +77,7 @@ module.exports = {
       body: bodyData
     })
     .then(res=>{
-      console.log('res in controller',res);
+      console.log('res in controller',res.body);
     })
     .catch(e=>console.log(e));
   }
