@@ -29,9 +29,15 @@ window.onload = () => {
               })
               .then(session=>{
                 // customerId = session.customer;
-                const sessionJSON = JSON.stringify(session,null,2);
-                const pre = document.createElement('pre');
-                pre.textContent = sessionJSON;
+                // const sessionJSON = JSON.stringify(session,null,2);
+                // const pre = document.createElement('pre');
+                // pre.textContent = sessionJSON;
+
+                const thanksImg = document.createElement('img');
+                thanksImg.setAttribute('class','thanks-img');
+                thanksImg.src = '/thankyou.png';
+                thanksImg.alt = 'thanks';
+                divPage.appendChild(thanksImg);
 
                 //subscriptionのPUT
                 subscription = session.subscription;
