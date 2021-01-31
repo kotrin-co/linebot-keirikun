@@ -22,4 +22,8 @@ router
   .route('/mail')
   .post(controller.createSheet);
 
+router
+  .route('/idToken')
+  .post(controller.getProfile);
+
 module.exports = router;

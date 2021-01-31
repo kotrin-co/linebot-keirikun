@@ -61,5 +61,11 @@ module.exports = {
         res.status(200).send(text);
       })
       .catch(e=>console.log(e));
+  },
+
+  getProfile: (req,res) => {
+    const data = req.body;
+    console.log('data in controller1',data);
+    console.log('data in controller2',data[0]);
   }
 }

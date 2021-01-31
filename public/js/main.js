@@ -13,9 +13,23 @@ window.onload = () => {
     })
     .then(()=>{
       
-      const token = liff.getIDToken();
+      const idToken = liff.getIDToken();
       document.getElementById('top-font').innerHTML=`${token}`;
-      
+      const jsonData = JSON.stringify({
+        idToken
+      });
+      fetch('/api/idToken',{
+        method: 'POST',
+        headers: {
+          'Content-Type':'application/json'
+        },
+        body: jsonData,
+        creadentials: 'same-origin'
+      })
+      .then(res=>{
+        
+      })
+      .catch(e=>console.log(e));
       // liff.getProfile()
       //   .then(async(profile)=>{
       //     const lineId = profile.userId;
