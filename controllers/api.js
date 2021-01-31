@@ -66,8 +66,8 @@ module.exports = {
 
   getProfile: (req,res) => {
     const data = req.body;
-    console.log('data in controller1',data);
     data.client_id = process.env.ACCESS_TOKEN;
+    console.log('data in controller1',data);
     const jsonData = JSON.stringify(data);
     fetch('https://api.line.me/oauth2/v2.1/verify',{
       method: 'POST',
