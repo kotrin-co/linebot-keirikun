@@ -16,7 +16,7 @@ window.onload = () => {
       const idToken = liff.getIDToken();
       document.getElementById('top-font').innerHTML=`${idToken}`;
       const jsonData = JSON.stringify({
-        idToken: idToken
+        id_token: idToken
       });
       fetch('/api/idToken',{
         method: 'POST',

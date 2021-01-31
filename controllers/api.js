@@ -1,4 +1,5 @@
 const Data = require('../models/Data');
+const fetch = require('node-fetch');
 
 module.exports = {
 
@@ -66,6 +67,18 @@ module.exports = {
   getProfile: (req,res) => {
     const data = req.body;
     console.log('data in controller1',data);
-    console.log('data in controller2',data[0]);
+    data.client_id = process.env.ACCESS_TOKEN;
+    const jsonData = JSON.stringify(data);
+    fetch('https://api.line.me/oauth2/v2.1/verify',{
+      method: 'POST',
+      headers: {
+        'Content-Type':'application/json'
+      },
+      body: jsonData
+    })
+    .then(res=>{
+      console.log('res in controller',res);
+    })
+    .catch(e=>console.log(e));
   }
 }
