@@ -244,6 +244,7 @@ window.onload = () => {
                         //入力値のクリア
                         input_amount.value = '';
                         select_account.selectedIndex = -1;
+                        select_transaction.selectedIndex = -1;
                         select_month.selectedIndex = -1;
                         select_day.selectedIndex = -1;
                       })

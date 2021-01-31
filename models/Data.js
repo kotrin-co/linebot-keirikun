@@ -376,7 +376,7 @@ module.exports = {
           console.log('rowNum',rowNumber);
 
           //行番号が備品の場合、rowNumberを１減算する（雑収入が２行しかないため）
-          if(selectedAccount === 28) rowNumber--;
+          if(parseInt(selectedAccount) === 28) rowNumber--;
 
           //列用アルファベット配列の生成
           const columns = createAlphabetsArray();
