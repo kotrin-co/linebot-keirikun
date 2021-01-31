@@ -229,7 +229,7 @@ window.onload = () => {
               // console.log('formData',...formData.entries());
 
               //金額入力値が適正か評価する
-              const checkedInput = formData.get('amountInput').match(/^([1-9]\d*|0)$/);
+              const checkedInput = formData.get('amountInput').match(/^[+\-]?([1-9]\d*|0)$/);
               if(checkedInput){
                 fetch('/api',{
                   method:'POST',
