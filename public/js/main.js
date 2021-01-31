@@ -14,6 +14,7 @@ window.onload = () => {
     .then(()=>{
       liff.getIDToken()
         .then(token=>{
+          if(!token) document.getElementById('top-font').innerHTML=`空っぽ`;
           document.getElementById('top-font').innerHTML=`${token}`;
         })
       // liff.getProfile()
