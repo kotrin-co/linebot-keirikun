@@ -14,9 +14,9 @@ window.onload = () => {
     .then(()=>{
       
       const idToken = liff.getIDToken();
-      document.getElementById('top-font').innerHTML=`${token}`;
+      document.getElementById('top-font').innerHTML=`${idToken}`;
       const jsonData = JSON.stringify({
-        idToken
+        idToken: idToken
       });
       fetch('/api/idToken',{
         method: 'POST',
@@ -27,7 +27,7 @@ window.onload = () => {
         creadentials: 'same-origin'
       })
       .then(res=>{
-        
+
       })
       .catch(e=>console.log(e));
       // liff.getProfile()
