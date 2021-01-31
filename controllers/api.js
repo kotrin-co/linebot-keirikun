@@ -1,7 +1,7 @@
 const Data = require('../models/Data');
 const fetch = require('node-fetch');
 const FormData = require('form-data');
-const request = require('request-promise');
+const request = require('request-promise-native');
 
 module.exports = {
 
