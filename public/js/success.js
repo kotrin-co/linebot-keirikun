@@ -59,7 +59,7 @@ window.onload = () => {
                       .then(text=>{
                         // alert(text);
                         const backButton = document.createElement('button');
-                        backButton.setAttribute('class','btn btn-secondary');
+                        backButton.setAttribute('class','btn btn-secondary back-button');
                         backButton.innerHTML = '設定ページへ戻る';
                         backButton.addEventListener('click',()=>{
                           liff.openWindow({
