@@ -1,6 +1,7 @@
 const Data = require('../models/Data');
 const fetch = require('node-fetch');
 const FormData = require('form-data');
+const request = require('request-promise');
 
 module.exports = {
 
@@ -75,16 +76,30 @@ module.exports = {
     // formData.append('client_id',data.client_id);
     const bodyData = `id_token=${data.id_token}&client_id=${process.env.ACCESS_TOKEN}`;
     console.log('data in controller1',bodyData);
-    fetch('https://api.line.me/oauth2/v2.1/verify',{
-      method: 'POST',
-      // headers: {
-      //   'Content-Type':'application/x-www-form-urlencoded'
-      // },
-      body: bodyData
-    })
-    .then(res=>{
-      console.log('res in controller',res);
-    })
-    .catch(e=>console.log(e));
+
+    const options = {
+      url:'https://api.line.me/oauth2/v2.1/verify',
+      method:'POST',
+      json:{
+        id_token: data.id_token,
+        client_id: data.client_id
+      }
+    }
+    request(options)
+      .then(res=>{
+        console.log(res);
+      })
+      .catch(e=>console.log(e));
+    // fetch('https://api.line.me/oauth2/v2.1/verify',{
+    //   method: 'POST',
+    //   // headers: {
+    //   //   'Content-Type':'application/x-www-form-urlencoded'
+    //   // },
+    //   body: bodyData
+    // })
+    // .then(res=>{
+    //   console.log('res in controller',res);
+    // })
+    // .catch(e=>console.log(e));
   }
 }
