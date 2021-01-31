@@ -71,39 +71,6 @@ window.onload = () => {
 
             formElement.appendChild(div_form_amount);
 
-            //勘定科目の選択
-            const div_form_account = document.createElement('div');
-            div_form_account.setAttribute('class','form-group form-inline');
-
-            //勘定科目ラベル
-            const label_account = document.createElement('label');
-            label_account.setAttribute('class','label-account');
-            label_account.innerHTML = '勘定科目：';
-            div_form_account.appendChild(label_account);
-            
-            //勘定科目のselect
-            const select_account = document.createElement('select');
-            select_account.setAttribute('class','form-control account-selector');
-            select_account.setAttribute('name','selectedAccount');
-            ACCOUNTS.forEach((account,index)=>{
-              const option = document.createElement('option');
-              option.innerHTML = account;
-              option.value = index;
-              select_account.appendChild(option);
-            });
-            select_account.selectedIndex = -1;
-            div_form_account.appendChild(select_account);
-            formElement.appendChild(div_form_account);
-            
-            //数字インプットでエンターを押した時に、科目選択にフォーカスされるようにする
-            input_amount.onkeydown = (e) => {
-              const key = e.keyCode || e.charCode || 0;
-              if(key===13){
-                select_account.focus();
-                // e.preventDefault();
-              }
-            }
-
             //取引方法の選択
             const div_form_transaction = document.createElement('div');
             div_form_transaction.setAttribute('class','form-group form-inline');
@@ -126,12 +93,48 @@ window.onload = () => {
             });
             select_transaction.selectedIndex = -1;
             div_form_transaction.appendChild(select_transaction);
-            formElement.appendChild(div_form_transaction);
+
+            //勘定科目の選択
+            const div_form_account = document.createElement('div');
+            div_form_account.setAttribute('class','form-group form-inline');
+
+            //勘定科目ラベル
+            const label_account = document.createElement('label');
+            label_account.setAttribute('class','label-account');
+            label_account.innerHTML = '勘定科目：';
+            div_form_account.appendChild(label_account);
+            
+            //勘定科目のselect
+            const select_account = document.createElement('select');
+            select_account.setAttribute('class','form-control account-selector');
+            select_account.setAttribute('name','selectedAccount');
+            ACCOUNTS.forEach((account,index)=>{
+              const option = document.createElement('option');
+              option.innerHTML = account;
+              option.value = index;
+              select_account.appendChild(option);
+            });
+            select_account.selectedIndex = -1;
+            div_form_account.appendChild(select_account);
+            
+            //数字インプットでエンターを押した時に、科目選択にフォーカスされるようにする
+            input_amount.onkeydown = (e) => {
+              const key = e.keyCode || e.charCode || 0;
+              if(key===13){
+                select_account.focus();
+                // e.preventDefault();
+              }
+            }
 
             //勘定科目を入力したら取引方法をリセットする
-            const accountChange = () => {
-              select_transaction.innerHTML = '';
-              const l = select_account === 27 ? 2:3;
+            select_account.addEventListener('change',()=>{
+              //子ノードの全削除
+              if(select_account.hasChildNodes()){
+                while(select_account.childNodes.length>0){
+                  select_account.removeChild(select_account.firstChild);
+                }
+              }
+              const l = select_account.selectedIndex === 27 ? 2:3;
               for(let i=0;i<l;i++){
                 const option = document.createElement('option');
                 option.innerHTML = (select_account.selectedIndex === 0 && i === l-1) ? '源泉所得税' : TRANSACTIONS[i];
@@ -139,8 +142,11 @@ window.onload = () => {
                 select_transaction.appendChild(option);
               }
               select_transaction.selectedIndex = -1;
-            }
-            select_account.onchange = accountChange();
+            });
+
+            //formElementへの追加
+            formElement.appendChild(div_form_account);
+            formElement.appendChild(div_form_transaction);
 
             //日時の選択
             const div_form_date = document.createElement('div');
