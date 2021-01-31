@@ -82,7 +82,7 @@ module.exports = {
       method:'POST',
       json:{
         id_token: data.id_token,
-        client_id: data.client_id
+        client_id: '1655219547'
       }
     }
     request(options)
