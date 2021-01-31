@@ -71,10 +71,10 @@ module.exports = {
     const jsonData = JSON.stringify(data);
     fetch('https://api.line.me/oauth2/v2.1/verify',{
       method: 'POST',
-      headers: {
-        'Content-Type':'application/json'
-      },
-      body: jsonData
+      // headers: {
+      //   'Content-Type':'application/json'
+      // },
+      body: data
     })
     .then(res=>{
       console.log('res in controller',res);
