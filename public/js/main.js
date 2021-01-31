@@ -12,11 +12,10 @@ window.onload = () => {
       liffId: myLiffId
     })
     .then(()=>{
-      liff.getIDToken()
-        .then(token=>{
-          if(!token) document.getElementById('top-font').innerHTML=`空っぽ`;
-          document.getElementById('top-font').innerHTML=`${token}`;
-        })
+      
+      const token = liff.getIDToken();
+      document.getElementById('top-font').innerHTML=`${token}`;
+      
       // liff.getProfile()
       //   .then(async(profile)=>{
       //     const lineId = profile.userId;
