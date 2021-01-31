@@ -69,13 +69,15 @@ module.exports = {
     data.client_id = process.env.ACCESS_TOKEN;
     console.log('data in controller1',data);
     // const jsonData = JSON.stringify(data);
-    const bodyData = `id_token=${data.id_token}&client_id=${data.client_id}`;
+    const formData = new FormData();
+    formData.append('id_token',data.id_token);
+    formData.append('client_id',data.client_id);
     fetch('https://api.line.me/oauth2/v2.1/verify',{
       method: 'POST',
       // headers: {
       //   'Content-Type':'application/x-www-form-urlencoded'
       // },
-      body: bodyData
+      body: formData
     })
     .then(res=>{
       console.log('res in controller',res);
