@@ -33,11 +33,13 @@ window.onload = () => {
                 // const pre = document.createElement('pre');
                 // pre.textContent = sessionJSON;
 
+                const divImg = document.createElement('div');
                 const thanksImg = document.createElement('img');
                 thanksImg.setAttribute('class','thanks-img');
                 thanksImg.src = '/thankyou.png';
                 thanksImg.alt = 'thanks';
-                divPage.appendChild(thanksImg);
+                divImg.appendChild(thanksImg);
+                divPage.appendChild(divImg);
 
                 //subscriptionのPUT
                 subscription = session.subscription;
@@ -58,7 +60,7 @@ window.onload = () => {
                         // alert(text);
                         const backButton = document.createElement('button');
                         backButton.setAttribute('class','btn btn-secondary');
-                        backButton.innerHTML = '戻る';
+                        backButton.innerHTML = '設定ページへ戻る';
                         backButton.addEventListener('click',()=>{
                           liff.openWindow({
                             url:'https://liff.line.me/1655219547-eobVGLdB',
