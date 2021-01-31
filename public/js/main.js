@@ -228,9 +228,26 @@ window.onload = () => {
               formData.append('line_uid',lineId);
               // console.log('formData',...formData.entries());
 
+              //入力チェック
+              let check = true;
+
               //金額入力値が適正か評価する
               const checkedInput = formData.get('amountInput').match(/^[+\-]?([1-9]\d*|0)$/);
-              if(checkedInput){
+              if(!checkedInput) check = false;
+
+              //勘定科目が選択されているか
+              if(select_account.selectedIndex === -1) check = false;
+
+              //取引方法が入力されているか
+              if(select_transaction.selectedIndex === -1) check = false;
+
+              //月が入力されているか
+              if(select_month.selectedIndex === -1) check = false;
+
+              //日が入力されているか
+              if(select_day.selectedIndex === -1) check = false;
+
+              if(check){
                 fetch('/api',{
                   method:'POST',
                   body:formData,
@@ -258,7 +275,7 @@ window.onload = () => {
                   throw error;
                 });
               }else{
-                alert('金額には半角数値を入力してください');
+                alert('入力に不備があります');
               }
             });
             formElement.appendChild(postButton);

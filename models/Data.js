@@ -11,7 +11,6 @@ const {
   original_SSID,
   original_SID
 } = require('../params/params');
-const { resolve } = require('path');
 
 const connection = new Client({
   connectionString: process.env.DATABASE_URL,
