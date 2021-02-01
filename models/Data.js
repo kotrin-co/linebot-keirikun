@@ -96,7 +96,7 @@ const updateJournal = (ssId) => {
                 //ACCOUNTSのインデックス計算　雑収入のみ２項目のため、そのための処理を入れる
                 const accountNumber = j<=82 ? Math.floor(j/3) : Math.round(j/3);
                 //源泉所得税の場合だけ摘要に特別処理を行う
-                const description = j === 2 ? '源泉所得税' : ACCOUNTS[j];
+                const description = j === 2 ? '源泉所得税' : ACCOUNTS[accountNumber];
                 while(days>daysEveryMonth[month-1]){
                   days -= daysEveryMonth[month-1];
                   month++;
