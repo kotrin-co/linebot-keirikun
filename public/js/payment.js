@@ -252,38 +252,47 @@ const createMemberPage = (userInfo,lineId) => {
     //スプレッドシート更新ボタン
     const updateButton = document.createElement('input');
     updateButton.type = 'button';
-    updateButton.value = 'シートを更新する';
     updateButton.setAttribute('class','btn btn-primary');
-
-    const formData = new FormData(formElement);
-    formData.append('userName',userInfo.display_name);
-    formData.append('line_uid',userInfo.line_uid);
-    updateButton.addEventListener('click',()=>{
-      divPage.innerHTML = '';
-      displaySpinner();
-      //シート作成処理
-      fetch('/api/mail',{
-        method:'POST',
-        body:formData,
-        credentials:'same-origin'
-      })
-        .then(res=>{
-          if(res.ok){
-            res.text()
-              .then(text=>{
-                alert(text);
-                liff.openWindow({
-                  url:'https://liff.line.me/1655219547-eobVGLdB',
-                  external: false
-                });
-              })
-              .catch(e=>console.log(e));
-          }else{
-            alert('HTTPレスポンスエラーです');
-          }
+    
+    //シート作成日時を比較する
+    const thisYear = new Date().getFullYear();
+    const createdYear = new Date(userInfo.createdat).getFullYear();
+    if(thisYear === createdYear){
+      updateButton.value = 'シートは最新の状態です';
+      updateButton.disabled = true;
+    }else{
+      updateButton.value = 'シートを更新する';
+      const formData = new FormData(formElement);
+      formData.append('userName',userInfo.display_name);
+      formData.append('line_uid',userInfo.line_uid);
+      updateButton.addEventListener('click',()=>{
+        divPage.innerHTML = '';
+        displaySpinner();
+        //シート作成処理
+        fetch('/api/mail',{
+          method:'POST',
+          body:formData,
+          credentials:'same-origin'
         })
-        .catch(e=>console.log(e));
-    });
+          .then(res=>{
+            if(res.ok){
+              res.text()
+                .then(text=>{
+                  alert(text);
+                  liff.openWindow({
+                    url:'https://liff.line.me/1655219547-eobVGLdB',
+                    external: false
+                  });
+                })
+                .catch(e=>console.log(e));
+            }else{
+              alert('HTTPレスポンスエラーです');
+            }
+          })
+          .catch(e=>console.log(e));
+      });
+    }
+    
     const divUpdateButton = document.createElement('div');
     divUpdateButton.appendChild(updateButton);
     divUpdateButton.setAttribute('class','div-center');
