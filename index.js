@@ -174,50 +174,51 @@ const handleMessageEvent = async (ev) => {
 
     connection.query(select_query)
       .then(res=>{
-        console.log('res.rows[0]:',res.rows[0]);
+        // console.log('res.rows[0]:',res.rows[0]);
         if(res.rows[0].ssid){
-          // if( text === '消す'){
-          //   const update_query = {
-          //     text:`UPDATE users SET (gmail,ssid) = ('','') WHERE line_uid='${ev.source.userId}';`
-          //   };
-          //   connection.query(update_query)
-          //     .then(()=>console.log('消した！！'))
-          //     .catch(e=>console.log(e));
-          // }
-
-          if( text === 'けーり君サポートお願い！'){
-            return client.replyMessage(ev.replyToken,[
-              {
+          const nowTime = new Date().getTime();
+          const thisYear = new Date().getFullYear();
+          const createdYear = new Date(parseInt(res.rows[0].createdat)).getFullYear();
+          console.log('nowTime:',nowTime,thisYear,createdYear);
+          if(thisYear === createdYear){
+            if( text === 'けーり君サポートお願い！'){
+              return client.replyMessage(ev.replyToken,[
+                {
+                  "type":"text",
+                  "text":"金額を半角数値で入力してください！"
+                },
+                {
+                  "type":"text",
+                  "text":"マイナスの数値を入力すると元の数値から減算されるよ!"
+                }
+              ]);
+            }
+            else if(text.match(/^[+\-]?([1-9]\d*|0)$/)){
+              const flexMessage = Flex.makeAccountSelector(text);
+              return client.replyMessage(ev.replyToken,flexMessage);
+            }
+            else if(text === '日付からデータ確認！'){
+              const flexMessage = Flex.makeDateSelector('confirmation','','','');
+              return client.replyMessage(ev.replyToken,flexMessage);
+            }
+            else if(text === '科目からデータ確認！'){
+              const flexMessage = Flex.makeAccountSelector('');
+              return client.replyMessage(ev.replyToken,flexMessage);
+            }
+            else if(text === 'データ削除'){
+              const flexMessage = Flex.makeDateSelector('delete','','','');
+              return client.replyMessage(ev.replyToken,flexMessage);
+            }
+            else{
+              return client.replyMessage(ev.replyToken,{
                 "type":"text",
-                "text":"金額を半角数値で入力してください！"
-              },
-              {
-                "type":"text",
-                "text":"マイナスの数値を入力すると元の数値から減算されるよ!"
-              }
-            ]);
-          }
-          else if(text.match(/^[+\-]?([1-9]\d*|0)$/)){
-            const flexMessage = Flex.makeAccountSelector(text);
-            return client.replyMessage(ev.replyToken,flexMessage);
-
-          }
-          else if(text === '日付からデータ確認！'){
-            const flexMessage = Flex.makeDateSelector('confirmation','','','');
-            return client.replyMessage(ev.replyToken,flexMessage);
-          }
-          else if(text === '科目からデータ確認！'){
-            const flexMessage = Flex.makeAccountSelector('');
-            return client.replyMessage(ev.replyToken,flexMessage);
-          }
-          else if(text === 'データ削除'){
-            const flexMessage = Flex.makeDateSelector('delete','','','');
-            return client.replyMessage(ev.replyToken,flexMessage);
-          }
-          else{
+                "text":"半角数字をメッセージで送ると、会計データを入力できますよ^^"
+              });
+            }
+          }else{
             return client.replyMessage(ev.replyToken,{
               "type":"text",
-              "text":"半角数字をメッセージで送ると、会計データを入力できますよ^^"
+              "text":"新しい年となりました。設定から新しいシートを作成してください"
             });
           }
         }else{
