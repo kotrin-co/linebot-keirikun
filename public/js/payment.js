@@ -256,7 +256,7 @@ const createMemberPage = (userInfo,lineId) => {
     
     //シート作成日時を比較する
     const thisYear = new Date().getFullYear();
-    const createdYear = new Date(userInfo.createdat).getFullYear();
+    const createdYear = new Date(parseInt(userInfo.createdat)).getFullYear();
     if(thisYear === createdYear){
       updateButton.value = 'シートは最新の状態です';
       updateButton.disabled = true;
