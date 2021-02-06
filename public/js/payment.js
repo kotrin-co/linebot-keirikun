@@ -259,6 +259,7 @@ const createMemberPage = (userInfo,lineId) => {
     formData.append('userName',userInfo.display_name);
     formData.append('line_uid',userInfo.line_uid);
     updateButton.addEventListener('click',()=>{
+      divPage.innerHTML = '';
       displaySpinner();
       //シート作成処理
       fetch('/api/mail',{

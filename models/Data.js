@@ -663,23 +663,16 @@ module.exports = {
             .then((ssId)=>{
                 gmailAccountAdd(spreadsheetId,'writer',gmail)
                     .then((ssID)=>{
+                        const nowTime = new Date().getTime();
                         const update_query = {
-                            text:`UPDATE users SET (gmail,ssid) = ('${gmail}','${ssID}') WHERE line_uid='${line_uid}';`
+                            text:`UPDATE users SET (gmail,ssid,createdat) = ('${gmail}','${ssID}',${nowTime}) WHERE line_uid='${line_uid}';`
                         };
                         connection.query(update_query)
                             .then(()=>{
                                 initialTreat(ssID,line_uid)
                                   .then(message=>{
                                     console.log('message',message);
-                                    const nowTime = new Date().getTime();
-                                    const update_query = {
-                                      text: `UPDATE users SET createdat=${nowTime} WHERE line_uid='${line_uid}';`
-                                    }
-                                    connection.query(update_query)
-                                      .then(()=>{
-                                        resolve(message);
-                                      })
-                                      .catch(e=>console.log(e));
+                                    resolve(message);
                                   })
                                   .catch(e=>console.log(e));
                             })
