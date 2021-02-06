@@ -254,12 +254,12 @@ const createMemberPage = (userInfo,lineId) => {
     updateButton.type = 'button';
     updateButton.value = 'シートを更新する';
     updateButton.setAttribute('class','btn btn-primary');
-    updateButton.setAttribute('id','sheet-update');
 
     const formData = new FormData(formElement);
     formData.append('userName',userInfo.display_name);
     formData.append('line_uid',userInfo.line_uid);
     updateButton.addEventListener('click',()=>{
+      displaySpinner();
       //シート作成処理
       fetch('/api/mail',{
         method:'POST',
@@ -282,8 +282,11 @@ const createMemberPage = (userInfo,lineId) => {
           }
         })
         .catch(e=>console.log(e));
-    })
-    divPage.appendChild(updateButton);
+    });
+    const divUpdateButton = document.createElement('div');
+    divUpdateButton.appendChild(updateButton);
+    divUpdateButton.setAttribute('class','div-center');
+    divPage.appendChild(divUpdateButton);
   }
 
   //お問合せ先

@@ -41,7 +41,7 @@ const connection = new Client({
 connection.connect();
 
 const create_userTable = {
-    text:'CREATE TABLE IF NOT EXISTS users (id SERIAL NOT NULL, line_uid VARCHAR(50), display_name VARCHAR(50), timestamp BIGINT, gmail VARCHAR(100), ssid VARCHAR(100), subscription VARCHAR(50));'
+    text:'CREATE TABLE IF NOT EXISTS users (id SERIAL NOT NULL, line_uid VARCHAR(50), display_name VARCHAR(50), timestamp BIGINT, gmail VARCHAR(100), ssid VARCHAR(100), subscription VARCHAR(50), createdat BIGINT);'
 };
     
 connection.query(create_userTable)
