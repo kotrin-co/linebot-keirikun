@@ -262,7 +262,7 @@ const createMemberPage = (userInfo,lineId) => {
       updateButton.disabled = true;
     }else{
       // updateButton.value = 'シートを更新する';
-      updateButton.value = userInfo.createdat;
+      updateButton.value = `${thisYear} & ${createdYear}`;
       const formData = new FormData(formElement);
       formData.append('userName',userInfo.display_name);
       formData.append('line_uid',userInfo.line_uid);
