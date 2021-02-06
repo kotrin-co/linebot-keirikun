@@ -453,259 +453,259 @@ const availableCheck = (ev) => {
   });
 }
 
-const createSheet = async (address,userName,ev) => {
+// const createSheet = async (address,userName,ev) => {
 
-    const jwtClient = new google.auth.JWT(
-        privatekey.client_email,
-        null,
-        privatekey.private_key,
-        ['https://www.googleapis.com/auth/spreadsheets']
-     );
+//     const jwtClient = new google.auth.JWT(
+//         privatekey.client_email,
+//         null,
+//         privatekey.private_key,
+//         ['https://www.googleapis.com/auth/spreadsheets']
+//      );
 
-   //リクエストの承認をチェックする
-   jwtClient.authorize(function (err, tokens) {
-       if (err) {
-           console.log(err);
-           return;
-       } else {
-           console.log('OK!!');
-       }
-       });
+//    //リクエストの承認をチェックする
+//    jwtClient.authorize(function (err, tokens) {
+//        if (err) {
+//            console.log(err);
+//            return;
+//        } else {
+//            console.log('OK!!');
+//        }
+//        });
 
-    const sheets = await google.sheets({version: 'v4', auth: jwtClient});
+//     const sheets = await google.sheets({version: 'v4', auth: jwtClient});
 
-    const name = userName;
-    const year = new Date().getFullYear();
+//     const name = userName;
+//     const year = new Date().getFullYear();
 
-    const request = {
-        resource : {
-          //spreadsheetId: '',
-          properties: {
-            title: `${name}さんの会計シート(${year})`,
-            locale: 'ja_JP',
-            timeZone:'Asia/Tokyo'
-          },
-         'sheets': [
-                {
-              'properties': {
-                'sheetId': 0,
-                'title': 'デフォルト',
-                'index': 1,
-                'sheetType': 'GRID',
-                'gridProperties': {
-                  'rowCount': 50,
-                  'columnCount': 400
-                }
-              }
-            }
-          ],
-        }
-      };
+//     const request = {
+//         resource : {
+//           //spreadsheetId: '',
+//           properties: {
+//             title: `${name}さんの会計シート(${year})`,
+//             locale: 'ja_JP',
+//             timeZone:'Asia/Tokyo'
+//           },
+//          'sheets': [
+//                 {
+//               'properties': {
+//                 'sheetId': 0,
+//                 'title': 'デフォルト',
+//                 'index': 1,
+//                 'sheetType': 'GRID',
+//                 'gridProperties': {
+//                   'rowCount': 50,
+//                   'columnCount': 400
+//                 }
+//               }
+//             }
+//           ],
+//         }
+//       };
   
-    await sheets.spreadsheets.create(request, (err,response)=>{
+//     await sheets.spreadsheets.create(request, (err,response)=>{
 
-      const spreadsheetId = response.data.spreadsheetId;
-      gmailAccountAdd(spreadsheetId,'owner','kentaro523@gmail.com')
-          .then((ssId)=>{
-              gmailAccountAdd(spreadsheetId,'writer',address)
-                  .then((ssID)=>{
-                      const update_query = {
-                          text:`UPDATE users SET (gmail,ssid) = ('${address}','${ssID}') WHERE line_uid='${ev.source.userId}';`
-                      };
+//       const spreadsheetId = response.data.spreadsheetId;
+//       gmailAccountAdd(spreadsheetId,'owner','kentaro523@gmail.com')
+//           .then((ssId)=>{
+//               gmailAccountAdd(spreadsheetId,'writer',address)
+//                   .then((ssID)=>{
+//                       const update_query = {
+//                           text:`UPDATE users SET (gmail,ssid) = ('${address}','${ssID}') WHERE line_uid='${ev.source.userId}';`
+//                       };
           
-                      connection.query(update_query)
-                          .then(()=>{
-                              initialTreat(jwtClient,ssID,ev.source.userId)
-                                .then(message=>{
-                                  console.log('message',message);
-                                  return client.replyMessage(ev.replyToken,{
-                                    "type":"text",
-                                    "text":`${userName}さん、会計シートが正しく作れました\uDBC0\uDC04`
-                                  });
-                                })
-                                .catch(e=>console.log(e));
-                          })
-                          .catch(e=>console.log(e.stack));
-                  })
-                  .catch(e=>console.log(e));
-          })
-    });
-}
+//                       connection.query(update_query)
+//                           .then(()=>{
+//                               initialTreat(jwtClient,ssID,ev.source.userId)
+//                                 .then(message=>{
+//                                   console.log('message',message);
+//                                   return client.replyMessage(ev.replyToken,{
+//                                     "type":"text",
+//                                     "text":`${userName}さん、会計シートが正しく作れました\uDBC0\uDC04`
+//                                   });
+//                                 })
+//                                 .catch(e=>console.log(e));
+//                           })
+//                           .catch(e=>console.log(e.stack));
+//                   })
+//                   .catch(e=>console.log(e));
+//           })
+//     });
+// }
 
-const gmailAccountAdd = async (ssID,role,gmail) => {
+// const gmailAccountAdd = async (ssID,role,gmail) => {
 
-    return new Promise(async (resolve,reject) => {
-        const jwtClient = new google.auth.JWT(
-            privatekey.client_email,
-            null,
-            privatekey.private_key,
-            ['https://www.googleapis.com/auth/drive',
-        'https://www.googleapis.com/auth/drive.file']
-         );
-       //リクエストの承認をチェックする
-       jwtClient.authorize(function (err, tokens) {
-           if (err) {
-               console.log(err);
-               return;
-           } else {
-               console.log('OK!!');
-           }
-           });
+//     return new Promise(async (resolve,reject) => {
+//         const jwtClient = new google.auth.JWT(
+//             privatekey.client_email,
+//             null,
+//             privatekey.private_key,
+//             ['https://www.googleapis.com/auth/drive',
+//         'https://www.googleapis.com/auth/drive.file']
+//          );
+//        //リクエストの承認をチェックする
+//        jwtClient.authorize(function (err, tokens) {
+//            if (err) {
+//                console.log(err);
+//                return;
+//            } else {
+//                console.log('OK!!');
+//            }
+//            });
     
-        const drive = await google.drive({version: 'v3', auth: jwtClient});
+//         const drive = await google.drive({version: 'v3', auth: jwtClient});
     
-        const fileId = ssID; //spreadsheetID
+//         const fileId = ssID; //spreadsheetID
     
-        const permission =
-            {
-                'type':'user',
-                'role':role,
-                'emailAddress':gmail
-            };
+//         const permission =
+//             {
+//                 'type':'user',
+//                 'role':role,
+//                 'emailAddress':gmail
+//             };
     
-        if(role==='owner'){
-            await drive.permissions.create({
-                resource:permission,
-                fileId: fileId,
-                fields: 'id',
-            　  transferOwnership:true, //'writer'のときはfalse
-                sendNotificationEmail: true//'writer'のときはfalse
-            }, function (err, res) {
-                if (err) {
-                console.error(err);
-                } else {
-                console.log('Your Gmail Account Permission ID: ', res.data.id);
-                resolve(ssID);
-                }
-            });
-        }else{
-            await drive.permissions.create({
-                resource:permission,
-                fileId: fileId,
-                fields: 'id',
-            }, function (err, res) {
-                if (err) {
-                console.error(err);
-                } else {
-                console.log('Your Gmail Account Permission ID: ', res.data.id);
-                resolve(ssID);
-                }
-            });
-        }
-    })
-}
+//         if(role==='owner'){
+//             await drive.permissions.create({
+//                 resource:permission,
+//                 fileId: fileId,
+//                 fields: 'id',
+//             　  transferOwnership:true, //'writer'のときはfalse
+//                 sendNotificationEmail: true//'writer'のときはfalse
+//             }, function (err, res) {
+//                 if (err) {
+//                 console.error(err);
+//                 } else {
+//                 console.log('Your Gmail Account Permission ID: ', res.data.id);
+//                 resolve(ssID);
+//                 }
+//             });
+//         }else{
+//             await drive.permissions.create({
+//                 resource:permission,
+//                 fileId: fileId,
+//                 fields: 'id',
+//             }, function (err, res) {
+//                 if (err) {
+//                 console.error(err);
+//                 } else {
+//                 console.log('Your Gmail Account Permission ID: ', res.data.id);
+//                 resolve(ssID);
+//                 }
+//             });
+//         }
+//     })
+// }
 
-const initialTreat = (auth,ssID,line_uid) => {
+// const initialTreat = (auth,ssID,line_uid) => {
 
-  return new Promise((resolve,reject) => {
+//   return new Promise((resolve,reject) => {
 
-    const sheets = google.sheets({version: 'v4', auth});
+//     const sheets = google.sheets({version: 'v4', auth});
 
-    const title_SID = ['入力用シート','仕訳帳','月次集計','確定申告B 第一表','確定申告B 第一表（控）','確定申告B 第二表','確定申告B 第二表（控）'];
+//     const title_SID = ['入力用シート','仕訳帳','月次集計','確定申告B 第一表','確定申告B 第一表（控）','確定申告B 第二表','確定申告B 第二表（控）'];
 
-    //シートタイトル変更用メソッド
-    const changeTitle = (sheetId,index) => {
-      return new Promise(resolve=>{
-        const title_change_request = {
-          spreadsheetId: ssID,
-          resource: {
-            requests: [
-              {
-                'updateSheetProperties': {
-                  'properties': {
-                    'sheetId': sheetId,
-                    'title': title_SID[index]
-                  },
-                  'fields': 'title'
-                }
-              }
-            ]
-          }
-        };
-        sheets.spreadsheets.batchUpdate(title_change_request)
-          .then(res=>resolve())
-          .catch(e=>console.log(e));
-      });
-    }
+//     //シートタイトル変更用メソッド
+//     const changeTitle = (sheetId,index) => {
+//       return new Promise(resolve=>{
+//         const title_change_request = {
+//           spreadsheetId: ssID,
+//           resource: {
+//             requests: [
+//               {
+//                 'updateSheetProperties': {
+//                   'properties': {
+//                     'sheetId': sheetId,
+//                     'title': title_SID[index]
+//                   },
+//                   'fields': 'title'
+//                 }
+//               }
+//             ]
+//           }
+//         };
+//         sheets.spreadsheets.batchUpdate(title_change_request)
+//           .then(res=>resolve())
+//           .catch(e=>console.log(e));
+//       });
+//     }
 
-    //シートコピー用メソッド
-    const copySheet = (index) => {
-      return new Promise(resolve=>{
-        const copy_request = {
-          spreadsheetId: original_SSID,
-          sheetId: original_SID[index],
-          resource: {
-            destinationSpreadsheetId: ssID
-          }
-        };
-        sheets.spreadsheets.sheets.copyTo(copy_request)
-          .then(response=>{
-            console.log('index,sheetId',index,response.data.sheetId);
-            // resolve(`${index} ok`);
-            changeTitle(response.data.sheetId,index)
-              .then(()=>resolve(`${index} ok`))
-              .catch(e=>console.log(e));
-          })
-          .catch(e=>console.log(e));
-      });
-    }
+//     //シートコピー用メソッド
+//     const copySheet = (index) => {
+//       return new Promise(resolve=>{
+//         const copy_request = {
+//           spreadsheetId: original_SSID,
+//           sheetId: original_SID[index],
+//           resource: {
+//             destinationSpreadsheetId: ssID
+//           }
+//         };
+//         sheets.spreadsheets.sheets.copyTo(copy_request)
+//           .then(response=>{
+//             console.log('index,sheetId',index,response.data.sheetId);
+//             // resolve(`${index} ok`);
+//             changeTitle(response.data.sheetId,index)
+//               .then(()=>resolve(`${index} ok`))
+//               .catch(e=>console.log(e));
+//           })
+//           .catch(e=>console.log(e));
+//       });
+//     }
 
-    //最初に作った空白シートを削除する
-    const deleteBlankSheet = () => {
-      return new Promise(resolve=>{
-        const delete_request = {
-          spreadsheetId: ssID,
-          resource: {
-            requests: [
-              {
-                'deleteSheet': {
-                  'sheetId': 0
-                }
-              }
-            ]
-          }
-        };
-        sheets.spreadsheets.batchUpdate(delete_request)
-          .then(res=>{
-            console.log('不要シート削除成功');
-            resolve('不要シート削除');
-          })
-          .catch(e=>console.log(e));
-      });
-    }
+//     //最初に作った空白シートを削除する
+//     const deleteBlankSheet = () => {
+//       return new Promise(resolve=>{
+//         const delete_request = {
+//           spreadsheetId: ssID,
+//           resource: {
+//             requests: [
+//               {
+//                 'deleteSheet': {
+//                   'sheetId': 0
+//                 }
+//               }
+//             ]
+//           }
+//         };
+//         sheets.spreadsheets.batchUpdate(delete_request)
+//           .then(res=>{
+//             console.log('不要シート削除成功');
+//             resolve('不要シート削除');
+//           })
+//           .catch(e=>console.log(e));
+//       });
+//     }
 
-    copySheet(0)
-      .then(m=>{
-        console.log(m);
-        copySheet(1)
-          .then(m=>{
-            console.log(m);
-            copySheet(2)
-              .then(m=>{
-                console.log(m);
-                copySheet(3)
-                  .then(m=>{
-                    console.log(m);
-                    copySheet(4)
-                      .then(m=>{
-                        console.log(m);
-                        copySheet(5)
-                          .then(m=>{
-                            console.log(m);
-                            copySheet(6)
-                              .then(m=>{
-                                console.log(m);
-                                deleteBlankSheet()
-                                  .then(m=>{
-                                    console.log(m);
-                                    resolve('initial treat success!');
-                                  })
-                              })
-                          })
-                      })
-                  })
-              })
-          })
-      })
-  });
-}
+//     copySheet(0)
+//       .then(m=>{
+//         console.log(m);
+//         copySheet(1)
+//           .then(m=>{
+//             console.log(m);
+//             copySheet(2)
+//               .then(m=>{
+//                 console.log(m);
+//                 copySheet(3)
+//                   .then(m=>{
+//                     console.log(m);
+//                     copySheet(4)
+//                       .then(m=>{
+//                         console.log(m);
+//                         copySheet(5)
+//                           .then(m=>{
+//                             console.log(m);
+//                             copySheet(6)
+//                               .then(m=>{
+//                                 console.log(m);
+//                                 deleteBlankSheet()
+//                                   .then(m=>{
+//                                     console.log(m);
+//                                     resolve('initial treat success!');
+//                                   })
+//                               })
+//                           })
+//                       })
+//                   })
+//               })
+//           })
+//       })
+//   });
+// }

@@ -154,7 +154,7 @@ const createMemberPage = (userInfo,lineId) => {
       break;
     
     default:
-      contractInfo = `■ご契約情報<br>　ご契約中です(${userInfo.subscription})`;
+      contractInfo = `■ご契約情報<br>　ご契約中です`;
       break;
   }
   label_contract.innerHTML = contractInfo;
@@ -246,8 +246,44 @@ const createMemberPage = (userInfo,lineId) => {
   //スプレッドシート情報
   if(userInfo.ssid){
     const label_ss = document.createElement('label');
-    label_ss.innerHTML = `■スプレッドシート：作成済<br>　ID:${userInfo.ssid}`;
+    label_ss.innerHTML = `■スプレッドシート：作成済`;
     divPage.appendChild(label_ss);
+
+    //スプレッドシート更新ボタン
+    const updateButton = document.createElement('input');
+    updateButton.type = 'button';
+    updateButton.value = 'シートを更新する';
+    updateButton.setAttribute('class','btn btn-primary');
+    updateButton.setAttribute('id','sheet-update');
+
+    const formData = new FormData(formElement);
+    formData.append('userName',userInfo.display_name);
+    formData.append('line_uid',userInfo.line_uid);
+    updateButton.addEventListener('click',()=>{
+      //シート作成処理
+      fetch('/api/mail',{
+        method:'POST',
+        body:formData,
+        credentials:'same-origin'
+      })
+        .then(res=>{
+          if(res.ok){
+            res.text()
+              .then(text=>{
+                alert(text);
+                liff.openWindow({
+                  url:'https://liff.line.me/1655219547-eobVGLdB',
+                  external: false
+                });
+              })
+              .catch(e=>console.log(e));
+          }else{
+            alert('HTTPレスポンスエラーです');
+          }
+        })
+        .catch(e=>console.log(e));
+    })
+    divPage.appendChild(updateButton);
   }
 
   //お問合せ先
