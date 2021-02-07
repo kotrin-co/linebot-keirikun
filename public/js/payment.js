@@ -454,37 +454,57 @@ const displaySpinner = () => {
 //トースト生成
 const makeToast = (text) => {
 
-  //本体
-  const divToast = document.createElement('div');
-  divToast.setAttribute('class','toast');
-  divToast.setAttribute('role','alert');
-  divToast.setAttribute('aria-live','assertive');
-  divToast.setAttribute('aria-atomic','true');
+  const divAlert = document.createElement('div');
+  divAlert.setAttribute('class','alert alert-warning alert-dismissible fade show');
+  divAlert.setAttribute('role','alert');
 
-  //ヘッダー
-  const divHeader = document.createElement('div');
+  divAlert.innerHTML = text;
 
   //閉じるボタン
   const closeButton = document.createElement('button');
   closeButton.setAttribute('type','button');
-  closeButton.setAttribute('class','ml-2 mb-1 close');
-  closeButton.setAttribute('data-dismiss','toast');
+  closeButton.setAttribute('class','close');
+  closeButton.setAttribute('data-dismiss','alert');
   closeButton.setAttribute('aria-label','Close');
 
   const span = document.createElement('span');
   span.setAttribute('aria-hidden','true');
   span.innerHTML = '&times;'
 
-  //本文
-  const divBody = document.createElement('div');
-  divBody.setAttribute('class','toast-body');
-  divBody.innerHTML = text;
+  divAlert.appendChild(closeButton);
+  divPage.appendChild(divAlert);
 
-  closeButton.appendChild(span);
-  divHeader.appendChild(closeButton);
+  // //本体
+  // const divToast = document.createElement('div');
+  // divToast.setAttribute('class','toast');
+  // divToast.setAttribute('role','alert');
+  // divToast.setAttribute('aria-live','assertive');
+  // divToast.setAttribute('aria-atomic','true');
 
-  divToast.appendChild(divHeader);
-  divToast.appendChild(divBody);
+  // //ヘッダー
+  // const divHeader = document.createElement('div');
 
-  divPage.appendChild(divToast);
+  // //閉じるボタン
+  // const closeButton = document.createElement('button');
+  // closeButton.setAttribute('type','button');
+  // closeButton.setAttribute('class','ml-2 mb-1 close');
+  // closeButton.setAttribute('data-dismiss','toast');
+  // closeButton.setAttribute('aria-label','Close');
+
+  // const span = document.createElement('span');
+  // span.setAttribute('aria-hidden','true');
+  // span.innerHTML = '&times;'
+
+  // //本文
+  // const divBody = document.createElement('div');
+  // divBody.setAttribute('class','toast-body');
+  // divBody.innerHTML = text;
+
+  // closeButton.appendChild(span);
+  // divHeader.appendChild(closeButton);
+
+  // divToast.appendChild(divHeader);
+  // divToast.appendChild(divBody);
+
+  // divPage.appendChild(divToast);
 }
