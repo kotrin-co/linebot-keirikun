@@ -145,7 +145,7 @@ const createMemberPage = (userInfo) => {
   let contractInfo;
   switch(userInfo.subscription){
     case 'guest':
-      contractInfo = '■ご契約情報<br>　ゲストユーザーです'
+      contractInfo = '<i class="fas fa-check-circle"></i> ご契約情報<br>　ゲストユーザーです'
       break;
 
     case 'trial':
@@ -162,11 +162,11 @@ const createMemberPage = (userInfo) => {
         left = Math.floor(left*24*60);
         left += '分';
       }
-      contractInfo = `■ご契約情報<br>　試用期間中です(残り${left})`;
+      contractInfo = `<i class="fas fa-check-circle"></i> ご契約情報<br>　試用期間中です(残り${left})`;
       break;
     
     default:
-      contractInfo = `■ご契約情報<br>　ご契約中です`;
+      contractInfo = `<i class="fas fa-check-circle"></i> ご契約情報<br>　ご契約中です`;
       break;
   }
   label_contract.innerHTML = contractInfo;
@@ -181,7 +181,7 @@ const createMemberPage = (userInfo) => {
   const label_gmail = document.createElement('label');
   label_gmail.setAttribute('class','label-gmail');
   if(userInfo.gmail){
-    label_gmail.innerHTML = '■スプレッドシートに紐づくGmailアドレス';
+    label_gmail.innerHTML = '<i class="fas fa-check-circle"></i> スプレッドシートに紐づくGmailアドレス';
   }else{
     label_gmail.innerHTML = 'まずはGmailを登録して、スプレッドシートを作成しましょう！';
   }
@@ -258,7 +258,7 @@ const createMemberPage = (userInfo) => {
   //スプレッドシート情報
   if(userInfo.ssid){
     const label_ss = document.createElement('label');
-    label_ss.innerHTML = `■スプレッドシート：作成済`;
+    label_ss.innerHTML = `<i class="fas fa-check-circle"></i> スプレッドシート：作成済`;
     divPage.appendChild(label_ss);
 
     //スプレッドシート更新ボタン
@@ -313,7 +313,7 @@ const createMemberPage = (userInfo) => {
 
   //お問合せ先
   const label_contact = document.createElement('label');
-  label_contact.innerHTML = '■お問合せ先<br>　電話：090-xxxx-xxxx<br>　メール：kentaro523@gmail.com';
+  label_contact.innerHTML = '<i class="fas fa-check-circle"></i> お問合せ先<br>　電話：090-xxxx-xxxx<br>　メール：kentaro523@gmail.com';
   divPage.appendChild(label_contact);
 
 
