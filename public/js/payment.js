@@ -28,7 +28,6 @@ window.onload = () => {
       .then(res=>{
         res.json()
           .then(data=>{
-            debug.innerHTML = data.timestamp +','+data.subscription;
             //タイトル生成
             const divTitle = document.createElement('div');
             divTitle.setAttribute('class','div-center');
@@ -47,7 +46,7 @@ window.onload = () => {
             if(!data.subscription || (data.subscription === 'trial' && left<0)){
               createPaymentPage(); //未課金
             }else{
-              createMemberPage(data,lineId); //課金orゲストor無料トライアル
+              createMemberPage(data); //課金orゲストor無料トライアル
             }
           })
       })
@@ -138,7 +137,7 @@ const createPaymentPage = () => {
   });
 }
 
-const createMemberPage = (userInfo,lineId) => {
+const createMemberPage = (userInfo) => {
 
   //契約情報
   const label_contract = document.createElement('label');
@@ -327,7 +326,7 @@ const createMemberPage = (userInfo,lineId) => {
     btnCancel.setAttribute('class','btn-outline-secondary');
     btnCancel.innerHTML ='解約する';
     btnCancel.addEventListener('click',()=>{
-      fetch(`/api/cancel/${lineId}?sub=${userInfo.subscription}`)
+      fetch(`/api/cancel/${userInfo.line_uid}?sub=${userInfo.subscription}`)
         .then(response=>{
           if(response.ok){
             response.text()
