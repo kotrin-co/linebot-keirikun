@@ -327,6 +327,7 @@ const createMemberPage = (userInfo) => {
     btnCancel.innerHTML ='解約する';
     btnCancel.addEventListener('click',()=>{
       //本当に解約するの？のカード生成
+      const divConfirmation = document.createElement('div');
       const divCard = document.createElement('div');
       divCard.setAttribute('class','card text-center w-75 text-white bg-warning');
       divCard.setAttribute('id','confirmation-card')
@@ -346,9 +347,9 @@ const createMemberPage = (userInfo) => {
       noButton.innerHTML = 'いいえ';
       noButton.addEventListener('click',()=>{
         //子ノードの全削除
-        if(divCard.hasChildNodes()){
-          while(divCard.childNodes.length>0){
-            divCard.removeChild(divCard.firstChild);
+        if(divConfirmation.hasChildNodes()){
+          while(divConfirmation.childNodes.length>0){
+            divConfirmation.removeChild(divConfirmation.firstChild);
           }
         }
       });
@@ -357,7 +358,8 @@ const createMemberPage = (userInfo) => {
       divBody.appendChild(yesButton);
       divBody.appendChild(noButton);
       divCard.appendChild(divBody);
-      divPage.appendChild(divCard);
+      divConfirmation.appendChild(divCard);
+      divPage.appendChild(divConfirmation);
       // fetch(`/api/cancel/${userInfo.line_uid}?sub=${userInfo.subscription}`)
       //   .then(response=>{
       //     if(response.ok){
