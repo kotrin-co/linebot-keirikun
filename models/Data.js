@@ -357,7 +357,7 @@ module.exports = {
   getUserData: (idToken) => {
     return new Promise(resolve=>{
       const bodyData = `id_token=${idToken}&client_id=${process.env.LOGIN_CHANNEL_ID}`;
-      console.log('bodydata in Data.js',bodyData);
+      // console.log('bodydata in Data.js',bodyData);
 
       fetch('https://api.line.me/oauth2/v2.1/verify',{
         method: 'POST',
@@ -377,6 +377,7 @@ module.exports = {
             connection.query(select_query)
               .then(res=>{
                 if(res.rows.length){
+                  console.log('res.rows[0]',res.rows[0]);
                   resolve(res.rows[0]);
                 }else{
                   console.log('対象のユーザー情報がありません');
