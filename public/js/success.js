@@ -11,14 +11,13 @@ window.onload = () => {
     })
     .then(()=>{
       liff.getProfile()
-        .then(async(profile)=>{
-          const lineId = profile.userId;
-          const response = await fetch(`api?line_uid=${lineId}`);
-          const data = await response.json();
+        .then(profile=>{
+          
+          const name = profile.displayName;
 
           //タイトル生成
           const title = document.createElement('p');
-          title.innerHTML = `${data.display_name}さん!<br>「けーりくん」ご契約ありがとうございます！`;
+          title.innerHTML = `${name}さん!<br>「けーりくん」ご契約ありがとうございます！`;
           divPage.appendChild(title);
 
           if(sessionId){
