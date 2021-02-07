@@ -225,7 +225,7 @@ const createMemberPage = (userInfo) => {
         if(res.ok){
           res.text()
             .then(text=>{
-              alert(text);
+              makeAlert(text);
               liff.openWindow({
                 url:'https://liff.line.me/1655219547-eobVGLdB',
                 external: false
@@ -233,11 +233,11 @@ const createMemberPage = (userInfo) => {
             })
             .catch(e=>console.log(e));
         }else{
-          alert('HTTPレスポンスエラーです');
+          makeAlert('HTTPレスポンスエラーです');
         }
       })
     }else{
-      alert('メールアドレスを正しく入力してください');
+      makeAlert('メールアドレスを正しく入力してください');
     }
   })
 
@@ -290,7 +290,7 @@ const createMemberPage = (userInfo) => {
             if(res.ok){
               res.text()
                 .then(text=>{
-                  alert(text);
+                  makeAlert(text);
                   liff.openWindow({
                     url:'https://liff.line.me/1655219547-eobVGLdB',
                     external: false
@@ -298,7 +298,7 @@ const createMemberPage = (userInfo) => {
                 })
                 .catch(e=>console.log(e));
             }else{
-              alert('HTTPレスポンスエラーです');
+              makeAlert('HTTPレスポンスエラーです');
             }
           })
           .catch(e=>console.log(e));
@@ -349,23 +349,22 @@ const createMemberPage = (userInfo) => {
 
       //「はい」ボタンクリック時の処理
       yesButton.addEventListener('click',()=>{
-        makeAlert('テストだよ');
-        // fetch(`/api/cancel/${userInfo.line_uid}?sub=${userInfo.subscription}`)
-        //   .then(response=>{
-        //     if(response.ok){
-        //       response.text()
-        //         .then(text=>{
-        //           alert(text);
-        //           liff.openWindow({
-        //             url: 'https://liff.line.me/1655219547-eobVGLdB',
-        //             external: false
-        //           });
-        //         })
-        //         .catch(e=>console.log(e));
-        //     }else{
-        //       alert('HTTPレスポンスエラーです');
-        //     }
-        //   })
+        fetch(`/api/cancel/${userInfo.line_uid}?sub=${userInfo.subscription}`)
+          .then(response=>{
+            if(response.ok){
+              response.text()
+                .then(text=>{
+                  makeAlert(text);
+                  liff.openWindow({
+                    url: 'https://liff.line.me/1655219547-eobVGLdB',
+                    external: false
+                  });
+                })
+                .catch(e=>console.log(e));
+            }else{
+              makeAlert('HTTPレスポンスエラーです');
+            }
+          })
       });
 
       //「いいえ」ボタンクリック時の処理
