@@ -252,7 +252,6 @@ const handleMessageEvent = async (ev) => {
       "text":`けーり君の無料試用期間が切れてしました\uDBC0\uDC1C ぜひご購入をお願いします\uDBC0\uDC04`
     });
   }
-  
 }
 
 const handlePostbackEvent = async (ev) => {
