@@ -28,6 +28,7 @@ window.onload = () => {
       .then(res=>{
         res.json()
           .then(data=>{
+            debug.innerHTML = data;
             //タイトル生成
             const divTitle = document.createElement('div');
             divTitle.setAttribute('class','div-center');
