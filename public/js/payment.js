@@ -471,6 +471,7 @@ const makeAlert = (text) => {
   span.setAttribute('aria-hidden','true');
   span.innerHTML = '&times;'
 
+  closeButton.appendChild(span);
   divAlert.appendChild(closeButton);
   divPage.appendChild(divAlert);
 
