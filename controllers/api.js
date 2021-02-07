@@ -65,7 +65,7 @@ module.exports = {
 
   getUserInfo: (req,res) => {
     const data = req.body;
-    Data.getUserInfo(data.id_token)
+    Data.getUserData(data.id_token)
       .then(userInfo=>{
         if(!userInfo){
           console.log('ユーザー情報なし');
