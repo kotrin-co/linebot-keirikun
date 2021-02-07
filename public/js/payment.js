@@ -333,17 +333,17 @@ const createMemberPage = (userInfo) => {
       divCard.setAttribute('id','confirmation-card')
       const divBody = document.createElement('div');
       divBody.setAttribute('class','card-body');
-      const h5Title = document.createElement('h5');
-      h5Title.setAttribute('class','card-title');
-      h5Title.innerHTML = '解約確認';
+      const h4Title = document.createElement('h4');
+      h4Title.setAttribute('class','card-title');
+      h4Title.innerHTML = '！解約確認';
       const pText = document.createElement('p');
       pText.setAttribute('class','card-text');
       pText.innerHTML = '本当に契約を解除しますか？'
       const yesButton = document.createElement('button');
-      yesButton.setAttribute('class','btn-outline-secondary');
+      yesButton.setAttribute('class','btn-outline-secondary confirmation-button');
       yesButton.innerHTML = 'はい';
       const noButton = document.createElement('button');
-      noButton.setAttribute('class','btn-outline-secondary');
+      noButton.setAttribute('class','btn-outline-secondary confirmation-button');
       noButton.innerHTML = 'いいえ';
       noButton.addEventListener('click',()=>{
         //子ノードの全削除
@@ -353,7 +353,7 @@ const createMemberPage = (userInfo) => {
           }
         }
       });
-      divBody.appendChild(h5Title);
+      divBody.appendChild(h4Title);
       divBody.appendChild(pText);
       divBody.appendChild(yesButton);
       divBody.appendChild(noButton);
