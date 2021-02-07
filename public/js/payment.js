@@ -343,7 +343,12 @@ const createMemberPage = (userInfo) => {
       noButton.setAttribute('class','btn-outline-secondary');
       noButton.innerHTML = 'いいえ';
       noButton.addEventListener('click',()=>{
-        divCard.innerHTML = '';
+        //子ノードの全削除
+        if(divCard.hasChildNodes()){
+          while(divCard.childNodes.length>0){
+            divCard.removeChild(divCard.firstChild);
+          }
+        }
       });
       divBody.appendChild(h5Title);
       divBody.appendChild(pText);
