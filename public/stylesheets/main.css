@@ -43,6 +43,8 @@
 
 #payment-page{
   margin: 0 0.5rem;
+  position: relative;
+  z-index: 0;
 }
 
 .div-center{
@@ -80,6 +82,11 @@
 .text-center{
   text-align: center;
   margin-top:40%;
+}
+
+#confirmation-card{
+  position: absolute;
+  z-index: 99;
 }
 
 /* 支払成功ページ */

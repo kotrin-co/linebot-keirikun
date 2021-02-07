@@ -326,13 +326,15 @@ const createMemberPage = (userInfo) => {
     btnCancel.setAttribute('class','btn-outline-secondary');
     btnCancel.innerHTML ='解約する';
     btnCancel.addEventListener('click',()=>{
+      //本当に解約するの？のカード生成
       const divCard = document.createElement('div');
-      divCard.setAttribute('class','card text-center w-50');
+      divCard.setAttribute('class','card text-center w-75');
+      divCard.setAttribute('id','confirmation-card')
       const divBody = document.createElement('div');
       divBody.setAttribute('class','card-body');
       const h5Title = document.createElement('h5');
       h5Title.setAttribute('class','card-title');
-      h5Title.innerHTML = '確認';
+      h5Title.innerHTML = '解約確認';
       const pText = document.createElement('p');
       pText.setAttribute('class','card-text');
       pText.innerHTML = '本当に契約を解除しますか？'
