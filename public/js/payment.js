@@ -349,22 +349,23 @@ const createMemberPage = (userInfo) => {
 
       //「はい」ボタンクリック時の処理
       yesButton.addEventListener('click',()=>{
-        fetch(`/api/cancel/${userInfo.line_uid}?sub=${userInfo.subscription}`)
-          .then(response=>{
-            if(response.ok){
-              response.text()
-                .then(text=>{
-                  alert(text);
-                  liff.openWindow({
-                    url: 'https://liff.line.me/1655219547-eobVGLdB',
-                    external: false
-                  });
-                })
-                .catch(e=>console.log(e));
-            }else{
-              alert('HTTPレスポンスエラーです');
-            }
-          })
+        makeToast('テストだよ');
+        // fetch(`/api/cancel/${userInfo.line_uid}?sub=${userInfo.subscription}`)
+        //   .then(response=>{
+        //     if(response.ok){
+        //       response.text()
+        //         .then(text=>{
+        //           alert(text);
+        //           liff.openWindow({
+        //             url: 'https://liff.line.me/1655219547-eobVGLdB',
+        //             external: false
+        //           });
+        //         })
+        //         .catch(e=>console.log(e));
+        //     }else{
+        //       alert('HTTPレスポンスエラーです');
+        //     }
+        //   })
       });
 
       //「いいえ」ボタンクリック時の処理
@@ -450,6 +451,40 @@ const displaySpinner = () => {
   divPage.appendChild(divCenter);
 }
 
+//トースト生成
 const makeToast = (text) => {
 
+  //本体
+  const divToast = document.createElement('div');
+  divToast.setAttribute('class','toast');
+  divToast.setAttribute('role','alert');
+  divToast.setAttribute('aria-live','assertive');
+  divToast.setAttribute('aria-atomic','true');
+
+  //ヘッダー
+  const divHeader = document.createElement('div');
+
+  //閉じるボタン
+  const closeButton = document.createElement('button');
+  closeButton.setAttribute('type','button');
+  closeButton.setAttribute('class','ml-2 mb-1 close');
+  closeButton.setAttribute('data-dismiss','toast');
+  closeButton.setAttribute('aria-label','Close');
+
+  const span = document.createElement('span');
+  span.setAttribute('aria-hidden','true');
+  span.innerHTML = '&times;'
+
+  //本文
+  const divBody = document.createElement('div');
+  divBody.setAttribute('class','toast-body');
+  divBody.innerHTML = text;
+
+  closeButton.appendChild(span);
+  divHeader.appendChild(closeButton);
+
+  divToast.appendChild(divHeader);
+  divToast.appendChild(divBody);
+
+  divPage.appendChild(divToast);
 }
