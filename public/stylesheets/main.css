@@ -87,6 +87,7 @@
 #confirmation-card{
   position: absolute;
   z-index: 99;
+  top: 20%;
 }
 
 /* 支払成功ページ */
