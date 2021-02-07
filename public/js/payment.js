@@ -326,23 +326,48 @@ const createMemberPage = (userInfo) => {
     btnCancel.setAttribute('class','btn-outline-secondary');
     btnCancel.innerHTML ='解約する';
     btnCancel.addEventListener('click',()=>{
-      fetch(`/api/cancel/${userInfo.line_uid}?sub=${userInfo.subscription}`)
-        .then(response=>{
-          if(response.ok){
-            response.text()
-              .then(text=>{
-                alert(text);
-                liff.openWindow({
-                  url: 'https://liff.line.me/1655219547-eobVGLdB',
-                  external: false
-                });
-              })
-              .catch(e=>console.log(e));
-          }else{
-            alert('HTTPレスポンスエラーです');
-          }
-        })
-    })
+      const divCard = document.createElement('div');
+      divCard.setAttribute('class','card text-center w-50');
+      const divBody = document.createElement('div');
+      divBody.setAttribute('class','card-body');
+      const h5Title = document.createElement('h5');
+      h5Title.setAttribute('class','card-title');
+      h5Title.innerHTML = '確認';
+      const pText = document.createElement('p');
+      pText.setAttribute('class','card-text');
+      pText.innerHTML = '本当に契約を解除しますか？'
+      const yesButton = document.createElement('button');
+      yesButton.setAttribute('class','btn-outline-secondary');
+      yesButton.innerHTML = 'はい';
+      const noButton = document.createElement('button');
+      noButton.setAttribute('class','btn-outline-secondary');
+      noButton.innerHTML = 'いいえ';
+      noButton.addEventListener('click',()=>{
+        divCard.innerHTML = '';
+      });
+      divBody.appendChild(h5Title);
+      divBody.appendChild(pText);
+      divBody.appendChild(yesButton);
+      divBody.appendChild(noButton);
+      divCard.appendChild(divBody);
+      divPage.appendChild(divCard);
+      // fetch(`/api/cancel/${userInfo.line_uid}?sub=${userInfo.subscription}`)
+      //   .then(response=>{
+      //     if(response.ok){
+      //       response.text()
+      //         .then(text=>{
+      //           alert(text);
+      //           liff.openWindow({
+      //             url: 'https://liff.line.me/1655219547-eobVGLdB',
+      //             external: false
+      //           });
+      //         })
+      //         .catch(e=>console.log(e));
+      //     }else{
+      //       alert('HTTPレスポンスエラーです');
+      //     }
+      //   })
+    });
     divCancel.appendChild(btnCancel);
     divPage.appendChild(divCancel);
   }
