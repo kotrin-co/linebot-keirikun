@@ -84,7 +84,7 @@ window.onload = () => {
                           divPage.appendChild(pre);
                         })
                     }else{
-                      alert('HTTPレスポンスエラーです');
+                      makeAlert('HTTPレスポンスエラーです');
                     }
                   })
                   //カスターマーポータルの生成(本番環境でないとできない)
@@ -128,4 +128,29 @@ window.onload = () => {
           })
       })
     })
+}
+
+//アラート生成
+const makeAlert = (text) => {
+
+  const divAlert = document.createElement('div');
+  divAlert.setAttribute('class','alert alert-warning alert-dismissible fade show make-alert');
+  divAlert.setAttribute('role','alert');
+
+  divAlert.innerHTML = text;
+
+  //閉じるボタン
+  const closeButton = document.createElement('button');
+  closeButton.setAttribute('type','button');
+  closeButton.setAttribute('class','close');
+  closeButton.setAttribute('data-dismiss','alert');
+  closeButton.setAttribute('aria-label','Close');
+
+  const span = document.createElement('span');
+  span.setAttribute('aria-hidden','true');
+  span.innerHTML = '&times;'
+
+  closeButton.appendChild(span);
+  divAlert.appendChild(closeButton);
+  divPage.appendChild(divAlert);
 }
