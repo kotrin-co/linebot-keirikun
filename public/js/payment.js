@@ -326,6 +326,7 @@ const createMemberPage = (userInfo) => {
     btnCancel.setAttribute('class','btn-outline-secondary');
     btnCancel.innerHTML ='解約する';
     btnCancel.addEventListener('click',()=>{
+      btnCancel.disabled = true;
       //本当に解約するの？のカード生成
       const divConfirmation = document.createElement('div');
       const divCard = document.createElement('div');
@@ -346,6 +347,9 @@ const createMemberPage = (userInfo) => {
       noButton.setAttribute('class','btn-outline-secondary confirmation-button');
       noButton.innerHTML = 'いいえ';
       noButton.addEventListener('click',()=>{
+        //キャンセルボタンのdisabled解除
+        btnCancel.disabled = false;
+        
         //子ノードの全削除
         if(divConfirmation.hasChildNodes()){
           while(divConfirmation.childNodes.length>0){
