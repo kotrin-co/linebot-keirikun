@@ -336,7 +336,7 @@ const createMemberPage = (userInfo) => {
       divBody.setAttribute('class','card-body');
       const h4Title = document.createElement('h4');
       h4Title.setAttribute('class','card-title');
-      h4Title.innerHTML = '！解約確認';
+      h4Title.innerHTML = '<i class="fas fa-exclamation-triangle"></i> 解約確認';
       const pText = document.createElement('p');
       pText.setAttribute('class','card-text');
       pText.innerHTML = '本当に契約を解除しますか？'
@@ -346,10 +346,32 @@ const createMemberPage = (userInfo) => {
       const noButton = document.createElement('button');
       noButton.setAttribute('class','btn-outline-secondary confirmation-button');
       noButton.innerHTML = 'いいえ';
+
+      //「はい」ボタンクリック時の処理
+      yesButton.addEventListener('click',()=>{
+        fetch(`/api/cancel/${userInfo.line_uid}?sub=${userInfo.subscription}`)
+          .then(response=>{
+            if(response.ok){
+              response.text()
+                .then(text=>{
+                  alert(text);
+                  liff.openWindow({
+                    url: 'https://liff.line.me/1655219547-eobVGLdB',
+                    external: false
+                  });
+                })
+                .catch(e=>console.log(e));
+            }else{
+              alert('HTTPレスポンスエラーです');
+            }
+          })
+      });
+
+      //「いいえ」ボタンクリック時の処理
       noButton.addEventListener('click',()=>{
         //キャンセルボタンのdisabled解除
         btnCancel.disabled = false;
-        
+
         //子ノードの全削除
         if(divConfirmation.hasChildNodes()){
           while(divConfirmation.childNodes.length>0){
@@ -357,6 +379,7 @@ const createMemberPage = (userInfo) => {
           }
         }
       });
+
       divBody.appendChild(h4Title);
       divBody.appendChild(pText);
       divBody.appendChild(yesButton);
@@ -364,22 +387,7 @@ const createMemberPage = (userInfo) => {
       divCard.appendChild(divBody);
       divConfirmation.appendChild(divCard);
       divPage.appendChild(divConfirmation);
-      // fetch(`/api/cancel/${userInfo.line_uid}?sub=${userInfo.subscription}`)
-      //   .then(response=>{
-      //     if(response.ok){
-      //       response.text()
-      //         .then(text=>{
-      //           alert(text);
-      //           liff.openWindow({
-      //             url: 'https://liff.line.me/1655219547-eobVGLdB',
-      //             external: false
-      //           });
-      //         })
-      //         .catch(e=>console.log(e));
-      //     }else{
-      //       alert('HTTPレスポンスエラーです');
-      //     }
-      //   })
+
     });
     divCancel.appendChild(btnCancel);
     divPage.appendChild(divCancel);
@@ -440,4 +448,8 @@ const displaySpinner = () => {
   divSpinner.appendChild(spanText);
   divCenter.appendChild(divSpinner);
   divPage.appendChild(divCenter);
+}
+
+const makeToast = (text) => {
+
 }
