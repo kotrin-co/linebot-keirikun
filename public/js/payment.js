@@ -10,34 +10,46 @@ window.onload = () => {
       liffId: myLiffId
     })
     .then(()=>{
-      liff.getProfile()
-        .then(async(profile) => {
-          const lineId = profile.userId;
-          const response = await fetch(`api?line_uid=${lineId}`);
-          const data = await response.json();
 
-          //タイトル生成
-          const divTitle = document.createElement('div');
-          divTitle.setAttribute('class','div-center');
-          const title = document.createElement('p');
-          const titleText = data.subscription ? `ようこそ${data.display_name}さん!<br>「けーり君」各種情報ページ` : `ようこそ${data.display_name}さん!<br>「けーり君」ご購入ページ`;
-          title.innerHTML = titleText;
-          divTitle.appendChild(title);
-          divPage.appendChild(divTitle);
+      //idトークンの取得
+      const idToken = liff.getIDToken();
+      const jsonData = JSON.stringify({
+        id_token: idToken
+      });
 
-          //無料トライアル残存時間の計算
-          const registeredDate = data.timestamp;
-          const today = new Date().getTime();
-          const left = FREE_TRIAL_PERIOD - ((today-registeredDate)/(24*60*60*1000));
+      fetch('/api/idToken',{
+        method: 'POST',
+        headers: {
+          'Content-Type':'application/json'
+        },
+        body: jsonData,
+        creadentials: 'same-origin'
+      })
+      .then(res=>{
+        res.json()
+          .then(data=>{
+            //タイトル生成
+            const divTitle = document.createElement('div');
+            divTitle.setAttribute('class','div-center');
+            const title = document.createElement('p');
+            const titleText = data.subscription ? `ようこそ${data.display_name}さん!<br>「けーり君」各種情報ページ` : `ようこそ${data.display_name}さん!<br>「けーり君」ご購入ページ`;
+            title.innerHTML = titleText;
+            divTitle.appendChild(title);
+            divPage.appendChild(divTitle);
 
-          //課金しているかどうかで表示コンテンツを変える
-          if(!data.subscription || (data.subscription === 'trial' && left<0)){
-            createPaymentPage(); //未課金
-          }else{
-            createMemberPage(data,lineId); //課金orゲストor無料トライアル
-          }
-        })
-        .catch(e=>console.log(e));
+            //無料トライアル残存時間の計算
+            const registeredDate = data.timestamp;
+            const today = new Date().getTime();
+            const left = FREE_TRIAL_PERIOD - ((today-registeredDate)/(24*60*60*1000));
+
+            //課金しているかどうかで表示コンテンツを変える
+            if(!data.subscription || (data.subscription === 'trial' && left<0)){
+              createPaymentPage(); //未課金
+            }else{
+              createMemberPage(data,lineId); //課金orゲストor無料トライアル
+            }
+          })
+      })
     })
 }
 

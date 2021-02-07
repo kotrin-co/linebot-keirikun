@@ -24,6 +24,6 @@ router
 
 router
   .route('/idToken')
-  .post(controller.getProfile);
+  .post(controller.getUserInfo);
 
 module.exports = router;

@@ -1,5 +1,4 @@
 const Data = require('../models/Data');
-const fetch = require('node-fetch');
 
 module.exports = {
 
@@ -64,24 +63,16 @@ module.exports = {
       .catch(e=>console.log(e));
   },
 
-  getProfile: (req,res) => {
+  getUserInfo: (req,res) => {
     const data = req.body;
-    const bodyData = `id_token=${data.id_token}&client_id=${process.env.LOGIN_CHANNEL_ID}`;
-    console.log('data in controller1',bodyData);
-
-    fetch('https://api.line.me/oauth2/v2.1/verify',{
-      method: 'POST',
-      headers: {
-        'Content-Type':'application/x-www-form-urlencoded'
-      },
-      body: bodyData
-    })
-    .then(res=>{
-      res.json()
-        .then(json=>{
-          console.log('json@@@',json);
-        })
-    })
-    .catch(e=>console.log(e));
+    Data.getUserInfo(data.id_token)
+      .then(userInfo=>{
+        if(!userInfo){
+          console.log('ユーザー情報なし');
+        }else{
+          res.status(200).send(userInfo);
+        }
+      })
+      .catch(e=>console.log(e));
   }
 }

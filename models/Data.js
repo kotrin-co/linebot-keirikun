@@ -1,6 +1,7 @@
 const { Client } = require('pg');
 const { google } = require('googleapis');
 const privatekey = require('../client_secret.json');
+const fetch = require('node-fetch');
 
 const {
   ACCOUNTS,
@@ -337,21 +338,58 @@ const initialTreat = (ssID,line_uid) => {
 module.exports = {
 
   //ユーザーデータの取得
-  getUserData: (line_uid) => {
-    return new Promise((resolve,reject) => {
-      const pickup_query = {
-        text:`SELECT * FROM users WHERE line_uid='${line_uid}';`
-      }
-      connection.query(pickup_query)
-        .then(user=>{
-          if(user.rows.length){
-            resolve(user.rows[0]);
-          }else{
-            resolve('');
-          }
-        })
-        .catch(e=>console.log(e));
-    })
+  // getUserData: (line_uid) => {
+  //   return new Promise((resolve,reject) => {
+  //     const pickup_query = {
+  //       text:`SELECT * FROM users WHERE line_uid='${line_uid}';`
+  //     }
+  //     connection.query(pickup_query)
+  //       .then(user=>{
+  //         if(user.rows.length){
+  //           resolve(user.rows[0]);
+  //         }else{
+  //           resolve('');
+  //         }
+  //       })
+  //       .catch(e=>console.log(e));
+  //   })
+  // },
+  getUserData: (idToken) => {
+    return new Promise(resolve=>{
+      const bodyData = `id_token=${idToken}&client_id=${process.env.LOGIN_CHANNEL_ID}`;
+      console.log('bodydata in Data.js',bodyData);
+
+      fetch('https://api.line.me/oauth2/v2.1/verify',{
+        method: 'POST',
+        headers: {
+          'Content-Type':'application/x-www-form-urlencoded'
+        },
+        body: bodyData
+      })
+      .then(response=>{
+        response.json()
+          .then(json=>{
+            console.log('json@@@',json);
+            const lineId = json.sub;
+            const select_query = {
+              text: `SELECT * FROM users WHERE line_uid='${lineId}';`
+            };
+            connection.query(select_query)
+              .then(res=>{
+                if(res.rows.length){
+                  resolve(res.rows[0]);
+                }else{
+                  console.log('対象のユーザー情報がありません');
+                  resolve(false);
+                }
+              })
+              .catch(e=>console.log(e));
+          })
+          .catch(e=>console.log(e));
+      })
+      .catch(e=>console.log(e));
+    });
+    
   },
 
   //入力用シートへの入力
@@ -682,5 +720,6 @@ module.exports = {
             })
       });
     })
-  }
+  },
+  
 }
