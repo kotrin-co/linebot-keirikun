@@ -328,7 +328,7 @@ const createMemberPage = (userInfo) => {
     btnCancel.addEventListener('click',()=>{
       //本当に解約するの？のカード生成
       const divCard = document.createElement('div');
-      divCard.setAttribute('class','card text-center w-75');
+      divCard.setAttribute('class','card text-center w-75 text-white bg-warning');
       divCard.setAttribute('id','confirmation-card')
       const divBody = document.createElement('div');
       divBody.setAttribute('class','card-body');
