@@ -349,7 +349,7 @@ const createMemberPage = (userInfo) => {
 
       //「はい」ボタンクリック時の処理
       yesButton.addEventListener('click',()=>{
-        makeToast('テストだよ');
+        makeAlert('テストだよ');
         // fetch(`/api/cancel/${userInfo.line_uid}?sub=${userInfo.subscription}`)
         //   .then(response=>{
         //     if(response.ok){
@@ -452,7 +452,7 @@ const displaySpinner = () => {
 }
 
 //トースト生成
-const makeToast = (text) => {
+const makeAlert = (text) => {
 
   const divAlert = document.createElement('div');
   divAlert.setAttribute('class','alert alert-warning alert-dismissible fade show');
