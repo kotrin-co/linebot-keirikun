@@ -97,10 +97,11 @@
 }
 
 .make-alert{
-  width:80%;
+  /* width:80%; */
+  height: 8rem;
   position: absolute;
   z-index: 99;
-  top: 0;
+  top: 40%;
 }
 
 /* 支払成功ページ */
