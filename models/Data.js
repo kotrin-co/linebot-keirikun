@@ -357,7 +357,7 @@ module.exports = {
   getUserData: (idToken) => {
     return new Promise(resolve=>{
       const bodyData = `id_token=${idToken}&client_id=${process.env.LOGIN_CHANNEL_ID}`;
-      console.log('bodydata in Data.js',bodyData);
+      // console.log('bodydata in Data.js',bodyData);
 
       fetch('https://api.line.me/oauth2/v2.1/verify',{
         method: 'POST',

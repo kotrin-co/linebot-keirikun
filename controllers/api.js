@@ -65,7 +65,7 @@ module.exports = {
 
   getUserInfo: (req,res) => {
     const data = req.body;
-    console.log('idtoken',data);
+    // console.log('idtoken',data);
     Data.getUserData(data.id_token)
       .then(userInfo=>{
         if(!userInfo){
