@@ -278,7 +278,7 @@ const createMemberPage = (userInfo) => {
 
     //シート更新可能日
     const startPoint = new Date(year,2,13).getTime();
-    const endPoint = new Date(year+1,2,12).getTime();
+    const endPoint = new Date(year+1,2,13).getTime();
 
     const createdAt = parseInt(userInfo.createdat);
     
