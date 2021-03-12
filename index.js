@@ -209,15 +209,6 @@ const handleMessageEvent = async (ev) => {
               const flexMessage = Flex.makeDateSelector('delete','','','');
               return client.replyMessage(ev.replyToken,flexMessage);
             }
-            else if(text === 'テスト'){
-              console.log('today',new Date().getTime());
-              const day = new Date().getDate();
-              const day2 = new Date(new Date().getTime()+0.25*60*60*1000).getDate();
-              return client.replyMessage(ev.replyToken,{
-                type: 'text',
-                text: `day1 ${day} day2 ${day2}`
-              });
-            }
             else{
               return client.replyMessage(ev.replyToken,{
                 "type":"text",

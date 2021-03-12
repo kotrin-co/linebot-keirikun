@@ -691,13 +691,14 @@ module.exports = {
       const name = userName;
 
       //シートにつける年度計算
+      const nowTimestamp = new Date().getTime();
       let year;
-      const thisMonth = new Date().getMonth()+1;
-      const today = new Date().getDate();
-      if(thisMonth<3 || (thisMonth === 3 && today<13)){
-        year = new Date().getFullYear() - 1;
+      const thisMonth = new Date(nowTimestamp+9*60*60*1000).getMonth()+1;
+      const today = new Date(nowTimestamp+9*60*60*1000).getDate();
+      if(thisMonth<3 || (thisMonth === 3 && today<14)){
+        year = new Date(nowTimestamp+9*60*60*1000).getFullYear() - 1;
       }else{
-        year = new Date().getFullYear();
+        year = new Date(nowTimestamp+9*60*60*1000).getFullYear();
       }
 
       const request = {
