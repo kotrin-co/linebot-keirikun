@@ -212,7 +212,7 @@ const handleMessageEvent = async (ev) => {
             else if(text === 'テスト'){
               console.log('today',new Date().getTime());
               const day = new Date().getDate();
-              const day2 = new Date(new Date().getTime()+0.5*60*60*1000).getDate();
+              const day2 = new Date(new Date().getTime()+0.25*60*60*1000).getDate();
               return client.replyMessage(ev.replyToken,{
                 type: 'text',
                 text: `day1 ${day} day2 ${day2}`
