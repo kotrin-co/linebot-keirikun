@@ -9,7 +9,8 @@ const {
   CREDITS,
   TRANSACTIONS,
   ADMIN,
-  original_SSID,
+  original_SSID_0,
+  original_SSID_1,
   original_SID
 } = require('../params/params');
 
@@ -256,6 +257,19 @@ const initialTreat = (ssID,line_uid) => {
     //シートコピー用メソッド
     const copySheet = (index) => {
       return new Promise(resolve=>{
+        
+        //閏年判定
+        let year;
+        const thisMonth = new Date().getMonth()+1;
+        const today = new Date().getDate();
+        if(thisMonth<3 || (thisMonth === 3 && today<16)){
+          year = new Date().getFullYear() - 1;
+        }else{
+          year = new Date().getFullYear();
+        }
+
+        const original_SSID = year%4===0 ? original_SSID_1 : original_SSID_0;
+
         const copy_request = {
           spreadsheetId: original_SSID,
           sheetId: original_SID[index],
@@ -422,8 +436,15 @@ module.exports = {
           const columns = createAlphabetsArray();
           
           //列番号の計算
-          //各月日数配列の生成
-          const year = new Date().getFullYear();
+          //各月日数配列の生成(3/16を新年スタートとする)
+          let year;
+          const thisMonth = new Date().getMonth()+1;
+          const today = new Date().getDate();
+          if(thisMonth<3 || (thisMonth === 3 && today<16)){
+            year = new Date().getFullYear() - 1;
+          }else{
+            year = new Date().getFullYear();
+          }
           const daysEveryMonth = [];
           for(let i=0; i<12; i++){
             daysEveryMonth.push(new Date(year,i+1,0).getDate());
@@ -668,7 +689,16 @@ module.exports = {
       const sheets = authorize();
 
       const name = userName;
-      const year = new Date().getFullYear();
+
+      //シートにつける年度計算
+      let year;
+      const thisMonth = new Date().getMonth()+1;
+      const today = new Date().getDate();
+      if(thisMonth<3 || (thisMonth === 3 && today<13)){
+        year = new Date().getFullYear() - 1;
+      }else{
+        year = new Date().getFullYear();
+      }
 
       const request = {
         resource : {

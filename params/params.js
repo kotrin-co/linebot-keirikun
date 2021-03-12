@@ -67,7 +67,8 @@ module.exports = {
   BUTTON_COLOR: '#434DFF',
   BUTTON_COLOR_D: '#CC0000',
   TRANSACTIONS: ['現金','振込・振替','クレカ'],
-  original_SSID: '13Y2AZYNHWnQNKdSzK5Vxna_YPdf4YnT61imptdiM_MU',
+  original_SSID_0: '13Y2AZYNHWnQNKdSzK5Vxna_YPdf4YnT61imptdiM_MU',
+  original_SSID_1: '13Y2AZYNHWnQNKdSzK5Vxna_YPdf4YnT61imptdiM_MU',
   original_SID: [0,1786699057,251943700,1686142823,661995045,1312117404,550715539],
   FREE_TRIAL_PERIOD: 0.007, //無料試用期間→日数単位で書く
   ADMIN: 'kentaro523@gmail.com'
