@@ -725,7 +725,7 @@ module.exports = {
           ],
         }
       };
-    
+
       await sheets.spreadsheets.create(request, (err,response)=>{
 
         const spreadsheetId = response.data.spreadsheetId;
@@ -733,20 +733,34 @@ module.exports = {
             .then((ssId)=>{
                 gmailAccountAdd(spreadsheetId,'writer',gmail)
                     .then((ssID)=>{
-                        const nowTime = new Date().getTime();
-                        const update_query = {
-                            text:`UPDATE users SET (gmail,ssid,createdat) = ('${gmail}','${ssID}',${nowTime}) WHERE line_uid='${line_uid}';`
+                        //既存ssidの取得
+                        const select_query = {
+                          text: `SELECT * FROM users WHERE line_uid='${line_uid}';`
                         };
-                        connection.query(update_query)
-                            .then(()=>{
-                                initialTreat(ssID,line_uid)
-                                  .then(message=>{
-                                    console.log('message',message);
-                                    resolve(message);
-                                  })
-                                  .catch(e=>console.log(e));
-                            })
-                            .catch(e=>console.log(e.stack));
+                        connection.query(select_query)
+                          .then(res=>{
+                            console.log('res.rows',res.rows[0]);
+                            //usersテーブルに挿入するssidを配列化
+                            const ssidArray = [ssID,res.rows[0].ssid,res.rows[0].ssid1,res.rows[0].ssid2,res.rows[0].ssid3];
+                            console.log('ssidArray',ssidArray);
+
+                            //updateクエリ
+                            const nowTime = new Date().getTime();
+                            const update_query = {
+                                text:`UPDATE users SET (gmail,ssid,createdat,ssid1,ssid2,ssid3,ssid4) = ('${gmail}','${ssidArray[0]}',${nowTime},'${ssidArray[1]}','${ssidArray[2]}','${ssidArray[3]}','${ssidArray[4]}') WHERE line_uid='${line_uid}';`
+                            };
+                            connection.query(update_query)
+                              .then(()=>{
+                                  initialTreat(ssID,line_uid)
+                                    .then(message=>{
+                                      console.log('message',message);
+                                      resolve(message);
+                                    })
+                                    .catch(e=>console.log(e));
+                              })
+                              .catch(e=>console.log(e.stack));
+                          })
+                          .catch(e=>console.log(e));
                     })
                     .catch(e=>console.log(e));
             })
