@@ -326,6 +326,7 @@ module.exports = {
 
   sheetSelector: async (line_uid) => {
     const userInfo = await Data.getUserDataByLineId(line_uid);
+    console.log('userInfo in selector',userInfo);
     const ssidArray = [];
 
     //ssが存在したらidをssidArrayへ格納する
