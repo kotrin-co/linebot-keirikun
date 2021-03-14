@@ -17,10 +17,9 @@ const getYear = (timestamp) => {
   const month = new Date(ts).getMonth()+1;
   const date = new Date(ts).getDate();
 
-  if(month<3 || (month===3 && date<16)){
+  if(month<3 || (month===3 && date<14)){
     year--;
   }
-  console.log('debug:',timestamp,year,month,date,ts);
   return year;
 }
 
