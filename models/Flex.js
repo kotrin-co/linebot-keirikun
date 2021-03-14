@@ -11,6 +11,19 @@ const {
 
 const Data = require('./Data');
 
+const getYear = (timestamp) => {
+  const ts = timestamp + 9*60*60*1000;
+  let year = new Date(ts).getFullYear();
+  const month = new Date(ts).getMonth()+1;
+  const date = new Date(ts).getDate();
+
+  if(month<3 || (month===3 && date<16)){
+    year--;
+  }
+
+  return year;
+}
+
 module.exports = {
 
   makeAccountSelector: (number) => {
@@ -340,19 +353,11 @@ module.exports = {
 
     //現状の入力対象のスプレッドシート
     const target = userInfo.target_ss;
+    const createdAt = userInfo.createdat;
     if(ssidArray[target]){
 
       //年度の計算
-      let year = CORRECTED_YEAR;
-      // const nowTimestamp = new Date().getTime();
-      // let year;
-      // const thisMonth = new Date(nowTimestamp+9*60*60*1000).getMonth()+1;
-      // const today = new Date(nowTimestamp+9*60*60*1000).getDate();
-      // if(thisMonth<3 || (thisMonth === 3 && today<14)){
-      //   year = new Date(nowTimestamp+9*60*60*1000).getFullYear() - 1;
-      // }else{
-      //   year = new Date(nowTimestamp+9*60*60*1000).getFullYear();
-      // }
+      const year = getYear(createdAt);
 
       //ボタン要素の自動生成
       const bodyContents = [];

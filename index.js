@@ -16,7 +16,9 @@ const {
   ACCOUNTS,
   TRANSACTIONS,
   FREE_TRIAL_PERIOD,
-  CORRECTED_YEAR
+  CORRECTED_YEAR,
+  START_TS,
+  END_TS
 } = require('./params/params');
 
 //stripeの設定
@@ -199,8 +201,8 @@ const handleMessageEvent = async (ev) => {
           // }
 
           //シート更新可能日
-          const startPoint = new Date(year,2,16).getTime() -9*60*60*1000;
-          const endPoint = new Date(year+1,2,16).getTime() -9*60*60*1000;
+          const startPoint = START_TS;
+          const endPoint = END_TS;
 
           const createdAt = parseInt(res.rows[0].createdat);
 
