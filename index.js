@@ -248,8 +248,9 @@ const handleMessageEvent = async (ev) => {
               }else{
                 year = new Date(nowTimestamp+9*60*60*1000).getFullYear();
               }
+              console.log('test',nowTimestamp,year,thisMonth,today);
             }
-            
+
             else{
               return client.replyMessage(ev.replyToken,{
                 "type":"text",
