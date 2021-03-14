@@ -233,6 +233,23 @@ const handleMessageEvent = async (ev) => {
               const flexMessage = await Flex.makeDateSelector('delete','','','',ev.source.userId);
               return client.replyMessage(ev.replyToken,flexMessage);
             }
+
+            else if(text === 'テスト'){
+              //テスト用シフト（ここだけ変えれば良い）
+              const testShift = -1;
+
+              //年度計算
+              const nowTimestamp = new Date().getTime(); 
+              let year;
+              const thisMonth = new Date(nowTimestamp+9*60*60*1000).getMonth()+1;
+              const today = new Date(nowTimestamp+9*60*60*1000).getDate();
+              if(thisMonth<3 || (thisMonth === 3 && today< (16 + testShift))){
+                year = new Date(nowTimestamp+9*60*60*1000).getFullYear() - 1;
+              }else{
+                year = new Date(nowTimestamp+9*60*60*1000).getFullYear();
+              }
+            }
+            
             else{
               return client.replyMessage(ev.replyToken,{
                 "type":"text",
