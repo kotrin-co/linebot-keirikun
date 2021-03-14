@@ -17,7 +17,7 @@ const getYear = (timestamp) => {
   const month = new Date(ts).getMonth()+1;
   const date = new Date(ts).getDate();
 
-  if(month<3 || (month===3 && date<14)){
+  if(month<3 || (month===3 && date<16)){
     year--;
   }
   return year;
@@ -396,7 +396,7 @@ module.exports = {
               },
               {
                 type: "text",
-                text: "※緑色=今の選択シート",
+                text: "※緑色=現在選択中のシート",
                 wrap: true,
                 size: "md"
               }

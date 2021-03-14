@@ -206,8 +206,6 @@ const handleMessageEvent = async (ev) => {
 
           const createdAt = parseInt(res.rows[0].createdat);
 
-          //過去のシートへの入力モード
-
           if((createdAt>=startPoint) && (createdAt<endPoint)){
             if( text === 'けーり君サポートお願い！'){
               return client.replyMessage(ev.replyToken,[
