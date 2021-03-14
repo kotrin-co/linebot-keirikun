@@ -420,10 +420,34 @@ module.exports = {
       }
       connection.query(select_query)
         .then(async(res)=>{
-          //スプレッドシートidとシートidの抜き出し
-          const ssId = res.rows[0].ssid;
-          const inputSheetId = res.rows[0].sid1;
-          console.log('ssid sid',ssId,inputSheetId);
+
+          //採用するスプレッドシートID
+          let ssId = '';
+          //スプレッドシートidの決定
+          const target_ss = res.rows[0].target_ss;
+          switch(target_ss){
+            case 0:
+              ssId = res.rows[0].ssid;
+              break;
+
+            case 1:
+              ssId = res.rows[0].ssid1;
+              break;
+
+            case 2:
+              ssId = res.rows[0].ssid2;
+              break;
+            
+            case 3:
+              ssId = res.rows[0].ssid3;
+              break;
+            
+            case 4:
+              ssId = res.rows[0].ssid4;
+              break;
+          }
+
+          console.log('ssid',ssId);
 
           const sheets = authorize();
 

@@ -387,6 +387,12 @@ module.exports = {
                 text: "入力したいシートの年度をお選びください",
                 wrap: true,
                 size: "lg"
+              },
+              {
+                type: "text",
+                text: "緑色=今の入力年度",
+                wrap: true,
+                size: "md"
               }
             ]
           },
