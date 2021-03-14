@@ -204,9 +204,6 @@ const handleMessageEvent = async (ev) => {
 
           const createdAt = parseInt(res.rows[0].createdat);
 
-          console.log('params:',thisMonth,today,year,startPoint,endPoint,createdAt);
-
-
           //過去のシートへの入力モード
 
           if((createdAt>=startPoint) && (createdAt<endPoint)){
