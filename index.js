@@ -307,6 +307,7 @@ const handlePostbackEvent = async (ev) => {
       const selectedAccount = parseInt(postbackData[2]);
       const selectedTransaction = parseInt(postbackData[3]);
       const flexMessage = await Flex.makeDateSelector('input',amount,selectedAccount,selectedTransaction,ev.source.userId);
+      console.log('flex',flexMessage);
       return client.replyMessage(ev.replyToken,flexMessage);
     }
 
