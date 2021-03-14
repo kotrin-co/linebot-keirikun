@@ -6,7 +6,8 @@ const {
   BUTTON_COLOR,
   BUTTON_COLOR_D,
   TRANSACTIONS,
-  CORRECTED_YEAR
+  CORRECTED_YEAR,
+  TEST_SHIFT
 } = require('../params/params');
 
 const Data = require('./Data');
@@ -352,7 +353,7 @@ module.exports = {
 
     //現状の入力対象のスプレッドシート
     const target = userInfo.target_ss;
-    const createdAt = userInfo.createdat;
+    const createdAt = userInfo.createdat + TEST_SHIFT;
     if(ssidArray[target]){
 
       //年度の計算

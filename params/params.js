@@ -89,5 +89,6 @@ module.exports = {
   ADMIN: 'kentaro523@gmail.com',
   CORRECTED_YEAR: year,
   START_TS: startPoint,
-  END_TS: endPoint
+  END_TS: endPoint,
+  TEST_SHIFT: 3*24*60*60*1000 //テスト用の日数シフト用パラメータ
 }

@@ -18,7 +18,8 @@ const {
   FREE_TRIAL_PERIOD,
   CORRECTED_YEAR,
   START_TS,
-  END_TS
+  END_TS,
+  TEST_SHIFT
 } = require('./params/params');
 
 //stripeの設定
@@ -204,7 +205,7 @@ const handleMessageEvent = async (ev) => {
           const startPoint = START_TS;
           const endPoint = END_TS;
 
-          const createdAt = parseInt(res.rows[0].createdat) +3*24*60*60*1000;
+          const createdAt = parseInt(res.rows[0].createdat) + TEST_SHIFT;
 
           if((createdAt>=startPoint) && (createdAt<endPoint)){
             if( text === 'けーり君サポートお願い！'){
