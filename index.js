@@ -164,9 +164,6 @@ const handleMessageEvent = async (ev) => {
   //課金チェック
   const available = await availableCheck(ev);
 
-  //過去のシートへの入力モード
-  let pastMode = false;
-
   if(available){
     const text = (ev.message.type === 'text') ? ev.message.text : '';
     const profile = await client.getProfile(ev.source.userId);
@@ -206,6 +203,9 @@ const handleMessageEvent = async (ev) => {
           const endPoint = new Date(year+1,2,14).getTime();
 
           const createdAt = parseInt(res.rows[0].createdat);
+
+          console.log('params:',thisMonth,today,year,startPoint,endPoint,createdAt);
+
 
           //過去のシートへの入力モード
 
