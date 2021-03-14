@@ -13,7 +13,7 @@ const {
 const Data = require('./Data');
 
 const getYear = (timestamp) => {
-  const ts = parseInt(timestamp) + 9*60*60*1000;
+  const ts = parseInt(timestamp) + 9*60*60*1000 + TEST_SHIFT;
   let year = new Date(ts).getFullYear();
   const month = new Date(ts).getMonth()+1;
   const date = new Date(ts).getDate();
@@ -353,7 +353,7 @@ module.exports = {
 
     //現状の入力対象のスプレッドシート
     const target = userInfo.target_ss;
-    const createdAt = userInfo.createdat + TEST_SHIFT;
+    const createdAt = userInfo.createdat;
     if(ssidArray[target]){
 
       //年度の計算
