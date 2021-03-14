@@ -267,9 +267,10 @@ const createMemberPage = (userInfo) => {
     updateButton.setAttribute('class','btn btn-primary');
     
     //シート作成日時を比較する
-    let year = new Date().getFullYear();
-    const thisMonth = new Date().getMonth()+1;
-    const today = new Date().getDate();
+    const ts = new Date().getTime() + 3*24*60*60*1000;
+    let year = new Date(ts).getFullYear();
+    const thisMonth = new Date(ts).getMonth()+1;
+    const today = new Date(ts).getDate();
     if(thisMonth<3 || (thisMonth === 3 && today<16)){
       year--;
     }

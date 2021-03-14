@@ -1,5 +1,5 @@
 //年度計算
-const nowTimestamp = new Date().getTime();
+const nowTimestamp = new Date().getTime() +3*24*60*60*1000; //テスト用に３日シフト
 let year;
 const thisMonth = new Date(nowTimestamp+9*60*60*1000).getMonth()+1;
 const today = new Date(nowTimestamp+9*60*60*1000).getDate();
