@@ -179,56 +179,58 @@ module.exports = {
     return flexMessage;
   },
 
-  makeDateSelector: async (mode,amount,selectedAccount,selectedTransaction,line_uid) => {
-    const userInfo = await Data.getUserDataByLineId(line_uid);
-    const year = getYear(userInfo.createdat) - userInfo.target_ss;
-    console.log('makedate year',year);
+  makeDateSelector: (mode,amount,selectedAccount,selectedTransaction,line_uid) => {
+    return new Promise(async(resolve) => {
+      const userInfo = await Data.getUserDataByLineId(line_uid);
+      const year = getYear(userInfo.createdat) - userInfo.target_ss;
+      console.log('makedate year',year);
 
-    let postbackData;
-    if(mode === 'input'){
-      postbackData = `date&${amount}&${selectedAccount}&${selectedTransaction}`;
-    }else if(mode === 'confirmation'){
-      postbackData = 'confirmationByDate';
-    }else if(mode === 'delete'){
-      postbackData = 'delete';
-    }
-
-    const flexMessage = {
-      "type":"flex",
-      "altText":"日付選択",
-      "contents":
-      {
-        "type": "bubble",
-        "body": {
-          "type": "box",
-          "layout": "vertical",
-          "contents": [
-            {
-              "type": "text",
-              "text": "対象日を選んでください",
-              "size": "md",
-              "align": "center"
-            }
-          ]
-        },
-        "footer": {
-          "type": "box",
-          "layout": "vertical",
-          "contents": [
-            {
-              "type": "button",
-              "action": {
-                "type": "datetimepicker",
-                "label": "日付を選択する",
-                "data": postbackData,
-                "mode": "date"
-              }
-            }
-          ]
-        }
+      let postbackData;
+      if(mode === 'input'){
+        postbackData = `date&${amount}&${selectedAccount}&${selectedTransaction}`;
+      }else if(mode === 'confirmation'){
+        postbackData = 'confirmationByDate';
+      }else if(mode === 'delete'){
+        postbackData = 'delete';
       }
-    };
-    return flexMessage;
+
+      const flexMessage = {
+        "type":"flex",
+        "altText":"日付選択",
+        "contents":
+        {
+          "type": "bubble",
+          "body": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "text",
+                "text": "対象日を選んでください",
+                "size": "md",
+                "align": "center"
+              }
+            ]
+          },
+          "footer": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "button",
+                "action": {
+                  "type": "datetimepicker",
+                  "label": "日付を選択する",
+                  "data": postbackData,
+                  "mode": "date"
+                }
+              }
+            ]
+          }
+        }
+      };
+      resolve(flexMessage);
+    });
   },
 
   // makeDateChoiceForConfirmation: (mode) => {
