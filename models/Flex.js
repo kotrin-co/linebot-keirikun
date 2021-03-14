@@ -12,7 +12,7 @@ const {
 const Data = require('./Data');
 
 const getYear = (timestamp) => {
-  const ts = timestamp + 9*60*60*1000;
+  const ts = parseInt(timestamp) + 9*60*60*1000;
   let year = new Date(ts).getFullYear();
   const month = new Date(ts).getMonth()+1;
   const date = new Date(ts).getDate();
