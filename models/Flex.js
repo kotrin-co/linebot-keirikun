@@ -20,7 +20,7 @@ const getYear = (timestamp) => {
   if(month<3 || (month===3 && date<16)){
     year--;
   }
-
+  console.log('debug:',timestamp,year,month,date,ts);
   return year;
 }
 
