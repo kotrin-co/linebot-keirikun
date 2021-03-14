@@ -199,8 +199,8 @@ const handleMessageEvent = async (ev) => {
           }
 
           //シート更新可能日
-          const startPoint = new Date(year,2,14).getTime();
-          const endPoint = new Date(year+1,2,14).getTime();
+          const startPoint = new Date(year,2,14,0,0).getTime();
+          const endPoint = new Date(year+1,2,14,0,0).getTime();
 
           const createdAt = parseInt(res.rows[0].createdat);
 
