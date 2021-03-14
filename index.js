@@ -174,7 +174,7 @@ const handleMessageEvent = async (ev) => {
     };
 
     connection.query(select_query)
-      .then(res=>{
+      .then(async(res)=>{
         //ssidの抜き出し
         const ssidArray = [];
         if(res.rows.length){
