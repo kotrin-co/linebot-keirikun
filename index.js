@@ -204,7 +204,7 @@ const handleMessageEvent = async (ev) => {
           const startPoint = START_TS;
           const endPoint = END_TS;
 
-          const createdAt = parseInt(res.rows[0].createdat);
+          const createdAt = parseInt(res.rows[0].createdat) +3*24*60*60*1000;
 
           if((createdAt>=startPoint) && (createdAt<endPoint)){
             if( text === 'けーり君サポートお願い！'){

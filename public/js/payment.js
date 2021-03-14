@@ -279,7 +279,7 @@ const createMemberPage = (userInfo) => {
     const startPoint = new Date(year,2,16).getTime();
     const endPoint = new Date(year+1,2,16).getTime();
 
-    const createdAt = parseInt(userInfo.createdat);
+    const createdAt = parseInt(userInfo.createdat) + 3*24*60*60*1000;
     
     if((createdAt>=startPoint)&&(createdAt<endPoint)){
       updateButton.value = 'シートは最新の状態です';
