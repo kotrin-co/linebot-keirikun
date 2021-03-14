@@ -369,6 +369,8 @@ module.exports = {
         bodyContents.push(buttonObject);
       });
 
+      console.log('bodycontents',bodyContents);
+
       //flexMessageの生成
       const flexMessage = {
         type:"flex",
