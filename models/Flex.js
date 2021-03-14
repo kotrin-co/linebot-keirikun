@@ -183,6 +183,9 @@ module.exports = {
     return new Promise(async(resolve) => {
       const userInfo = await Data.getUserDataByLineId(line_uid);
       const year = getYear(userInfo.createdat) - userInfo.target_ss;
+      const nowTime = new Date().getTime() + 9*60*60*1000;
+      const month = new Date(nowTime).getMonth()+1;
+      const date = new Date(nowTime).getDate();
       console.log('makedate year',year);
 
       let postbackData;
@@ -222,7 +225,10 @@ module.exports = {
                   "type": "datetimepicker",
                   "label": "日付を選択する",
                   "data": postbackData,
-                  "mode": "date"
+                  "mode": "date",
+                  "min": `${year}-01-01`,
+                  "max": `${year}-12-31`,
+                  "initial": `${year}-${month}-${date}`
                 }
               }
             ]
