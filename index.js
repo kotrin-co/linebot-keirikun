@@ -225,7 +225,6 @@ const handleMessageEvent = async (ev) => {
 
             else if(text === '入力するスプレッドシートを切り替える'){
               const flexMessage = await Flex.sheetSelector(ev.source.userId);
-              console.log('flexmessage',flexMessage);
               return client.replyMessage(ev.replyToken,flexMessage);
             }
 
@@ -424,6 +423,31 @@ const handlePostbackEvent = async (ev) => {
           return client.replyMessage(ev.replyToken,{
             "type":"text",
             "text":`${selectedMonth}月${selectedDay}日の「${ACCOUNTS[selectedAccount]}(${TRANSACTIONS[selectedTransaction]})」を削除しました！`
+          });
+        })
+        .catch(e=>console.log(e));
+    }
+
+    else if(postbackData[0] === 'change_ss'){
+      const changeTo = parseInt(postbackData[1]);
+      Data.changeTargetSS(ev.source.userId,changeTo)
+        .then(res=>{
+          console.log(res);
+
+          //シート年度
+          let year;
+          const correctedNowTime = new Date().getTime() + 9*60*60*1000;
+          const thisMonth = new Date(correctedNowTime).getMonth()+1;
+          const today = new Date(correctedNowTime).getDate();
+          if(thisMonth<3 || (thisMonth === 3 && today<14)){
+            year = new Date(correctedNowTime).getFullYear() - 1;
+          }else{
+            year = new Date(correctedNowTime).getFullYear();
+          }
+
+          return client.replyMessage(ev.replyToken,{
+            type: 'text',
+            text: `入力シートの対象を${year-changeTo}年度に変更しました`
           });
         })
         .catch(e=>console.log(e));

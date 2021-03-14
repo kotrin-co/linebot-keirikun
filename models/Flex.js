@@ -326,7 +326,7 @@ module.exports = {
 
   sheetSelector: async (line_uid) => {
     const userInfo = await Data.getUserDataByLineId(line_uid);
-    console.log('userInfo in selector',userInfo);
+    // console.log('userInfo in selector',userInfo);
     const ssidArray = [];
 
     //ssが存在したらidをssidArrayへ格納する
@@ -335,7 +335,7 @@ module.exports = {
     if(userInfo.ssid2　&& userInfo.ssid2 !== 'null') ssidArray.push(userInfo.ssid2);
     if(userInfo.ssid3　&& userInfo.ssid3 !== 'null') ssidArray.push(userInfo.ssid3);
     if(userInfo.ssid4　&& userInfo.ssid4 !== 'null') ssidArray.push(userInfo.ssid4);
-    console.log('ssidArray',ssidArray);
+    // console.log('ssidArray',ssidArray);
 
     //現状の入力対象のスプレッドシート
     const target = userInfo.target_ss;
@@ -369,7 +369,7 @@ module.exports = {
         bodyContents.push(buttonObject);
       });
 
-      console.log('bodycontents',bodyContents);
+      // console.log('bodycontents',bodyContents);
 
       //flexMessageの生成
       const flexMessage = {

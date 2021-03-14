@@ -770,4 +770,17 @@ module.exports = {
     })
   },
   
+  //入力スプレッドシートの変更
+  changeTargetSS: (line_uid,target) => {
+    return new Promise (resolve=>{
+      const update_query = {
+        text: `UPDATE users SET target_ss=${target} WHERE line_uid='${line_uid}';`
+      }
+      connection.query(update_query)
+        .then(()=>{
+          resolve('update succeeded!');
+        })
+        .catch(e=>console.log(e));
+    });
+  }
 }
