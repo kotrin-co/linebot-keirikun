@@ -232,7 +232,7 @@ const handleMessageEvent = async (ev) => {
               return client.replyMessage(ev.replyToken,flexMessage);
             }
             else if(text === '日付からデータ確認！'){
-              const flexMessage = Flex.makeDateSelector('confirmation','','','');
+              const flexMessage = Flex.makeDateSelector('confirmation','','','',ev.source.userId);
               return client.replyMessage(ev.replyToken,flexMessage);
             }
             else if(text === '科目からデータ確認！'){
@@ -240,7 +240,7 @@ const handleMessageEvent = async (ev) => {
               return client.replyMessage(ev.replyToken,flexMessage);
             }
             else if(text === 'データ削除'){
-              const flexMessage = Flex.makeDateSelector('delete','','','');
+              const flexMessage = Flex.makeDateSelector('delete','','','',ev.source.userId);
               return client.replyMessage(ev.replyToken,flexMessage);
             }
             else{
@@ -306,7 +306,7 @@ const handlePostbackEvent = async (ev) => {
       const amount = parseInt(postbackData[1]);
       const selectedAccount = parseInt(postbackData[2]);
       const selectedTransaction = parseInt(postbackData[3]);
-      const flexMessage = Flex.makeDateSelector('input',amount,selectedAccount,selectedTransaction);
+      const flexMessage = Flex.makeDateSelector('input',amount,selectedAccount,selectedTransaction,ev.source.userId);
       return client.replyMessage(ev.replyToken,flexMessage);
     }
 

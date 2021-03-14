@@ -179,7 +179,10 @@ module.exports = {
     return flexMessage;
   },
 
-  makeDateSelector: (mode,amount,selectedAccount,selectedTransaction) => {
+  makeDateSelector: async (mode,amount,selectedAccount,selectedTransaction,line_uid) => {
+    const userInfo = await getUserDataByLineId(line_uid);
+    const year = getYear(userInfo.createdat) - userInfo.target_ss;
+    console.log('makedate year',year);
     let postbackData;
     if(mode === 'input'){
       postbackData = `date&${amount}&${selectedAccount}&${selectedTransaction}`;
