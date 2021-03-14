@@ -1,5 +1,5 @@
 //テスト用シフト（ここだけ変えれば良い）
-const testShift = -3;
+const testShift = -1;
 
 //年度計算
 const nowTimestamp = new Date().getTime(); 
