@@ -227,8 +227,8 @@ module.exports = {
                   "data": postbackData,
                   "mode": "date",
                   "min": `${year}-01-01`,
-                  "max": `${year}-12-31`,
-                  "initial": `${year}-${month}-${date}`
+                  "max": `${year}-12-31`
+                  // "initial": `${year}-${month}-${date}`
                 }
               }
             ]
