@@ -778,7 +778,7 @@ module.exports = {
                             //updateクエリ
                             const nowTime = new Date().getTime();
                             const update_query = {
-                                text:`UPDATE users SET (gmail,ssid,createdat,ssid1,ssid2,ssid3,ssid4) = ('${gmail}','${ssidArray[0]}',${nowTime},'${ssidArray[1]}','${ssidArray[2]}','${ssidArray[3]}','${ssidArray[4]}') WHERE line_uid='${line_uid}';`
+                                text:`UPDATE users SET (gmail,ssid,createdat,ssid1,ssid2,ssid3,ssid4,target_ss) = ('${gmail}','${ssidArray[0]}',${nowTime},'${ssidArray[1]}','${ssidArray[2]}','${ssidArray[3]}','${ssidArray[4]}',0) WHERE line_uid='${line_uid}';`
                             };
                             connection.query(update_query)
                               .then(()=>{
