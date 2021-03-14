@@ -62,12 +62,13 @@ const authorize = () => {
 }
 
 //仕訳帳の更新処理
-const updateJournal = (ssId) => {
+const updateJournal = (ssId,target_ss) => {
   return new Promise(resolve=>{
     const sheets = authorize();
 
     //各月日数配列の生成
-    const year = new Date().getFullYear();
+    // const year = new Date().getFullYear();
+    const year = CORRECTED_YEAR - target_ss;
     const daysEveryMonth = [];
     for(let i=0; i<12; i++){
       daysEveryMonth.push(new Date(year,i+1,0).getDate());
@@ -529,7 +530,7 @@ module.exports = {
             }
           }
           await sheets.spreadsheets.values.update(update_request);
-          await updateJournal(ssId);
+          await updateJournal(ssId,target_ss);
           resolve(newValue);
         })
         .catch(e=>console.log(e));
