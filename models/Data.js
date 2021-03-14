@@ -466,7 +466,7 @@ module.exports = {
           
           //列番号の計算
           //各月日数配列の生成(3/16を新年スタートとする)
-          let year = CORRECTED_YEAR;
+          let year = CORRECTED_YEAR -target_ss;
           // let year;
           // const thisMonth = new Date().getMonth()+1;
           // const today = new Date().getDate();
