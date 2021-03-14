@@ -605,7 +605,7 @@ module.exports = {
           
           //列番号の計算
           //各月日数配列の生成
-          const year = new Date().getFullYear();
+          let year = getYear(res.rows[0].createdat) -target_ss; //スプレッドシート作成時を基準とした年
           const daysEveryMonth = [];
           for(let i=0; i<12; i++){
             daysEveryMonth.push(new Date(year,i+1,0).getDate());
