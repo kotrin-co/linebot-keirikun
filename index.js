@@ -232,7 +232,7 @@ const handleMessageEvent = async (ev) => {
               return client.replyMessage(ev.replyToken,flexMessage);
             }
             else if(text === '日付からデータ確認！'){
-              const flexMessage = Flex.makeDateSelector('confirmation','','','',ev.source.userId);
+              const flexMessage = await Flex.makeDateSelector('confirmation','','','',ev.source.userId);
               return client.replyMessage(ev.replyToken,flexMessage);
             }
             else if(text === '科目からデータ確認！'){
@@ -240,7 +240,7 @@ const handleMessageEvent = async (ev) => {
               return client.replyMessage(ev.replyToken,flexMessage);
             }
             else if(text === 'データ削除'){
-              const flexMessage = Flex.makeDateSelector('delete','','','',ev.source.userId);
+              const flexMessage = await Flex.makeDateSelector('delete','','','',ev.source.userId);
               return client.replyMessage(ev.replyToken,flexMessage);
             }
             else{
