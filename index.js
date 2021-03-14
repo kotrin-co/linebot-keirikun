@@ -224,7 +224,7 @@ const handleMessageEvent = async (ev) => {
             }
 
             else if(text === '入力するスプレッドシートを切り替える'){
-              const flexMessage = Flex.sheetSelector(ev.source.userId);
+              const flexMessage = await Flex.sheetSelector(ev.source.userId);
               console.log('flexmessage',flexMessage);
               return client.replyMessage(ev.replyToken,flexMessage);
             }
