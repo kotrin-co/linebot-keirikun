@@ -531,7 +531,7 @@ module.exports = {
           }
           await sheets.spreadsheets.values.update(update_request);
           await updateJournal(ssId,target_ss);
-          resolve(newValue);
+          resolve([year-target_ss,newValue]);
         })
         .catch(e=>console.log(e));
     });
