@@ -1,5 +1,5 @@
 //テスト用シフト（ここだけ変えれば良い）
-const testShift = 0;//3*24*60*60*1000;
+const testShift = 3*24*60*60*1000;
 
 //年度計算
 const nowTimestamp = new Date().getTime() +testShift; //テスト用に３日シフト
