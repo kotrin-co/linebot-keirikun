@@ -5,7 +5,8 @@ const {
   NUMBER_OF_COLUMNS,
   BUTTON_COLOR,
   BUTTON_COLOR_D,
-  TRANSACTIONS
+  TRANSACTIONS,
+  CORRECTED_YEAR
 } = require('../params/params');
 
 const Data = require('./Data');
@@ -342,15 +343,16 @@ module.exports = {
     if(ssidArray[target]){
 
       //年度の計算
-      const nowTimestamp = new Date().getTime();
-      let year;
-      const thisMonth = new Date(nowTimestamp+9*60*60*1000).getMonth()+1;
-      const today = new Date(nowTimestamp+9*60*60*1000).getDate();
-      if(thisMonth<3 || (thisMonth === 3 && today<14)){
-        year = new Date(nowTimestamp+9*60*60*1000).getFullYear() - 1;
-      }else{
-        year = new Date(nowTimestamp+9*60*60*1000).getFullYear();
-      }
+      let year = CORRECTED_YEAR;
+      // const nowTimestamp = new Date().getTime();
+      // let year;
+      // const thisMonth = new Date(nowTimestamp+9*60*60*1000).getMonth()+1;
+      // const today = new Date(nowTimestamp+9*60*60*1000).getDate();
+      // if(thisMonth<3 || (thisMonth === 3 && today<14)){
+      //   year = new Date(nowTimestamp+9*60*60*1000).getFullYear() - 1;
+      // }else{
+      //   year = new Date(nowTimestamp+9*60*60*1000).getFullYear();
+      // }
 
       //ボタン要素の自動生成
       const bodyContents = [];

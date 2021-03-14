@@ -11,7 +11,8 @@ const {
   ADMIN,
   original_SSID_0,
   original_SSID_1,
-  original_SID
+  original_SID,
+  CORRECTED_YEAR
 } = require('../params/params');
 
 const connection = new Client({
@@ -259,14 +260,15 @@ const initialTreat = (ssID,line_uid) => {
       return new Promise(resolve=>{
         
         //閏年判定
-        let year;
-        const thisMonth = new Date().getMonth()+1;
-        const today = new Date().getDate();
-        if(thisMonth<3 || (thisMonth === 3 && today<16)){
-          year = new Date().getFullYear() - 1;
-        }else{
-          year = new Date().getFullYear();
-        }
+        let year = CORRECTED_YEAR;
+        // let year;
+        // const thisMonth = new Date().getMonth()+1;
+        // const today = new Date().getDate();
+        // if(thisMonth<3 || (thisMonth === 3 && today<16)){
+        //   year = new Date().getFullYear() - 1;
+        // }else{
+        //   year = new Date().getFullYear();
+        // }
 
         const original_SSID = year%4===0 ? original_SSID_1 : original_SSID_0;
 
@@ -463,14 +465,16 @@ module.exports = {
           
           //列番号の計算
           //各月日数配列の生成(3/16を新年スタートとする)
-          let year;
-          const thisMonth = new Date().getMonth()+1;
-          const today = new Date().getDate();
-          if(thisMonth<3 || (thisMonth === 3 && today<14)){
-            year = new Date().getFullYear() - 1;
-          }else{
-            year = new Date().getFullYear();
-          }
+          let year = CORRECTED_YEAR;
+          // let year;
+          // const thisMonth = new Date().getMonth()+1;
+          // const today = new Date().getDate();
+          // if(thisMonth<3 || (thisMonth === 3 && today<14)){
+          //   year = new Date().getFullYear() - 1;
+          // }else{
+          //   year = new Date().getFullYear();
+          // }
+
           const daysEveryMonth = [];
           for(let i=0; i<12; i++){
             daysEveryMonth.push(new Date(year,i+1,0).getDate());
@@ -717,15 +721,16 @@ module.exports = {
       const name = userName;
 
       //シートにつける年度計算
-      const nowTimestamp = new Date().getTime();
-      let year;
-      const thisMonth = new Date(nowTimestamp+9*60*60*1000).getMonth()+1;
-      const today = new Date(nowTimestamp+9*60*60*1000).getDate();
-      if(thisMonth<3 || (thisMonth === 3 && today<14)){
-        year = new Date(nowTimestamp+9*60*60*1000).getFullYear() - 1;
-      }else{
-        year = new Date(nowTimestamp+9*60*60*1000).getFullYear();
-      }
+      let year = CORRECTED_YEAR;
+      // const nowTimestamp = new Date().getTime();
+      // let year;
+      // const thisMonth = new Date(nowTimestamp+9*60*60*1000).getMonth()+1;
+      // const today = new Date(nowTimestamp+9*60*60*1000).getDate();
+      // if(thisMonth<3 || (thisMonth === 3 && today<14)){
+      //   year = new Date(nowTimestamp+9*60*60*1000).getFullYear() - 1;
+      // }else{
+      //   year = new Date(nowTimestamp+9*60*60*1000).getFullYear();
+      // }
 
       const request = {
         resource : {

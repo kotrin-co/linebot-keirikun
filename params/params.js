@@ -1,3 +1,14 @@
+//年度計算
+const nowTimestamp = new Date().getTime();
+let year;
+const thisMonth = new Date(nowTimestamp+9*60*60*1000).getMonth()+1;
+const today = new Date(nowTimestamp+9*60*60*1000).getDate();
+if(thisMonth<3 || (thisMonth === 3 && today<14)){
+  year = new Date(nowTimestamp+9*60*60*1000).getFullYear() - 1;
+}else{
+  year = new Date(nowTimestamp+9*60*60*1000).getFullYear();
+}
+
 module.exports = {
   ACCOUNTS: ['売上','仕入','交通費','会議費','接待交際費','通信費','衣装費','消耗品費','荷造運賃','車両費','研修費','新聞図書費','外注工賃','広告宣伝費','諸会費','雑費','利子割引料','給料','雑給','従業員報酬','ｽﾀｯﾌ源泉所得税','家賃','水道光熱費','支払手数料','税理士・弁護士報酬','保険料','年金','雑収入','備品'],
   DEBITS:[
@@ -71,5 +82,6 @@ module.exports = {
   original_SSID_1: '13Y2AZYNHWnQNKdSzK5Vxna_YPdf4YnT61imptdiM_MU',
   original_SID: [0,1786699057,251943700,1686142823,661995045,1312117404,550715539],
   FREE_TRIAL_PERIOD: 0.007, //無料試用期間→日数単位で書く
-  ADMIN: 'kentaro523@gmail.com'
+  ADMIN: 'kentaro523@gmail.com',
+  CORRECTED_YEAR: year
 }

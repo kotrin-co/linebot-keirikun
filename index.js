@@ -14,10 +14,9 @@ const Flex = require('./models/Flex');
 
 const {
   ACCOUNTS,
-  original_SSID,
-  original_SID,
   TRANSACTIONS,
-  FREE_TRIAL_PERIOD
+  FREE_TRIAL_PERIOD,
+  CORRECTED_YEAR
 } = require('./params/params');
 
 //stripeの設定
@@ -188,15 +187,16 @@ const handleMessageEvent = async (ev) => {
         if(ssidArray[0]){
           
           //シート作成日時を比較する
-          let year;
-          const correctedNowTime = new Date().getTime() + 9*60*60*1000;
-          const thisMonth = new Date(correctedNowTime).getMonth()+1;
-          const today = new Date(correctedNowTime).getDate();
-          if(thisMonth<3 || (thisMonth === 3 && today<14)){
-            year = new Date(correctedNowTime).getFullYear() - 1;
-          }else{
-            year = new Date(correctedNowTime).getFullYear();
-          }
+          let year = CORRECTED_YEAR;
+          // let year;
+          // const correctedNowTime = new Date().getTime() + 9*60*60*1000;
+          // const thisMonth = new Date(correctedNowTime).getMonth()+1;
+          // const today = new Date(correctedNowTime).getDate();
+          // if(thisMonth<3 || (thisMonth === 3 && today<14)){
+          //   year = new Date(correctedNowTime).getFullYear() - 1;
+          // }else{
+          //   year = new Date(correctedNowTime).getFullYear();
+          // }
 
           //シート更新可能日
           const startPoint = new Date(year,2,14).getTime() -9*60*60*1000;
@@ -224,6 +224,7 @@ const handleMessageEvent = async (ev) => {
             }
 
             else if(text === '入力するスプレッドシートを切り替える'){
+              console.log('corrected year',CORRECTED_YEAR);
               const flexMessage = await Flex.sheetSelector(ev.source.userId);
               return client.replyMessage(ev.replyToken,flexMessage);
             }
@@ -435,15 +436,16 @@ const handlePostbackEvent = async (ev) => {
           console.log(res);
 
           //シート年度
-          let year;
-          const correctedNowTime = new Date().getTime() + 9*60*60*1000;
-          const thisMonth = new Date(correctedNowTime).getMonth()+1;
-          const today = new Date(correctedNowTime).getDate();
-          if(thisMonth<3 || (thisMonth === 3 && today<14)){
-            year = new Date(correctedNowTime).getFullYear() - 1;
-          }else{
-            year = new Date(correctedNowTime).getFullYear();
-          }
+          let year = CORRECTED_YEAR;
+          // let year;
+          // const correctedNowTime = new Date().getTime() + 9*60*60*1000;
+          // const thisMonth = new Date(correctedNowTime).getMonth()+1;
+          // const today = new Date(correctedNowTime).getDate();
+          // if(thisMonth<3 || (thisMonth === 3 && today<14)){
+          //   year = new Date(correctedNowTime).getFullYear() - 1;
+          // }else{
+          //   year = new Date(correctedNowTime).getFullYear();
+          // }
 
           return client.replyMessage(ev.replyToken,{
             type: 'text',
