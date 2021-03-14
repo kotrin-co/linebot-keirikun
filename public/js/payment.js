@@ -1,7 +1,7 @@
 const divPage = document.getElementById('payment-page');
 const debug = document.getElementById('debug');
 const FREE_TRIAL_PERIOD = 0.007;
-const TEST_SHIFT = 3*24*60*60*1000;
+const testShift = -2;
 
 window.onload = () => {
   const myLiffId = '1655219547-eobVGLdB';
@@ -268,17 +268,17 @@ const createMemberPage = (userInfo) => {
     updateButton.setAttribute('class','btn btn-primary');
     
     //シート作成日時を比較する
-    const ts = new Date().getTime() + TEST_SHIFT;
+    const ts = new Date().getTime();
     let year = new Date(ts).getFullYear();
     const thisMonth = new Date(ts).getMonth()+1;
     const today = new Date(ts).getDate();
-    if(thisMonth<3 || (thisMonth === 3 && today<16)){
+    if(thisMonth<3 || (thisMonth === 3 && today<(16+testShift))){
       year--;
     }
 
     //シート更新可能日
-    const startPoint = new Date(year,2,16).getTime();
-    const endPoint = new Date(year+1,2,16).getTime();
+    const startPoint = new Date(year,2,(16+testShift)).getTime();
+    const endPoint = new Date(year+1,2,(16+testShift)).getTime();
 
     const createdAt = parseInt(userInfo.createdat);
     

@@ -263,14 +263,6 @@ const initialTreat = (ssID,line_uid) => {
         
         //閏年判定
         let year = CORRECTED_YEAR;
-        // let year;
-        // const thisMonth = new Date().getMonth()+1;
-        // const today = new Date().getDate();
-        // if(thisMonth<3 || (thisMonth === 3 && today<16)){
-        //   year = new Date().getFullYear() - 1;
-        // }else{
-        //   year = new Date().getFullYear();
-        // }
 
         const original_SSID = year%4===0 ? original_SSID_1 : original_SSID_0;
 
@@ -360,7 +352,7 @@ const getYear = (timestamp) => {
   const month = new Date(ts).getMonth()+1;
   const date = new Date(ts).getDate();
 
-  if(month<3 || (month===3 && date<16)){
+  if(month<3 || (month===3 && date<(16+TEST_SHIFT))){
     year--;
   }
   return year;

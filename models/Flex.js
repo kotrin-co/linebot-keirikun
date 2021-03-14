@@ -13,12 +13,12 @@ const {
 const Data = require('./Data');
 
 const getYear = (timestamp) => {
-  const ts = parseInt(timestamp) + 9*60*60*1000; //+ TEST_SHIFT;
+  const ts = parseInt(timestamp) + 9*60*60*1000;
   let year = new Date(ts).getFullYear();
   const month = new Date(ts).getMonth()+1;
   const date = new Date(ts).getDate();
 
-  if(month<3 || (month===3 && date<16)){
+  if(month<3 || (month===3 && date<16+(TEST_SHIFT))){
     year--;
   }
   return year;
