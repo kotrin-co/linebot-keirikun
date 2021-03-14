@@ -186,6 +186,9 @@ module.exports = {
       const nowTime = new Date().getTime() + 9*60*60*1000;
       const month = ('0'+(new Date(nowTime).getMonth()+1)).slice(-2);
       const date = ('0'+new Date(nowTime).getDate()).slice(-2);
+      const minDate = `${year}-01-01`;
+      const maxDate = year === CORRECTED_YEAR ? `${year}-${month}-${date}` : `${year}-12-31`;
+      const initialDate = `${year}-${month}-${date}`;
       console.log('makedate year',year,month,date);
 
       let postbackData;
@@ -226,9 +229,9 @@ module.exports = {
                   "label": "日付を選択する",
                   "data": postbackData,
                   "mode": "date",
-                  "min": `${year}-01-01`,
-                  "max": `${year}-12-31`,
-                  "initial": `${year}-${month}-${date}`
+                  "min": minDate,
+                  "max": maxDate,
+                  "initial": initialDate
                 }
               }
             ]
