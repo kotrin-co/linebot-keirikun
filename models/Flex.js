@@ -187,7 +187,7 @@ module.exports = {
       const month = ('0'+(new Date(nowTime).getMonth()+1)).slice(-2);
       const date = ('0'+new Date(nowTime).getDate()).slice(-2);
       const minDate = `${year}-01-01`;
-      const maxDate = year === CORRECTED_YEAR ? `${year}-${month}-${date}` : `${year}-12-31`;
+      const maxDate = `${year}-12-31`;
       const initialDate = `${year}-${month}-${date}`;
       console.log('makedate year',year,month,date);
 
