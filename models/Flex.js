@@ -184,9 +184,9 @@ module.exports = {
       const userInfo = await Data.getUserDataByLineId(line_uid);
       const year = getYear(userInfo.createdat) - userInfo.target_ss;
       const nowTime = new Date().getTime() + 9*60*60*1000;
-      const month = ('0'+new Date(nowTime).getMonth()+1).slice(-2);
+      const month = ('0'+(new Date(nowTime).getMonth()+1)).slice(-2);
       const date = ('0'+new Date(nowTime).getDate()).slice(-2);
-      console.log('makedate year',year);
+      console.log('makedate year',year,month,date);
 
       let postbackData;
       if(mode === 'input'){
