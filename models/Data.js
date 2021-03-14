@@ -352,6 +352,19 @@ const initialTreat = (ssID,line_uid) => {
   });
 }
 
+//スプレッドシートが作成された年度取得用
+const getYear = (timestamp) => {
+  const ts = parseInt(timestamp) + 9*60*60*1000 + TEST_SHIFT;
+  let year = new Date(ts).getFullYear();
+  const month = new Date(ts).getMonth()+1;
+  const date = new Date(ts).getDate();
+
+  if(month<3 || (month===3 && date<16)){
+    year--;
+  }
+  return year;
+}
+
 module.exports = {
 
   //LINE IDによるユーザーデータの取得
@@ -465,16 +478,8 @@ module.exports = {
           const columns = createAlphabetsArray();
           
           //列番号の計算
-          //各月日数配列の生成(3/16を新年スタートとする)
-          let year = CORRECTED_YEAR -target_ss;
-          // let year;
-          // const thisMonth = new Date().getMonth()+1;
-          // const today = new Date().getDate();
-          // if(thisMonth<3 || (thisMonth === 3 && today<14)){
-          //   year = new Date().getFullYear() - 1;
-          // }else{
-          //   year = new Date().getFullYear();
-          // }
+          //各月日数配列の生成(スプレッドシートが作成された年度を起点とする)
+          let year = getYear(res.rows[0].createdat) -target_ss;
 
           const daysEveryMonth = [];
           for(let i=0; i<12; i++){
@@ -563,8 +568,34 @@ module.exports = {
 
       connection.query(select_query)
         .then(async(res)=>{
-          //スプレッドシートidとシートidの抜き出し
-          const ssId = res.rows[0].ssid;
+
+          //採用するスプレッドシートID
+          let ssId = '';
+          //スプレッドシートidの決定
+          const target_ss = res.rows[0].target_ss;
+          switch(target_ss){
+            case 0:
+              ssId = res.rows[0].ssid;
+              break;
+
+            case 1:
+              ssId = res.rows[0].ssid1;
+              break;
+
+            case 2:
+              ssId = res.rows[0].ssid2;
+              break;
+            
+            case 3:
+              ssId = res.rows[0].ssid3;
+              break;
+            
+            case 4:
+              ssId = res.rows[0].ssid4;
+              break;
+          }
+
+          console.log('ssid',ssId);
 
           //auth
           const sheets = authorize();
