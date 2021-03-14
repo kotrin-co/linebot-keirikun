@@ -390,7 +390,7 @@ module.exports = {
               },
               {
                 type: "text",
-                text: "緑色=今の入力年度",
+                text: "※緑色=今の選択シート",
                 wrap: true,
                 size: "md"
               }
