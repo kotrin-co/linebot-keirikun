@@ -184,8 +184,8 @@ module.exports = {
       const userInfo = await Data.getUserDataByLineId(line_uid);
       const year = getYear(userInfo.createdat) - userInfo.target_ss;
       const nowTime = new Date().getTime() + 9*60*60*1000;
-      const month = new Date(nowTime).getMonth()+1;
-      const date = new Date(nowTime).getDate();
+      const month = ('0'+new Date(nowTime).getMonth()+1).slice(-2);
+      const date = ('0'+new Date(nowTime).getDate()).slice(-2);
       console.log('makedate year',year);
 
       let postbackData;
@@ -227,8 +227,8 @@ module.exports = {
                   "data": postbackData,
                   "mode": "date",
                   "min": `${year}-01-01`,
-                  "max": `${year}-12-31`
-                  // "initial": `${year}-${month}-${date}`
+                  "max": `${year}-12-31`,
+                  "initial": `${year}-${month}-${date}`
                 }
               }
             ]
