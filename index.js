@@ -191,15 +191,6 @@ const handleMessageEvent = async (ev) => {
           
           //シート作成日時を比較する
           let year = CORRECTED_YEAR;
-          // let year;
-          // const correctedNowTime = new Date().getTime() + 9*60*60*1000;
-          // const thisMonth = new Date(correctedNowTime).getMonth()+1;
-          // const today = new Date(correctedNowTime).getDate();
-          // if(thisMonth<3 || (thisMonth === 3 && today<14)){
-          //   year = new Date(correctedNowTime).getFullYear() - 1;
-          // }else{
-          //   year = new Date(correctedNowTime).getFullYear();
-          // }
 
           //シート更新可能日
           const startPoint = START_TS;

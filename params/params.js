@@ -1,5 +1,8 @@
+//テスト用シフト（ここだけ変えれば良い）
+const testShift = 0;//3*24*60*60*1000;
+
 //年度計算
-const nowTimestamp = new Date().getTime() +3*24*60*60*1000; //テスト用に３日シフト
+const nowTimestamp = new Date().getTime() +testShift; //テスト用に３日シフト
 let year;
 const thisMonth = new Date(nowTimestamp+9*60*60*1000).getMonth()+1;
 const today = new Date(nowTimestamp+9*60*60*1000).getDate();
@@ -90,5 +93,5 @@ module.exports = {
   CORRECTED_YEAR: year,
   START_TS: startPoint,
   END_TS: endPoint,
-  TEST_SHIFT: 0 //3*24*60*60*1000 //テスト用の日数シフト用パラメータ
+  TEST_SHIFT: testShift //テスト用の日数シフト用パラメータ
 }
