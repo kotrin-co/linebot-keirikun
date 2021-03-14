@@ -330,11 +330,11 @@ module.exports = {
     const ssidArray = [];
 
     //ssが存在したらidをssidArrayへ格納する
-    if(userInfo.ssid) ssidArray.push(userInfo.ssid);
-    if(userInfo.ssid1) ssidArray.push(userInfo.ssid1);
-    if(userInfo.ssid2) ssidArray.push(userInfo.ssid2);
-    if(userInfo.ssid3) ssidArray.push(userInfo.ssid3);
-    if(userInfo.ssid4) ssidArray.push(userInfo.ssid4);
+    if(userInfo.ssid　&& userInfo.ssid !== 'null') ssidArray.push(userInfo.ssid);
+    if(userInfo.ssid1　&& userInfo.ssid1 !== 'null') ssidArray.push(userInfo.ssid1);
+    if(userInfo.ssid2　&& userInfo.ssid2 !== 'null') ssidArray.push(userInfo.ssid2);
+    if(userInfo.ssid3　&& userInfo.ssid3 !== 'null') ssidArray.push(userInfo.ssid3);
+    if(userInfo.ssid4　&& userInfo.ssid4 !== 'null') ssidArray.push(userInfo.ssid4);
     console.log('ssidArray',ssidArray);
 
     //現状の入力対象のスプレッドシート
@@ -355,43 +355,43 @@ module.exports = {
       //ボタン要素の自動生成
       const bodyContents = [];
       ssidArray.forEach((value,index) => {
-        const buttonColor = index === target ? 'primary' : 'secondary';
+        const buttonColor = index == target ? 'primary' : 'secondary';
         const buttonObject = {
-          "type": "button",
-          "action": {
-            "type": "postback",
-            "label": `${year-index}年度`,
-            "data": `change_ss&${index}`
+          type: "button",
+          action: {
+            type: "postback",
+            label: `${year-index}年度`,
+            data: `change_ss&${index}`
           },
-          "style": buttonColor,
-          "margin": "md"
+          style: buttonColor,
+          margin: "md"
         }
         bodyContents.push(buttonObject);
       });
 
       //flexMessageの生成
       const flexMessage = {
-        "type":"flex",
-        "altText":"入力スプレッドシート切替",
-        "contents":
+        type:"flex",
+        altText:"入力スプレッドシート切替",
+        contents:
         {
-          "type": "bubble",
-          "header": {
-            "type": "box",
-            "layout": "vertical",
-            "contents": [
+          type: "bubble",
+          header: {
+            type: "box",
+            layout: "vertical",
+            contents: [
               {
-                "type": "text",
-                "text": "入力したいシートの年度をお選びください",
-                "wrap": true,
-                "size": "lg"
+                type: "text",
+                text: "入力したいシートの年度をお選びください",
+                wrap: true,
+                size: "lg"
               }
             ]
           },
-          "body": {
-            "type": "box",
-            "layout": "vertical",
-            "contents": bodyContents
+          body: {
+            type: "box",
+            layout: "vertical",
+            contents: bodyContents
           }
         }
       }
