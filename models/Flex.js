@@ -8,6 +8,8 @@ const {
   TRANSACTIONS
 } = require('../params/params');
 
+const Data = require('./Data');
+
 module.exports = {
 
   makeAccountSelector: (number) => {
@@ -321,6 +323,87 @@ module.exports = {
 
     return mainMessage;
   },
+
+  sheetSelector: async (line_uid) => {
+    const userInfo = await Data.getUserDataByLineId(line_uid);
+    const ssidArray = [];
+
+    //ssが存在したらidをssidArrayへ格納する
+    if(userInfo.ssid) ssidArray.push(userInfo.ssid);
+    if(userInfo.ssid1) ssidArray.push(userInfo.ssid1);
+    if(userInfo.ssid2) ssidArray.push(userInfo.ssid2);
+    if(userInfo.ssid3) ssidArray.push(userInfo.ssid3);
+    if(userInfo.ssid4) ssidArray.push(userInfo.ssid4);
+    console.log('ssidArray',ssidArray);
+
+    //現状の入力対象のスプレッドシート
+    const target = userInfo.target_ss;
+    if(ssidArray[target]){
+
+      //年度の計算
+      const nowTimestamp = new Date().getTime();
+      let year;
+      const thisMonth = new Date(nowTimestamp+9*60*60*1000).getMonth()+1;
+      const today = new Date(nowTimestamp+9*60*60*1000).getDate();
+      if(thisMonth<3 || (thisMonth === 3 && today<14)){
+        year = new Date(nowTimestamp+9*60*60*1000).getFullYear() - 1;
+      }else{
+        year = new Date(nowTimestamp+9*60*60*1000).getFullYear();
+      }
+
+      //ボタン要素の自動生成
+      const bodyContents = [];
+      ssidArray.forEach((value,index) => {
+        const buttonColor = index === target ? 'primary' : 'secondary';
+        const buttonObject = {
+          "type": "button",
+          "action": {
+            "type": "postback",
+            "label": `${year-index}年度`,
+            "data": `change_ss&${index}`
+          },
+          "style": buttonColor,
+          "margin": "md"
+        }
+        bodyContents.push(buttonObject);
+      });
+
+      //flexMessageの生成
+      const flexMessage = {
+        "type":"flex",
+        "altText":"入力スプレッドシート切替",
+        "contents":
+        {
+          "type": "bubble",
+          "header": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "text",
+                "text": "入力したいシートの年度をお選びください",
+                "wrap": true,
+                "size": "lg"
+              }
+            ]
+          },
+          "body": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": bodyContents
+          }
+        }
+      }
+
+      return flexMessage;
+
+    }else{
+      return {
+        type: 'text',
+        text: '対象のスプレッドシートが存在していません。'
+      }
+    }
+  }
 
   // makeAccountChoiceForConfirmation: () => {
   //   const flexMessage = {

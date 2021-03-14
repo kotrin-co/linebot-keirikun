@@ -351,23 +351,25 @@ const initialTreat = (ssID,line_uid) => {
 
 module.exports = {
 
-  //ユーザーデータの取得
-  // getUserData: (line_uid) => {
-  //   return new Promise((resolve,reject) => {
-  //     const pickup_query = {
-  //       text:`SELECT * FROM users WHERE line_uid='${line_uid}';`
-  //     }
-  //     connection.query(pickup_query)
-  //       .then(user=>{
-  //         if(user.rows.length){
-  //           resolve(user.rows[0]);
-  //         }else{
-  //           resolve('');
-  //         }
-  //       })
-  //       .catch(e=>console.log(e));
-  //   })
-  // },
+  //LINE IDによるユーザーデータの取得
+  getUserDataByLineId: (line_uid) => {
+    return new Promise((resolve,reject) => {
+      const pickup_query = {
+        text:`SELECT * FROM users WHERE line_uid='${line_uid}';`
+      }
+      connection.query(pickup_query)
+        .then(user=>{
+          if(user.rows.length){
+            resolve(user.rows[0]);
+          }else{
+            resolve('');
+          }
+        })
+        .catch(e=>console.log(e));
+    })
+  },
+
+  //idTokenによるユーザーデータの取得
   getUserData: (idToken) => {
     return new Promise(resolve=>{
       const bodyData = `id_token=${idToken}&client_id=${process.env.LOGIN_CHANNEL_ID}`;
