@@ -21,6 +21,7 @@ const getYear = (timestamp) => {
   if(month<3 || (month===3 && date<(16+TEST_SHIFT))){
     year--;
   }
+  console.log('getYear',ts,year,month,date);
   return year;
 }
 
