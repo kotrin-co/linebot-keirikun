@@ -13,12 +13,12 @@ const {
 const Data = require('./Data');
 
 const getYear = (timestamp) => {
-  const ts = parseInt(timestamp) + 9*60*60*1000;
+  const ts = parseInt(timestamp);
   let year = new Date(ts).getFullYear();
   const month = new Date(ts).getMonth()+1;
   const date = new Date(ts).getDate();
 
-  if(month<3 || (month===3 && date<16+(TEST_SHIFT))){
+  if(month<3 || (month===3 && date<(16+TEST_SHIFT))){
     year--;
   }
   return year;
@@ -183,9 +183,8 @@ module.exports = {
     return new Promise(async(resolve) => {
       const userInfo = await Data.getUserDataByLineId(line_uid);
       const year = getYear(userInfo.createdat) - userInfo.target_ss;
-      const nowTime = new Date().getTime() + 9*60*60*1000;
-      const month = ('0'+(new Date(nowTime).getMonth()+1)).slice(-2);
-      const date = ('0'+new Date(nowTime).getDate()).slice(-2);
+      const month = ('0'+(new Date().getMonth()+1)).slice(-2);
+      const date = ('0'+(new Date().getDate())).slice(-2);
       const minDate = `${year}-01-01`;
       const maxDate = `${year}-12-31`;
       const initialDate = `${year}-${month}-${date}`;

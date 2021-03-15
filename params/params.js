@@ -2,15 +2,10 @@
 const testShift = -1;
 
 //年度計算
-const nowTimestamp = new Date().getTime(); 
-let year;
-const thisMonth = new Date(nowTimestamp+9*60*60*1000).getMonth()+1;
-const today = new Date(nowTimestamp+9*60*60*1000).getDate();
-if(thisMonth<3 || (thisMonth === 3 && today< (16 + testShift))){
-  year = new Date(nowTimestamp+9*60*60*1000).getFullYear() - 1;
-}else{
-  year = new Date(nowTimestamp+9*60*60*1000).getFullYear();
-}
+let year = new Date().getFullYear();
+const thisMonth = new Date().getMonth()+1;
+const today = new Date().getDate();
+if(thisMonth<3 || (thisMonth === 3 && today< (16 + testShift))) year--;
 
 //年度スタートおよび終了のタイムスタンプ計算
 const startPoint = new Date(year,2,(16+testShift)).getTime();
