@@ -347,7 +347,7 @@ const initialTreat = (ssID,line_uid) => {
 
 //スプレッドシートが作成された年度取得用
 const getYear = (timestamp) => {
-  const ts = parseInt(timestamp) + TEST_SHIFT;
+  const ts = parseInt(timestamp);
   let year = new Date(ts).getFullYear();
   const month = new Date(ts).getMonth()+1;
   const date = new Date(ts).getDate();
