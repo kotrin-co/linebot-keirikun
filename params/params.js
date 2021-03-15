@@ -13,8 +13,8 @@ if(thisMonth<3 || (thisMonth === 3 && today< (16 + testShift))){
 }
 
 //年度スタートおよび終了のタイムスタンプ計算
-const startPoint = new Date(year,2,(16+testShift)).getTime() -9*60*60*1000;
-const endPoint = new Date(year+1,2,(16+testShift)).getTime() -9*60*60*1000;
+const startPoint = new Date(year,2,(16+testShift)).getTime();
+const endPoint = new Date(year+1,2,(16+testShift)).getTime();
 
 module.exports = {
   ACCOUNTS: ['売上','仕入','交通費','会議費','接待交際費','通信費','衣装費','消耗品費','荷造運賃','車両費','研修費','新聞図書費','外注工賃','広告宣伝費','諸会費','雑費','利子割引料','給料','雑給','従業員報酬','ｽﾀｯﾌ源泉所得税','家賃','水道光熱費','支払手数料','税理士・弁護士報酬','保険料','年金','雑収入','備品'],

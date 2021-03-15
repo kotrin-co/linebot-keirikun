@@ -236,17 +236,17 @@ const handleMessageEvent = async (ev) => {
 
             else if(text === 'テスト'){
               //テスト用シフト（ここだけ変えれば良い）
-              const testShift = -1;
+              const testShift = 0;
 
               //年度計算
               const nowTimestamp = new Date().getTime(); 
               let year;
-              const thisMonth = new Date(nowTimestamp+9*60*60*1000).getMonth()+1;
-              const today = new Date(nowTimestamp+9*60*60*1000).getDate();
+              const thisMonth = new Date(nowTimestamp+4*60*60*1000).getMonth()+1;
+              const today = new Date(nowTimestamp+4*60*60*1000).getDate();
               if(thisMonth<3 || (thisMonth === 3 && today< (16 + testShift))){
-                year = new Date(nowTimestamp+9*60*60*1000).getFullYear() - 1;
+                year = new Date(nowTimestamp+4*60*60*1000).getFullYear() - 1;
               }else{
-                year = new Date(nowTimestamp+9*60*60*1000).getFullYear();
+                year = new Date(nowTimestamp+4*60*60*1000).getFullYear();
               }
               console.log('test',nowTimestamp,year,thisMonth,today,START_TS,END_TS);
             }
