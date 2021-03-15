@@ -162,6 +162,8 @@ const delete_user = (ev) => {
 
 const handleMessageEvent = async (ev) => {
 
+  console.log('test',CORRECTED_YEAR,START_TS,END_TS);
+
   //課金チェック
   const available = await availableCheck(ev);
 
