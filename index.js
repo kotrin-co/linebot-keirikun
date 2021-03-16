@@ -160,14 +160,13 @@ const delete_user = (ev) => {
 
 const handleMessageEvent = async (ev) => {
 
-  console.log('test',CORRECTED_YEAR,START_TS,END_TS);
-
+  console.log('test',TS);
+  
   //課金チェック
   const available = await availableCheck(ev);
 
   if(available){
     const text = (ev.message.type === 'text') ? ev.message.text : '';
-    const profile = await client.getProfile(ev.source.userId);
 
     const select_query = {
         text:'SELECT * FROM users WHERE line_uid=$1;',
@@ -187,9 +186,6 @@ const handleMessageEvent = async (ev) => {
         }
         console.log('ssidArray:',ssidArray);
         if(ssidArray[0]){
-          
-          //シート作成日時を比較する
-          let year = CORRECTED_YEAR;
 
           //シート更新可能日
           const startPoint = START_TS;
