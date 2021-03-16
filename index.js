@@ -159,8 +159,6 @@ const delete_user = (ev) => {
 
 const handleMessageEvent = async (ev) => {
 
-  console.log('test',TS);
-
   //課金チェック
   const available = await availableCheck(ev);
 
@@ -227,9 +225,6 @@ const handleMessageEvent = async (ev) => {
             else if(text === 'データ削除'){
               const flexMessage = await Flex.makeDateSelector('delete','','','',ev.source.userId);
               return client.replyMessage(ev.replyToken,flexMessage);
-            }
-            else if(text === 'テスト'){
-              console.log('test',TS);
             }
             else{
               return client.replyMessage(ev.replyToken,{
