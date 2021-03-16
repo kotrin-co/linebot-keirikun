@@ -10,13 +10,12 @@ const apiRouter = require('./routers/api');
 const settingsRouter = require('./routers/settings');
 const Data = require('./models/Data');
 const Flex = require('./models/Flex');
-// const { copy } = require('./routers/index');
+const Time = require('./params/time');
 
 const {
   ACCOUNTS,
   TRANSACTIONS,
-  FREE_TRIAL_PERIOD,
-  TS
+  FREE_TRIAL_PERIOD
 } = require('./params/params');
 
 //stripeの設定
@@ -161,7 +160,7 @@ const delete_user = (ev) => {
 const handleMessageEvent = async (ev) => {
 
   console.log('test',TS);
-  
+
   //課金チェック
   const available = await availableCheck(ev);
 
@@ -188,8 +187,8 @@ const handleMessageEvent = async (ev) => {
         if(ssidArray[0]){
 
           //シート更新可能日
-          const startPoint = START_TS;
-          const endPoint = END_TS;
+          const startPoint = Time.getStartPoint();
+          const endPoint = Time.getEndPoint();
 
           const createdAt = parseInt(res.rows[0].createdat);
 
@@ -208,7 +207,7 @@ const handleMessageEvent = async (ev) => {
             }
 
             else if(text === '入力するスプレッドシートを切り替える'){
-              console.log('corrected year',CORRECTED_YEAR);
+              console.log('year',Time.getYearParam());
               const flexMessage = await Flex.sheetSelector(ev.source.userId);
               return client.replyMessage(ev.replyToken,flexMessage);
             }
@@ -424,7 +423,7 @@ const handlePostbackEvent = async (ev) => {
           console.log(res);
 
           //シート年度
-          let year = CORRECTED_YEAR;
+          const year = Time.getYearParam();
 
           return client.replyMessage(ev.replyToken,{
             type: 'text',

@@ -10,6 +10,8 @@ const {
 
 const Data = require('./Data');
 
+const Time = require('../params/time');
+
 const getYear = (timestamp) => {
   const ts = parseInt(timestamp);
   let year = new Date(ts).getFullYear();

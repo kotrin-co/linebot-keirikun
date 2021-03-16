@@ -2,6 +2,7 @@ const { Client } = require('pg');
 const { google } = require('googleapis');
 const privatekey = require('../client_secret.json');
 const fetch = require('node-fetch');
+const Time = require('../params/time');
 
 const {
   ACCOUNTS,
@@ -66,8 +67,7 @@ const updateJournal = (ssId,target_ss) => {
     const sheets = authorize();
 
     //各月日数配列の生成
-    // const year = new Date().getFullYear();
-    const year = CORRECTED_YEAR - target_ss;
+    const year = Time.getYearParam() - target_ss;
     const daysEveryMonth = [];
     for(let i=0; i<12; i++){
       daysEveryMonth.push(new Date(year,i+1,0).getDate());
@@ -260,7 +260,7 @@ const initialTreat = (ssID,line_uid) => {
       return new Promise(resolve=>{
         
         //閏年判定
-        let year = CORRECTED_YEAR;
+        const year = Time.getYearParam();
 
         const original_SSID = year%4===0 ? original_SSID_1 : original_SSID_0;
 
@@ -768,7 +768,7 @@ module.exports = {
       const name = userName;
 
       //シートにつける年度計算
-      let year = CORRECTED_YEAR;
+      let year = Time.getYearParam();
 
       const request = {
         resource : {

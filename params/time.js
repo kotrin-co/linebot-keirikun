@@ -1,8 +1,9 @@
+//テスト用
+const testShift = 0;
+
 module.exports = {
 
   getYearParam: () => {
-    //テスト用シフト（ここだけ変えれば良い）
-    const testShift = 0;
 
     //年度計算
     let year = new Date().getFullYear();
@@ -13,16 +14,9 @@ module.exports = {
     }
 
     return year;
-
-    //年度スタートおよび終了のタイムスタンプ計算
-    
-    
-    console.log('params',year,thisMonth,today,startPoint,endPoint);
   },
 
   getStartPoint: () => {
-    //テスト用シフト（ここだけ変えれば良い）
-    const testShift = 0;
 
     //年度計算
     let year = new Date().getFullYear();
@@ -35,8 +29,6 @@ module.exports = {
   },
 
   getEndPoint: () => {
-    //テスト用シフト（ここだけ変えれば良い）
-    const testShift = 0;
 
     //年度計算
     let year = new Date().getFullYear();
@@ -45,6 +37,6 @@ module.exports = {
     if(thisMonth<3 || (thisMonth === 3 && today< (16 + testShift))){
       year--;
     }
-    return endPoint = new Date(year+1,2,(16+testShift)).getTime();
+    return new Date(year+1,2,(16+testShift)).getTime();
   }
 }
