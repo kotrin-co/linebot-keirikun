@@ -477,6 +477,9 @@ module.exports = {
           for(let i=0; i<12; i++){
             daysEveryMonth.push(new Date(year,i+1,0).getDate());
           }
+
+          console.log('inputss year days',year,daysEveryMonth);
+          
           const m = parseInt(selectedMonth);
           const d = parseInt(selectedDay);
 
@@ -528,7 +531,7 @@ module.exports = {
           }
           await sheets.spreadsheets.values.update(update_request);
           await updateJournal(ssId,target_ss);
-          resolve([year-target_ss,newValue]);
+          resolve([year,newValue]);
         })
         .catch(e=>console.log(e));
     });
