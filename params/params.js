@@ -74,5 +74,5 @@ module.exports = {
   original_SID: [0,1786699057,251943700,1686142823,661995045,1312117404,550715539],
   FREE_TRIAL_PERIOD: 0.007, //無料試用期間→日数単位で書く
   ADMIN: 'kentaro523@gmail.com',
-  TEST_SHIFT: 0
+  TEST_SHIFT: 1
 }
