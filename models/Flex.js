@@ -5,7 +5,8 @@ const {
   NUMBER_OF_COLUMNS,
   BUTTON_COLOR,
   BUTTON_COLOR_D,
-  TRANSACTIONS
+  TRANSACTIONS,
+  TEST_SHIFT
 } = require('../params/params');
 
 const Data = require('./Data');

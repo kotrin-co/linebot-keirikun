@@ -12,7 +12,8 @@ const {
   ADMIN,
   original_SSID_0,
   original_SSID_1,
-  original_SID
+  original_SID,
+  TEST_SHIFT
 } = require('../params/params');
 
 const connection = new Client({

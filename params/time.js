@@ -1,5 +1,7 @@
-//テスト用
-const testShift = 0;
+//テスト用パラメータ
+const {
+  TEST_SHIFT
+} = require('./params');
 
 module.exports = {
 
@@ -9,7 +11,7 @@ module.exports = {
     let year = new Date().getFullYear();
     const thisMonth = new Date().getMonth()+1;
     const today = new Date().getDate();
-    if(thisMonth<3 || (thisMonth === 3 && today< (16 + testShift))){
+    if(thisMonth<3 || (thisMonth === 3 && today< (16 + TEST_SHIFT))){
       year--;
     }
 
@@ -22,10 +24,10 @@ module.exports = {
     let year = new Date().getFullYear();
     const thisMonth = new Date().getMonth()+1;
     const today = new Date().getDate();
-    if(thisMonth<3 || (thisMonth === 3 && today< (16 + testShift))){
+    if(thisMonth<3 || (thisMonth === 3 && today< (16 + TEST_SHIFT))){
       year--;
     }
-    return new Date(year,2,(16+testShift)).getTime();
+    return new Date(year,2,(16+TEST_SHIFTt)).getTime();
   },
 
   getEndPoint: () => {
@@ -34,9 +36,9 @@ module.exports = {
     let year = new Date().getFullYear();
     const thisMonth = new Date().getMonth()+1;
     const today = new Date().getDate();
-    if(thisMonth<3 || (thisMonth === 3 && today< (16 + testShift))){
+    if(thisMonth<3 || (thisMonth === 3 && today< (16 + TEST_SHIFT))){
       year--;
     }
-    return new Date(year+1,2,(16+testShift)).getTime();
+    return new Date(year+1,2,(16+TEST_SHIFT)).getTime();
   }
 }
