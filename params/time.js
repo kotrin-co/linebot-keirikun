@@ -27,7 +27,7 @@ module.exports = {
     if(thisMonth<3 || (thisMonth === 3 && today< (16 + TEST_SHIFT))){
       year--;
     }
-    return new Date(year,2,(16+TEST_SHIFTt)).getTime();
+    return new Date(year,2,(16+TEST_SHIFT)).getTime();
   },
 
   getEndPoint: () => {
