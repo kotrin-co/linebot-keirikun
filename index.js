@@ -16,9 +16,7 @@ const {
   ACCOUNTS,
   TRANSACTIONS,
   FREE_TRIAL_PERIOD,
-  CORRECTED_YEAR,
-  START_TS,
-  END_TS
+  TS
 } = require('./params/params');
 
 //stripeの設定
@@ -234,6 +232,9 @@ const handleMessageEvent = async (ev) => {
             else if(text === 'データ削除'){
               const flexMessage = await Flex.makeDateSelector('delete','','','',ev.source.userId);
               return client.replyMessage(ev.replyToken,flexMessage);
+            }
+            else if(text === 'テスト'){
+              console.log('test',TS);
             }
             else{
               return client.replyMessage(ev.replyToken,{

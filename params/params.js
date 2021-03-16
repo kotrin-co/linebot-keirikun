@@ -1,18 +1,4 @@
-//テスト用シフト（ここだけ変えれば良い）
-const testShift = 0;
 
-//年度計算
-let year = new Date().getFullYear();
-const thisMonth = new Date().getMonth()+1;
-const today = new Date().getDate();
-if(thisMonth<3 || (thisMonth === 3 && today< (16 + testShift))){
-  year--;
-}
-
-//年度スタートおよび終了のタイムスタンプ計算
-const startPoint = new Date(year,2,(16+testShift)).getTime();
-const endPoint = new Date(year+1,2,(16+testShift)).getTime();
-console.log('params',year,thisMonth,today,startPoint,endPoint);
 
 module.exports = {
   ACCOUNTS: ['売上','仕入','交通費','会議費','接待交際費','通信費','衣装費','消耗品費','荷造運賃','車両費','研修費','新聞図書費','外注工賃','広告宣伝費','諸会費','雑費','利子割引料','給料','雑給','従業員報酬','ｽﾀｯﾌ源泉所得税','家賃','水道光熱費','支払手数料','税理士・弁護士報酬','保険料','年金','雑収入','備品'],
@@ -88,8 +74,5 @@ module.exports = {
   original_SID: [0,1786699057,251943700,1686142823,661995045,1312117404,550715539],
   FREE_TRIAL_PERIOD: 0.007, //無料試用期間→日数単位で書く
   ADMIN: 'kentaro523@gmail.com',
-  CORRECTED_YEAR: year,
-  START_TS: startPoint,
-  END_TS: endPoint,
-  TEST_SHIFT: testShift
+  TS: new Date().getTime()
 }
