@@ -332,7 +332,7 @@ const createMemberPage = (userInfo) => {
     aToggler.setAttribute('role','button');
     aToggler.setAttribute('aria-expanded','false');
     aToggler.setAttribute('aria-controls','collapseTarget');
-    aToggler.value = '過去のシート作成';
+    aToggler.innerHTML = '過去のシート作成';
 
     const divCreateSheet = document.createElement('div');
     divCreateSheet.setAttribute('class','collapse');
