@@ -356,35 +356,36 @@ module.exports = {
 
   sheetSelector: async (line_uid) => {
     const userInfo = await Data.getUserDataByLineId(line_uid);
-    // console.log('userInfo in selector',userInfo);
-    const ssidArray = [];
 
-    //ssが存在したらidをssidArrayへ格納する
-    if(userInfo.ssid　&& userInfo.ssid !== 'null') ssidArray.push(userInfo.ssid);
-    if(userInfo.ssid1　&& userInfo.ssid1 !== 'null') ssidArray.push(userInfo.ssid1);
-    if(userInfo.ssid2　&& userInfo.ssid2 !== 'null') ssidArray.push(userInfo.ssid2);
-    if(userInfo.ssid3　&& userInfo.ssid3 !== 'null') ssidArray.push(userInfo.ssid3);
-    if(userInfo.ssid4　&& userInfo.ssid4 !== 'null') ssidArray.push(userInfo.ssid4);
-    // console.log('ssidArray',ssidArray);
+    const ssidArray = [];
 
     //現状の入力対象のスプレッドシート
     const target = userInfo.target_ss;
     const createdAt = userInfo.createdat;
-    if(ssidArray[target]){
 
-      //年度の計算
-      const year = getYear(createdAt);
+    //最新年度の計算
+    const latestYear = getYear(createdAt);
+
+    //ssが存在したらidをssidArrayへ格納する
+    if(userInfo.ssid　&& userInfo.ssid !== 'null') ssidArray.push(0);
+    if(userInfo.ssid1　&& userInfo.ssid1 !== 'null') ssidArray.push(1);
+    if(userInfo.ssid2　&& userInfo.ssid2 !== 'null') ssidArray.push(2);
+    if(userInfo.ssid3　&& userInfo.ssid3 !== 'null') ssidArray.push(3);
+    if(userInfo.ssid4　&& userInfo.ssid4 !== 'null') ssidArray.push(4);
+    console.log('ssidArray',ssidArray);
+
+    if(ssidArray[target]){
 
       //ボタン要素の自動生成
       const bodyContents = [];
-      ssidArray.forEach((value,index) => {
+      ssidArray.forEach( value => {
         const buttonColor = index == target ? 'primary' : 'secondary';
         const buttonObject = {
           type: "button",
           action: {
             type: "postback",
-            label: `${year-index}年度`,
-            data: `change_ss&${index}`
+            label: `${latestYear - value}年度`,
+            data: `change_ss&${value}`
           },
           style: buttonColor,
           margin: "md"
