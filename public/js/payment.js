@@ -349,11 +349,13 @@ const createMemberPage = (userInfo) => {
     const ssid1Button = document.createElement('button');
     ssid1Button.setAttribute('class','btn btn-success');
     ssid1Button.value = (!userInfo.ssid1 || userInfo.ssid1 === 'null') ? `${year-1}年度シート作成` : `${year-1}年度シート作成済`;
+    divCollapseCard.appendChild(ssid1Button);
 
     //ssid2
     const ssid2Button = document.createElement('button');
     ssid2Button.setAttribute('class','btn btn-success');
     ssid2Button.value = (!userInfo.ssid2 || userInfo.ssid2 === 'null') ? `${year-2}年度シート作成` : `${year-2}年度シート作成済`;
+    divCollapseCard.appendChild(ssid2Button);
 
     pCreateSheet.appendChild(aToggler);
     divPage.appendChild(pCreateSheet);
