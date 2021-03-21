@@ -342,19 +342,20 @@ const createMemberPage = (userInfo) => {
 
     const divCollapseCard = document.createElement('div');
     divCollapseCard.setAttribute('class','card card-body');
-    divCollapseCard.innerHTML = 'カードだよ';
 
     //過去シート作成ボタン
     //ssid1
     const ssid1Button = document.createElement('button');
-    ssid1Button.setAttribute('class','btn btn-success');
+    ssid1Button.setAttribute('class','btn btn-success past-create-button');
     ssid1Button.innerHTML = (!userInfo.ssid1 || userInfo.ssid1 === 'null') ? `${year-1}年度シート作成` : `${year-1}年度シート作成済`;
+    if(userInfo.ssid1 && userInfo.ssid1 !== 'null') ssid1Button.disabled = true;
     divCollapseCard.appendChild(ssid1Button);
 
     //ssid2
     const ssid2Button = document.createElement('button');
-    ssid2Button.setAttribute('class','btn btn-success');
+    ssid2Button.setAttribute('class','btn btn-success past-create-button');
     ssid2Button.innerHTML = (!userInfo.ssid2 || userInfo.ssid2 === 'null') ? `${year-2}年度シート作成` : `${year-2}年度シート作成済`;
+    if(userInfo.ssid2 && userInfo.ssid2 !== 'null') ssid2Button.disabled = true;
     divCollapseCard.appendChild(ssid2Button);
 
     pCreateSheet.appendChild(aToggler);
