@@ -290,6 +290,7 @@ const createMemberPage = (userInfo) => {
       const formData = new FormData(formElement);
       formData.append('userName',userInfo.display_name);
       formData.append('line_uid',userInfo.line_uid);
+      formData.append('year',year);
       updateButton.addEventListener('click',()=>{
         divPage.innerHTML = '';
         displaySpinner();
@@ -357,6 +358,72 @@ const createMemberPage = (userInfo) => {
     ssid2Button.innerHTML = (!userInfo.ssid2 || userInfo.ssid2 === 'null') ? `${year-2}年度シート作成` : `${year-2}年度シート作成済`;
     if(userInfo.ssid2 && userInfo.ssid2 !== 'null') ssid2Button.disabled = true;
     divCollapseCard.appendChild(ssid2Button);
+
+    //ボタン1クリック時処理
+    ssid1Button.addEventListener('click',()=>{
+      const formData = new FormData(formElement);
+      formData.append('userName',userInfo.display_name);
+      formData.append('line_uid',userInfo.line_uid);
+      formData.append('year',year-1);
+
+      divPage.innerHTML = '';
+        displaySpinner();
+        //シート作成処理
+        fetch('/api/mail',{
+          method:'POST',
+          body:formData,
+          credentials:'same-origin'
+        })
+          .then(res=>{
+            if(res.ok){
+              res.text()
+                .then(text=>{
+                  makeAlert(text);
+                  liff.openWindow({
+                    url:'https://liff.line.me/1655219547-eobVGLdB',
+                    external: false
+                  });
+                })
+                .catch(e=>console.log(e));
+            }else{
+              makeAlert('HTTPレスポンスエラーです');
+            }
+          })
+          .catch(e=>console.log(e));
+    });
+
+    //ボタン2クリック時処理
+    ssid2Button.addEventListener('click',()=>{
+      const formData = new FormData(formElement);
+      formData.append('userName',userInfo.display_name);
+      formData.append('line_uid',userInfo.line_uid);
+      formData.append('year',year-2);
+
+      divPage.innerHTML = '';
+        displaySpinner();
+        //シート作成処理
+        fetch('/api/mail',{
+          method:'POST',
+          body:formData,
+          credentials:'same-origin'
+        })
+          .then(res=>{
+            if(res.ok){
+              res.text()
+                .then(text=>{
+                  makeAlert(text);
+                  liff.openWindow({
+                    url:'https://liff.line.me/1655219547-eobVGLdB',
+                    external: false
+                  });
+                })
+                .catch(e=>console.log(e));
+            }else{
+              makeAlert('HTTPレスポンスエラーです');
+            }
+          })
+          .catch(e=>console.log(e));
+    });
 
     pCreateSheet.appendChild(aToggler);
     divPage.appendChild(pCreateSheet);
@@ -494,7 +561,7 @@ const displaySpinner = () => {
   const divCenter = document.createElement('div');
   divCenter.setAttribute('class','text-center');
   const divSpinner = document.createElement('div');
-  divSpinner.setAttribute('class','spinner-border text-primary');
+  divSpinner.setAttribute('class','spinner-grow text-primary');
   divSpinner.setAttribute('role','status');
   const spanText = document.createElement('span');
   spanText.setAttribute('class','sr-only');

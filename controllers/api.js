@@ -54,9 +54,9 @@ module.exports = {
   },
 
   createSheet: (req,res) => {
-    let { gmail,userName,line_uid } = req.body;
+    let { gmail,userName,line_uid,year } = req.body;
     gmail += '@gmail.com';
-    Data.createSheet(gmail,userName,line_uid)
+    Data.createSheet(gmail,userName,line_uid,year)
       .then(text=>{
         res.status(200).send(text);
       })

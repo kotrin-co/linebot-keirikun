@@ -224,7 +224,7 @@ const gmailAccountAdd = async (ssID,role,gmail) => {
 }
 
 //スプレッドシートの初期処理
-const initialTreat = (ssID,line_uid) => {
+const initialTreat = (ssID,year) => {
   return new Promise((resolve,reject) => {
 
     const sheets = authorize();
@@ -261,8 +261,6 @@ const initialTreat = (ssID,line_uid) => {
       return new Promise(resolve=>{
         
         //閏年判定
-        const year = Time.getYearParam();
-
         const original_SSID = year%4===0 ? original_SSID_1 : original_SSID_0;
 
         const copy_request = {
@@ -479,7 +477,7 @@ module.exports = {
           }
 
           console.log('inputss year days',year,daysEveryMonth);
-          
+
           const m = parseInt(selectedMonth);
           const d = parseInt(selectedDay);
 
@@ -763,7 +761,7 @@ module.exports = {
     })
   },
 
-  createSheet: (gmail,userName,line_uid) => {
+  createSheet: (gmail,userName,line_uid,year) => {
 
     return new Promise(async(resolve)=>{
 
@@ -772,7 +770,7 @@ module.exports = {
       const name = userName;
 
       //シートにつける年度計算
-      let year = Time.getYearParam();
+      const latestYear = Time.getYearParam();
 
       const request = {
         resource : {
@@ -813,18 +811,32 @@ module.exports = {
                         connection.query(select_query)
                           .then(res=>{
                             console.log('res.rows',res.rows[0]);
-                            //usersテーブルに挿入するssidを配列化
-                            const ssidArray = [ssID,res.rows[0].ssid,res.rows[0].ssid1,res.rows[0].ssid2,res.rows[0].ssid3];
-                            console.log('ssidArray',ssidArray);
-
-                            //updateクエリ
+                            
+                            //年数による差分処理
                             const nowTime = new Date().getTime();
-                            const update_query = {
+                            let update_query;
+                            const differential = latestYear - parseInt(year);
+
+                            if(differential === 0){
+                              //usersテーブルに挿入するssidを配列化
+                              const ssidArray = [ssID,res.rows[0].ssid,res.rows[0].ssid1,res.rows[0].ssid2,res.rows[0].ssid3];
+                              console.log('ssidArray',ssidArray);
+                              update_query = {
                                 text:`UPDATE users SET (gmail,ssid,createdat,ssid1,ssid2,ssid3,ssid4,target_ss) = ('${gmail}','${ssidArray[0]}',${nowTime},'${ssidArray[1]}','${ssidArray[2]}','${ssidArray[3]}','${ssidArray[4]}',0) WHERE line_uid='${line_uid}';`
-                            };
+                              };
+                            }else if(differential === 1){
+                              update_query = {
+                                text:`UPDATE users SET ssid1 = '${ssID}' WHERE line_uid='${line_uid}';`
+                              };
+                            }else if(differential === 2){
+                              update_query = {
+                                text:`UPDATE users SET ssid2 = '${ssID}' WHERE line_uid='${line_uid}';`
+                              };
+                            }
+                            
                             connection.query(update_query)
                               .then(()=>{
-                                  initialTreat(ssID,line_uid)
+                                  initialTreat(ssID,year)
                                     .then(message=>{
                                       console.log('message',message);
                                       resolve(message);
