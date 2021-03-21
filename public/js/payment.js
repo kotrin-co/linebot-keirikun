@@ -286,7 +286,7 @@ const createMemberPage = (userInfo) => {
       updateButton.value = 'シートは最新の状態です';
       updateButton.disabled = true;
     }else{
-      updateButton.value = 'シートを更新する';
+      updateButton.value = '最新シートを作成する';
       const formData = new FormData(formElement);
       formData.append('userName',userInfo.display_name);
       formData.append('line_uid',userInfo.line_uid);
@@ -322,6 +322,31 @@ const createMemberPage = (userInfo) => {
     divUpdateButton.appendChild(updateButton);
     divUpdateButton.setAttribute('class','div-center');
     divPage.appendChild(divUpdateButton);
+
+    //過去のスプレッドシート作成ボタン
+    const pCreateSheet = document.createElement('p');
+    const aToggler = document.createElement('a');
+    aToggler.setAttribute('class','btn btn-primary');
+    aToggler.setAttribute('data-toggle','collapse');
+    aToggler.setAttribute('href','#collapseTarget');
+    aToggler.setAttribute('role','button');
+    aToggler.setAttribute('aria-expanded','false');
+    aToggler.setAttribute('aria-controls','collapseTarget');
+    aToggler.value = '過去のシート作成';
+
+    const divCreateSheet = document.createElement('div');
+    divCreateSheet.setAttribute('class','collapse');
+    divCreateSheet.setAttribute('id','collapseTarget');
+
+    const divCollapseCard = document.createElement('div');
+    divCollapseCard.setAttribute('class','card card-body');
+    divCollapseCard.innerHTML = 'カードだよ';
+
+    pCreateSheet.appendChild(aToggler);
+    divPage.appendChild(pCreateSheet);
+
+    divCreateSheet.appendChild(divCollapseCard);
+    divPage.appendChild(divCreateSheet);
   }
 
   //お問合せ先
