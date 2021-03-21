@@ -325,6 +325,8 @@ const createMemberPage = (userInfo) => {
 
     //過去のスプレッドシート作成ボタン
     const pCreateSheet = document.createElement('p');
+    pCreateSheet.setAttribute('class','div-center');
+    
     const aToggler = document.createElement('a');
     aToggler.setAttribute('class','btn btn-primary');
     aToggler.setAttribute('data-toggle','collapse');
@@ -351,7 +353,7 @@ const createMemberPage = (userInfo) => {
 
   //お問合せ先
   const label_contact = document.createElement('label');
-  label_contact.innerHTML = '<i class="fas fa-check-circle"></i> お問合せ先<br>　電話：090-xxxx-xxxx<br>　メール：kentaro523@gmail.com';
+  label_contact.innerHTML = '<i class="fas fa-check-circle"></i> お問合せ先<br>　メール：kentaro523@gmail.com';
   divPage.appendChild(label_contact);
 
 
