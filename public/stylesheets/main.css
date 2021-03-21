@@ -104,6 +104,10 @@
   top: 40%;
 }
 
+.past-create-button{
+  margin: 0.5rem 0;
+}
+
 /* 支払成功ページ */
 
 #paid-success-page{

@@ -2,6 +2,7 @@ const { Client } = require('pg');
 const { google } = require('googleapis');
 const privatekey = require('../client_secret.json');
 const fetch = require('node-fetch');
+const Time = require('../params/time');
 
 const {
   ACCOUNTS,
@@ -9,8 +10,10 @@ const {
   CREDITS,
   TRANSACTIONS,
   ADMIN,
-  original_SSID,
-  original_SID
+  original_SSID_0,
+  original_SSID_1,
+  original_SID,
+  TEST_SHIFT
 } = require('../params/params');
 
 const connection = new Client({
@@ -60,12 +63,12 @@ const authorize = () => {
 }
 
 //仕訳帳の更新処理
-const updateJournal = (ssId) => {
+const updateJournal = (ssId,target_ss) => {
   return new Promise(resolve=>{
     const sheets = authorize();
 
     //各月日数配列の生成
-    const year = new Date().getFullYear();
+    const year = Time.getYearParam() - target_ss;
     const daysEveryMonth = [];
     for(let i=0; i<12; i++){
       daysEveryMonth.push(new Date(year,i+1,0).getDate());
@@ -221,7 +224,7 @@ const gmailAccountAdd = async (ssID,role,gmail) => {
 }
 
 //スプレッドシートの初期処理
-const initialTreat = (ssID,line_uid) => {
+const initialTreat = (ssID,year) => {
   return new Promise((resolve,reject) => {
 
     const sheets = authorize();
@@ -256,6 +259,10 @@ const initialTreat = (ssID,line_uid) => {
     //シートコピー用メソッド
     const copySheet = (index) => {
       return new Promise(resolve=>{
+        
+        //閏年判定
+        const original_SSID = year%4===0 ? original_SSID_1 : original_SSID_0;
+
         const copy_request = {
           spreadsheetId: original_SSID,
           sheetId: original_SID[index],
@@ -335,25 +342,40 @@ const initialTreat = (ssID,line_uid) => {
   });
 }
 
+//スプレッドシートが作成された年度取得用
+const getYear = (timestamp) => {
+  const ts = parseInt(timestamp);
+  let year = new Date(ts).getFullYear();
+  const month = new Date(ts).getMonth()+1;
+  const date = new Date(ts).getDate();
+
+  if(month<3 || (month===3 && date<(16+TEST_SHIFT))){
+    year--;
+  }
+  return year;
+}
+
 module.exports = {
 
-  //ユーザーデータの取得
-  // getUserData: (line_uid) => {
-  //   return new Promise((resolve,reject) => {
-  //     const pickup_query = {
-  //       text:`SELECT * FROM users WHERE line_uid='${line_uid}';`
-  //     }
-  //     connection.query(pickup_query)
-  //       .then(user=>{
-  //         if(user.rows.length){
-  //           resolve(user.rows[0]);
-  //         }else{
-  //           resolve('');
-  //         }
-  //       })
-  //       .catch(e=>console.log(e));
-  //   })
-  // },
+  //LINE IDによるユーザーデータの取得
+  getUserDataByLineId: (line_uid) => {
+    return new Promise((resolve,reject) => {
+      const pickup_query = {
+        text:`SELECT * FROM users WHERE line_uid='${line_uid}';`
+      }
+      connection.query(pickup_query)
+        .then(user=>{
+          if(user.rows.length){
+            resolve(user.rows[0]);
+          }else{
+            resolve('');
+          }
+        })
+        .catch(e=>console.log(e));
+    })
+  },
+
+  //idTokenによるユーザーデータの取得
   getUserData: (idToken) => {
     return new Promise(resolve=>{
       const bodyData = `id_token=${idToken}&client_id=${process.env.LOGIN_CHANNEL_ID}`;
@@ -404,10 +426,34 @@ module.exports = {
       }
       connection.query(select_query)
         .then(async(res)=>{
-          //スプレッドシートidとシートidの抜き出し
-          const ssId = res.rows[0].ssid;
-          const inputSheetId = res.rows[0].sid1;
-          console.log('ssid sid',ssId,inputSheetId);
+
+          //採用するスプレッドシートID
+          let ssId = '';
+          //スプレッドシートidの決定
+          const target_ss = res.rows[0].target_ss;
+          switch(target_ss){
+            case 0:
+              ssId = res.rows[0].ssid;
+              break;
+
+            case 1:
+              ssId = res.rows[0].ssid1;
+              break;
+
+            case 2:
+              ssId = res.rows[0].ssid2;
+              break;
+            
+            case 3:
+              ssId = res.rows[0].ssid3;
+              break;
+            
+            case 4:
+              ssId = res.rows[0].ssid4;
+              break;
+          }
+
+          console.log('ssid',ssId);
 
           const sheets = authorize();
 
@@ -422,12 +468,16 @@ module.exports = {
           const columns = createAlphabetsArray();
           
           //列番号の計算
-          //各月日数配列の生成
-          const year = new Date().getFullYear();
+          //各月日数配列の生成(スプレッドシートが作成された年度を起点とする)
+          let year = getYear(res.rows[0].createdat) -target_ss;
+
           const daysEveryMonth = [];
           for(let i=0; i<12; i++){
             daysEveryMonth.push(new Date(year,i+1,0).getDate());
           }
+
+          console.log('inputss year days',year,daysEveryMonth);
+
           const m = parseInt(selectedMonth);
           const d = parseInt(selectedDay);
 
@@ -478,8 +528,8 @@ module.exports = {
             }
           }
           await sheets.spreadsheets.values.update(update_request);
-          await updateJournal(ssId);
-          resolve(newValue);
+          await updateJournal(ssId,target_ss);
+          resolve([year,newValue]);
         })
         .catch(e=>console.log(e));
     });
@@ -511,8 +561,34 @@ module.exports = {
 
       connection.query(select_query)
         .then(async(res)=>{
-          //スプレッドシートidとシートidの抜き出し
-          const ssId = res.rows[0].ssid;
+
+          //採用するスプレッドシートID
+          let ssId = '';
+          //スプレッドシートidの決定
+          const target_ss = res.rows[0].target_ss;
+          switch(target_ss){
+            case 0:
+              ssId = res.rows[0].ssid;
+              break;
+
+            case 1:
+              ssId = res.rows[0].ssid1;
+              break;
+
+            case 2:
+              ssId = res.rows[0].ssid2;
+              break;
+            
+            case 3:
+              ssId = res.rows[0].ssid3;
+              break;
+            
+            case 4:
+              ssId = res.rows[0].ssid4;
+              break;
+          }
+
+          console.log('ssid',ssId);
 
           //auth
           const sheets = authorize();
@@ -522,7 +598,7 @@ module.exports = {
           
           //列番号の計算
           //各月日数配列の生成
-          const year = new Date().getFullYear();
+          let year = getYear(res.rows[0].createdat) -target_ss; //スプレッドシート作成時を基準とした年
           const daysEveryMonth = [];
           for(let i=0; i<12; i++){
             daysEveryMonth.push(new Date(year,i+1,0).getDate());
@@ -585,8 +661,32 @@ module.exports = {
 
       connection.query(select_query)
         .then(res=>{
-          //スプレッドシートidとシートidの抜き出し
-          const ssId = res.rows[0].ssid;
+
+          //採用するスプレッドシートID
+          let ssId = '';
+          //スプレッドシートidの決定
+          const target_ss = res.rows[0].target_ss;
+          switch(target_ss){
+            case 0:
+              ssId = res.rows[0].ssid;
+              break;
+
+            case 1:
+              ssId = res.rows[0].ssid1;
+              break;
+
+            case 2:
+              ssId = res.rows[0].ssid2;
+              break;
+            
+            case 3:
+              ssId = res.rows[0].ssid3;
+              break;
+            
+            case 4:
+              ssId = res.rows[0].ssid4;
+              break;
+          }
 
           //auth
           const sheets = authorize();
@@ -598,7 +698,7 @@ module.exports = {
           if(selectedAccount === 28) rowNumber--;
 
           //各月日数配列の生成
-          const year = new Date().getFullYear();
+          let year = getYear(res.rows[0].createdat) -target_ss; //スプレッドシート作成時を基準とした年
           const daysEveryMonth = [];
           for(let i=0; i<12; i++){
             daysEveryMonth.push(new Date(year,i+1,0).getDate());
@@ -661,14 +761,16 @@ module.exports = {
     })
   },
 
-  createSheet: (gmail,userName,line_uid) => {
+  createSheet: (gmail,userName,line_uid,year) => {
 
     return new Promise(async(resolve)=>{
 
       const sheets = authorize();
 
       const name = userName;
-      const year = new Date().getFullYear();
+
+      //シートにつける年度計算
+      const latestYear = Time.getYearParam();
 
       const request = {
         resource : {
@@ -694,7 +796,7 @@ module.exports = {
           ],
         }
       };
-    
+
       await sheets.spreadsheets.create(request, (err,response)=>{
 
         const spreadsheetId = response.data.spreadsheetId;
@@ -702,20 +804,48 @@ module.exports = {
             .then((ssId)=>{
                 gmailAccountAdd(spreadsheetId,'writer',gmail)
                     .then((ssID)=>{
-                        const nowTime = new Date().getTime();
-                        const update_query = {
-                            text:`UPDATE users SET (gmail,ssid,createdat) = ('${gmail}','${ssID}',${nowTime}) WHERE line_uid='${line_uid}';`
+                        //既存ssidの取得
+                        const select_query = {
+                          text: `SELECT * FROM users WHERE line_uid='${line_uid}';`
                         };
-                        connection.query(update_query)
-                            .then(()=>{
-                                initialTreat(ssID,line_uid)
-                                  .then(message=>{
-                                    console.log('message',message);
-                                    resolve(message);
-                                  })
-                                  .catch(e=>console.log(e));
-                            })
-                            .catch(e=>console.log(e.stack));
+                        connection.query(select_query)
+                          .then(res=>{
+                            console.log('res.rows',res.rows[0]);
+                            
+                            //年数による差分処理
+                            const nowTime = new Date().getTime();
+                            let update_query;
+                            const differential = latestYear - parseInt(year);
+
+                            if(differential === 0){
+                              //usersテーブルに挿入するssidを配列化
+                              const ssidArray = [ssID,res.rows[0].ssid,res.rows[0].ssid1,res.rows[0].ssid2,res.rows[0].ssid3];
+                              console.log('ssidArray',ssidArray);
+                              update_query = {
+                                text:`UPDATE users SET (gmail,ssid,createdat,ssid1,ssid2,ssid3,ssid4,target_ss) = ('${gmail}','${ssidArray[0]}',${nowTime},'${ssidArray[1]}','${ssidArray[2]}','${ssidArray[3]}','${ssidArray[4]}',0) WHERE line_uid='${line_uid}';`
+                              };
+                            }else if(differential === 1){
+                              update_query = {
+                                text:`UPDATE users SET ssid1 = '${ssID}' WHERE line_uid='${line_uid}';`
+                              };
+                            }else if(differential === 2){
+                              update_query = {
+                                text:`UPDATE users SET ssid2 = '${ssID}' WHERE line_uid='${line_uid}';`
+                              };
+                            }
+                            
+                            connection.query(update_query)
+                              .then(()=>{
+                                  initialTreat(ssID,year)
+                                    .then(message=>{
+                                      console.log('message',message);
+                                      resolve(message);
+                                    })
+                                    .catch(e=>console.log(e));
+                              })
+                              .catch(e=>console.log(e.stack));
+                          })
+                          .catch(e=>console.log(e));
                     })
                     .catch(e=>console.log(e));
             })
@@ -723,4 +853,17 @@ module.exports = {
     })
   },
   
+  //入力スプレッドシートの変更
+  changeTargetSS: (line_uid,target) => {
+    return new Promise (resolve=>{
+      const update_query = {
+        text: `UPDATE users SET target_ss=${target} WHERE line_uid='${line_uid}';`
+      }
+      connection.query(update_query)
+        .then(()=>{
+          resolve('update succeeded!');
+        })
+        .catch(e=>console.log(e));
+    });
+  }
 }

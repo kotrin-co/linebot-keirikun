@@ -5,8 +5,26 @@ const {
   NUMBER_OF_COLUMNS,
   BUTTON_COLOR,
   BUTTON_COLOR_D,
-  TRANSACTIONS
+  TRANSACTIONS,
+  TEST_SHIFT
 } = require('../params/params');
+
+const Data = require('./Data');
+
+const Time = require('../params/time');
+
+const getYear = (timestamp) => {
+  const ts = parseInt(timestamp);
+  let year = new Date(ts).getFullYear();
+  const month = new Date(ts).getMonth()+1;
+  const date = new Date(ts).getDate();
+
+  if(month<3 || (month===3 && date<(16+TEST_SHIFT))){
+    year--;
+  }
+  console.log('getYear',ts,year,month,date);
+  return year;
+}
 
 module.exports = {
 
@@ -163,52 +181,66 @@ module.exports = {
     return flexMessage;
   },
 
-  makeDateSelector: (mode,amount,selectedAccount,selectedTransaction) => {
-    let postbackData;
-    if(mode === 'input'){
-      postbackData = `date&${amount}&${selectedAccount}&${selectedTransaction}`;
-    }else if(mode === 'confirmation'){
-      postbackData = 'confirmationByDate';
-    }else if(mode === 'delete'){
-      postbackData = 'delete';
-    }
+  makeDateSelector: (mode,amount,selectedAccount,selectedTransaction,line_uid) => {
+    return new Promise(async(resolve) => {
+      const userInfo = await Data.getUserDataByLineId(line_uid);
+      const year = getYear(userInfo.createdat) - userInfo.target_ss;
+      const month = ('0'+(new Date().getMonth()+1)).slice(-2);
+      const date = ('0'+(new Date().getDate())).slice(-2);
+      const minDate = `${year}-01-01`;
+      const maxDate = `${year}-12-31`;
+      const initialDate = `${year}-${month}-${date}`;
+      console.log('makedate year',year,month,date);
 
-    const flexMessage = {
-      "type":"flex",
-      "altText":"日付選択",
-      "contents":
-      {
-        "type": "bubble",
-        "body": {
-          "type": "box",
-          "layout": "vertical",
-          "contents": [
-            {
-              "type": "text",
-              "text": "対象日を選んでください",
-              "size": "md",
-              "align": "center"
-            }
-          ]
-        },
-        "footer": {
-          "type": "box",
-          "layout": "vertical",
-          "contents": [
-            {
-              "type": "button",
-              "action": {
-                "type": "datetimepicker",
-                "label": "日付を選択する",
-                "data": postbackData,
-                "mode": "date"
-              }
-            }
-          ]
-        }
+      let postbackData;
+      if(mode === 'input'){
+        postbackData = `date&${amount}&${selectedAccount}&${selectedTransaction}`;
+      }else if(mode === 'confirmation'){
+        postbackData = 'confirmationByDate';
+      }else if(mode === 'delete'){
+        postbackData = 'delete';
       }
-    };
-    return flexMessage;
+
+      const flexMessage = {
+        "type":"flex",
+        "altText":"日付選択",
+        "contents":
+        {
+          "type": "bubble",
+          "body": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "text",
+                "text": "対象日を選んでください",
+                "size": "md",
+                "align": "center"
+              }
+            ]
+          },
+          "footer": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "button",
+                "action": {
+                  "type": "datetimepicker",
+                  "label": "日付を選択する",
+                  "data": postbackData,
+                  "mode": "date",
+                  "min": minDate,
+                  "max": maxDate,
+                  "initial": initialDate
+                }
+              }
+            ]
+          }
+        }
+      };
+      resolve(flexMessage);
+    });
   },
 
   // makeDateChoiceForConfirmation: (mode) => {
@@ -321,6 +353,90 @@ module.exports = {
 
     return mainMessage;
   },
+
+  sheetSelector: async (line_uid) => {
+    const userInfo = await Data.getUserDataByLineId(line_uid);
+
+    const ssidArray = [];
+
+    //現状の入力対象のスプレッドシート
+    const target = userInfo.target_ss;
+    const createdAt = userInfo.createdat;
+
+    //最新年度の計算
+    const latestYear = getYear(createdAt);
+
+    //ssが存在したらidをssidArrayへ格納する
+    if(userInfo.ssid　&& userInfo.ssid !== 'null') ssidArray.push(0);
+    if(userInfo.ssid1　&& userInfo.ssid1 !== 'null') ssidArray.push(1);
+    if(userInfo.ssid2　&& userInfo.ssid2 !== 'null') ssidArray.push(2);
+    if(userInfo.ssid3　&& userInfo.ssid3 !== 'null') ssidArray.push(3);
+    if(userInfo.ssid4　&& userInfo.ssid4 !== 'null') ssidArray.push(4);
+    console.log('ssidArray',ssidArray);
+
+    if(ssidArray.length){
+
+      //ボタン要素の自動生成
+      const bodyContents = [];
+      ssidArray.forEach( value => {
+        const buttonColor = value == target ? 'primary' : 'secondary';
+        const buttonObject = {
+          type: "button",
+          action: {
+            type: "postback",
+            label: `${latestYear - value}年度`,
+            data: `change_ss&${value}`
+          },
+          style: buttonColor,
+          margin: "md"
+        }
+        bodyContents.push(buttonObject);
+      });
+
+      // console.log('bodycontents',bodyContents);
+
+      //flexMessageの生成
+      const flexMessage = {
+        type:"flex",
+        altText:"入力スプレッドシート切替",
+        contents:
+        {
+          type: "bubble",
+          header: {
+            type: "box",
+            layout: "vertical",
+            contents: [
+              {
+                type: "text",
+                text: "入力したいシートの年度をお選びください",
+                wrap: true,
+                size: "lg"
+              },
+              {
+                type: "text",
+                text: "※緑色=現在選択中のシート",
+                wrap: true,
+                size: "md"
+              }
+            ]
+          },
+          body: {
+            type: "box",
+            layout: "vertical",
+            contents: bodyContents
+          }
+        }
+      }
+
+      return flexMessage;
+
+    }else{
+      return {
+        type: 'text',
+        text: '対象のスプレッドシートが存在していません。'
+      }
+    }
+  }
 
   // makeAccountChoiceForConfirmation: () => {
   //   const flexMessage = {

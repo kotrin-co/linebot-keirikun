@@ -1,3 +1,5 @@
+
+
 module.exports = {
   ACCOUNTS: ['売上','仕入','交通費','会議費','接待交際費','通信費','衣装費','消耗品費','荷造運賃','車両費','研修費','新聞図書費','外注工賃','広告宣伝費','諸会費','雑費','利子割引料','給料','雑給','従業員報酬','ｽﾀｯﾌ源泉所得税','家賃','水道光熱費','支払手数料','税理士・弁護士報酬','保険料','年金','雑収入','備品'],
   DEBITS:[
@@ -67,8 +69,10 @@ module.exports = {
   BUTTON_COLOR: '#434DFF',
   BUTTON_COLOR_D: '#CC0000',
   TRANSACTIONS: ['現金','振込・振替','クレカ'],
-  original_SSID: '13Y2AZYNHWnQNKdSzK5Vxna_YPdf4YnT61imptdiM_MU',
+  original_SSID_0: '13Y2AZYNHWnQNKdSzK5Vxna_YPdf4YnT61imptdiM_MU',
+  original_SSID_1: '1HWs2SBoh8ElvvA0MC7W7UT9zMsfEtE495mzpmCNeQYI', //閏年用
   original_SID: [0,1786699057,251943700,1686142823,661995045,1312117404,550715539],
   FREE_TRIAL_PERIOD: 0.007, //無料試用期間→日数単位で書く
-  ADMIN: 'kentaro523@gmail.com'
+  ADMIN: 'kentaro523@gmail.com',
+  TEST_SHIFT: 0
 }

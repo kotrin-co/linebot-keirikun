@@ -1,6 +1,7 @@
 const divPage = document.getElementById('payment-page');
 const debug = document.getElementById('debug');
 const FREE_TRIAL_PERIOD = 0.007;
+const testShift = 0;
 
 window.onload = () => {
   const myLiffId = '1655219547-eobVGLdB';
@@ -267,16 +268,29 @@ const createMemberPage = (userInfo) => {
     updateButton.setAttribute('class','btn btn-primary');
     
     //シート作成日時を比較する
-    const thisYear = new Date().getFullYear();
-    const createdYear = new Date(parseInt(userInfo.createdat)).getFullYear();
-    if(thisYear === createdYear){
+    const ts = new Date().getTime();
+    let year = new Date(ts).getFullYear();
+    const thisMonth = new Date(ts).getMonth()+1;
+    const today = new Date(ts).getDate();
+    if(thisMonth<3 || (thisMonth === 3 && today<(16+testShift))){
+      year--;
+    }
+
+    //シート更新可能日
+    const startPoint = new Date(year,2,(16+testShift)).getTime();
+    const endPoint = new Date(year+1,2,(16+testShift)).getTime();
+
+    const createdAt = parseInt(userInfo.createdat);
+    
+    if((createdAt>=startPoint)&&(createdAt<endPoint)){
       updateButton.value = 'シートは最新の状態です';
       updateButton.disabled = true;
     }else{
-      updateButton.value = 'シートを更新する';
+      updateButton.value = '最新シートを作成する';
       const formData = new FormData(formElement);
       formData.append('userName',userInfo.display_name);
       formData.append('line_uid',userInfo.line_uid);
+      formData.append('year',year);
       updateButton.addEventListener('click',()=>{
         divPage.innerHTML = '';
         displaySpinner();
@@ -309,11 +323,118 @@ const createMemberPage = (userInfo) => {
     divUpdateButton.appendChild(updateButton);
     divUpdateButton.setAttribute('class','div-center');
     divPage.appendChild(divUpdateButton);
+
+    //過去のスプレッドシート作成ボタン
+    const pCreateSheet = document.createElement('p');
+    pCreateSheet.setAttribute('class','div-center');
+
+    const aToggler = document.createElement('a');
+    aToggler.setAttribute('class','btn btn-primary');
+    aToggler.setAttribute('data-toggle','collapse');
+    aToggler.setAttribute('href','#collapseTarget');
+    aToggler.setAttribute('role','button');
+    aToggler.setAttribute('aria-expanded','false');
+    aToggler.setAttribute('aria-controls','collapseTarget');
+    aToggler.innerHTML = '過去のシート作成';
+
+    const divCreateSheet = document.createElement('div');
+    divCreateSheet.setAttribute('class','collapse');
+    divCreateSheet.setAttribute('id','collapseTarget');
+
+    const divCollapseCard = document.createElement('div');
+    divCollapseCard.setAttribute('class','card card-body');
+
+    //過去シート作成ボタン
+    //ssid1
+    const ssid1Button = document.createElement('button');
+    ssid1Button.setAttribute('class','btn btn-success past-create-button');
+    ssid1Button.innerHTML = (!userInfo.ssid1 || userInfo.ssid1 === 'null') ? `${year-1}年度シート作成` : `${year-1}年度シート作成済`;
+    if(userInfo.ssid1 && userInfo.ssid1 !== 'null') ssid1Button.disabled = true;
+    divCollapseCard.appendChild(ssid1Button);
+
+    //ssid2
+    const ssid2Button = document.createElement('button');
+    ssid2Button.setAttribute('class','btn btn-success past-create-button');
+    ssid2Button.innerHTML = (!userInfo.ssid2 || userInfo.ssid2 === 'null') ? `${year-2}年度シート作成` : `${year-2}年度シート作成済`;
+    if(userInfo.ssid2 && userInfo.ssid2 !== 'null') ssid2Button.disabled = true;
+    divCollapseCard.appendChild(ssid2Button);
+
+    //ボタン1クリック時処理
+    ssid1Button.addEventListener('click',()=>{
+      const formData = new FormData(formElement);
+      formData.append('userName',userInfo.display_name);
+      formData.append('line_uid',userInfo.line_uid);
+      formData.append('year',year-1);
+
+      divPage.innerHTML = '';
+        displaySpinner();
+        //シート作成処理
+        fetch('/api/mail',{
+          method:'POST',
+          body:formData,
+          credentials:'same-origin'
+        })
+          .then(res=>{
+            if(res.ok){
+              res.text()
+                .then(text=>{
+                  makeAlert(text);
+                  liff.openWindow({
+                    url:'https://liff.line.me/1655219547-eobVGLdB',
+                    external: false
+                  });
+                })
+                .catch(e=>console.log(e));
+            }else{
+              makeAlert('HTTPレスポンスエラーです');
+            }
+          })
+          .catch(e=>console.log(e));
+    });
+
+    //ボタン2クリック時処理
+    ssid2Button.addEventListener('click',()=>{
+      const formData = new FormData(formElement);
+      formData.append('userName',userInfo.display_name);
+      formData.append('line_uid',userInfo.line_uid);
+      formData.append('year',year-2);
+
+      divPage.innerHTML = '';
+        displaySpinner();
+        //シート作成処理
+        fetch('/api/mail',{
+          method:'POST',
+          body:formData,
+          credentials:'same-origin'
+        })
+          .then(res=>{
+            if(res.ok){
+              res.text()
+                .then(text=>{
+                  makeAlert(text);
+                  liff.openWindow({
+                    url:'https://liff.line.me/1655219547-eobVGLdB',
+                    external: false
+                  });
+                })
+                .catch(e=>console.log(e));
+            }else{
+              makeAlert('HTTPレスポンスエラーです');
+            }
+          })
+          .catch(e=>console.log(e));
+    });
+
+    pCreateSheet.appendChild(aToggler);
+    divPage.appendChild(pCreateSheet);
+
+    divCreateSheet.appendChild(divCollapseCard);
+    divPage.appendChild(divCreateSheet);
   }
 
   //お問合せ先
   const label_contact = document.createElement('label');
-  label_contact.innerHTML = '<i class="fas fa-check-circle"></i> お問合せ先<br>　電話：090-xxxx-xxxx<br>　メール：kentaro523@gmail.com';
+  label_contact.innerHTML = '<i class="fas fa-check-circle"></i> お問合せ先<br>　メール：kentaro523@gmail.com';
   divPage.appendChild(label_contact);
 
 
@@ -440,7 +561,7 @@ const displaySpinner = () => {
   const divCenter = document.createElement('div');
   divCenter.setAttribute('class','text-center');
   const divSpinner = document.createElement('div');
-  divSpinner.setAttribute('class','spinner-border text-primary');
+  divSpinner.setAttribute('class','spinner-grow text-primary');
   divSpinner.setAttribute('role','status');
   const spanText = document.createElement('span');
   spanText.setAttribute('class','sr-only');
