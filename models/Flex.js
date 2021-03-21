@@ -379,7 +379,7 @@ module.exports = {
       //ボタン要素の自動生成
       const bodyContents = [];
       ssidArray.forEach( value => {
-        const buttonColor = index == target ? 'primary' : 'secondary';
+        const buttonColor = value == target ? 'primary' : 'secondary';
         const buttonObject = {
           type: "button",
           action: {
