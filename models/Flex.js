@@ -374,7 +374,7 @@ module.exports = {
     if(userInfo.ssid4　&& userInfo.ssid4 !== 'null') ssidArray.push(4);
     console.log('ssidArray',ssidArray);
 
-    if(ssidArray[target]){
+    if(ssidArray.length){
 
       //ボタン要素の自動生成
       const bodyContents = [];
